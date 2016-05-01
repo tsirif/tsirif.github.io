@@ -9,8 +9,8 @@
 locale                   : "en-US"
 title                    : "COSA"
 title_separator          : "|"
-name                     : "Christos Tsirigotis"
-description              : "Chronicle of Open Source Activities. Personal blog of Christos Tsirigotis."
+name                     : &name "Christos Tsirigotis"
+description              : &description "Chronicle of Open Source Activities, personal blog of Christos Tsirigotis"
 url                      : "https://tsirif.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "tsirif/tsirif.github.io"
@@ -41,7 +41,7 @@ yandex_site_verification :
 
 # Social Sharing
 twitter:
-  username               : "tsiri_christos"
+  username               : &twitter "tsiri_christos"
 facebook:
   username               :
   app_id                 :
@@ -63,9 +63,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "Christos Tsirigotis"
-  avatar           : "bio-photo.jpg"
-  bio              : "Studying to be electrical engineer, computer scientist and programmer"
+  name             : *name
+  avatar           : "tsirif.jpeg"
+  bio              : "Engineer in process, enthusiast of robots and mathematics in their original sense."
   location         : "Thessaloniki, Greece"
   email            : "tsirif@gmail.com"
   uri              : "https://tsirif.github.io"
@@ -86,7 +86,7 @@ author:
   stackoverflow    : # http://stackoverflow.com/users/123456/username
   steam            :
   tumblr           :
-  twitter          : "tsiri_christos"
+  twitter          : *twitter
   vine             :
   weibo            :
   xing             :
@@ -145,6 +145,27 @@ kramdown:
   toc_levels: 1..6
   smart_quotes: lsquo,rsquo,ldquo,rdquo
   enable_coderay: false
+
+# Defaults
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: false
+      related: false
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
 
 
 # Outputting
@@ -206,16 +227,3 @@ compress_html:
   clippings: all
   ignore:
     envs: development
-
-defaults:
-  # _posts
-  - scope:
-      path: ""
-      type: posts
-    values:
-      layout: single
-      author_profile: true
-      read_time: true
-      comments: true
-      share: true
-      related: true
