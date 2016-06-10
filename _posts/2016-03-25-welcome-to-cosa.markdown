@@ -2,7 +2,7 @@
 title:  "Welcome to COSA!"
 date:   2016-03-25 05:05:00 +0200
 categories: Announcements
-tags: general
+tags: General
 ---
 Friday, 25 March 2016, 05:05 AM, Thessaloniki, Greece
 

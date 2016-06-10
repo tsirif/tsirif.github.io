@@ -2,7 +2,7 @@
 title:  "Google Summer of Code adventure begins"
 date:   2016-04-27 21:35:00 +0300
 categories: Announcements
-tags: general GSoC-16 python theano
+tags: General GSoC-16 Python Theano
 ---
 Finally, about a month after proposal submissions, Google Summer of Code announced which projects will participate in this year's coding summer adventure. My proposal to Python Software Foundation was accepted together with other 1205 proposals to 178 - in total - open-source organizations. Check the official blog [announcement](http://google-opensource.blogspot.gr/2016/04/students-announced-for-google-summer-of.html) for more statistical references.
 
