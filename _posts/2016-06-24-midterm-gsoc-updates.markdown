@@ -16,7 +16,7 @@ Some libgpuarray API
 Before, explaining collectives API I must refer to some **libgpuarray**
 structures that user has to handle in order to develop functioning software.
 
-* `gpucontext`: This structure is declared in [*buffer.h*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/src/gpuarray/buffer.h#L37).
+* `gpucontext`: This structure is declared in [*buffer.h*](https://github.com/Theano/libgpuarray/blob/master/src/gpuarray/buffer.h#L34).
 
 This is used to describe what the name means, a GPU context. A context of gpu is
 a concept which represents a process running in gpu. In general, a context can be "pushed"
@@ -26,16 +26,16 @@ GPU process (distinct memory address, allocations, kernel definitions).
 A context is "poped" out, when user does not want to use it anymore. In
 **libgpuarray**, `gpucontext` is assigned to a single gpu on creation and is used also
 to refer to the gpu which will be programmed. A call to
-[*gpucontext_init*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/src/gpuarray/buffer.h#L46)
+[*gpucontext_init*](https://github.com/Theano/libgpuarray/blob/master/src/gpuarray/buffer.h#L46)
 will create an instance and at least one call is necessary to make use of the
 rest library.
 
 `gpucontext* gpucontext_init(const char* name, int dev, int flags, int* ret);`
 
-* `gpudata`: This structure is declared in [*buffer.h*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/src/gpuarray/buffer.h#L30).
+* `gpudata`: This structure is declared in [*buffer.h*](https://github.com/Theano/libgpuarray/blob/master/src/gpuarray/buffer.h#L27).
 
 It represent allocated data in a device which is handled by a single
-`gpucontext`. A call to [*gpudata_alloc*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/src/gpuarray/buffer.h#L157)
+`gpucontext`. A call to [*gpudata_alloc*](https://github.com/Theano/libgpuarray/blob/master/src/gpuarray/buffer.h#L157)
 will return an allocated `gpudata`
 which refers to an allocated buffer space of size `sz` (in bytes) in the GPU
 selected through the `ctx` provided. Optionally, pointer `data` in host's memory
@@ -44,7 +44,7 @@ from host to the newly allocated buffer in GPU.
 
 `gpudata* gpudata_alloc(gpucontext* ctx, size_t sz, void* data, int flags, int* ret);`
 
-* `GpuArray`: This structure is declared in [*array.h*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/src/gpuarray/array.h#L23).
+* `GpuArray`: This structure is declared in [*array.h*](https://github.com/Theano/libgpuarray/blob/master/src/gpuarray/array.h#L23).
 
 It represents a **ndarray** in GPU. It is a container, similar to **Numpy**'s one,
 which places specific vector space attributes to a `gpudata` buffer. It contains
@@ -68,11 +68,11 @@ use the two following:
 Collectives API on GPU buffers
 ------------------------------
 
-I will explain now how to use buffer-level API which exists in [*buffer_collectives.h*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/src/gpuarray/buffer_collectives.h).
+I will explain now how to use buffer-level API which exists in [*buffer_collectives.h*](https://github.com/Theano/libgpuarray/blob/master/src/gpuarray/buffer_collectives.h).
 I am going to do this by presenting the test code as an example for convenience.
 
 First of all, since we are going to examine a multi-gpu example, a parallel
-framework is  used since [**nccl**](https://github.com/NVIDIA/nccl) requires
+framework is  used since [**NCCL**](https://github.com/NVIDIA/nccl) requires
 that some of the API must be called in parallel for each GPU to be used. In this
 example I am going to use **MPI**. I will omit the initialization of **MPI** and
 its ranks and use `MPI_COMM_WORLD`. Each process will handle a single GPU device
@@ -97,7 +97,7 @@ gpucomm_new(&comm, ctx, comm_id, num_of_devs, rank);
 Unique id is broadcast using **MPI** in order to be the same among GPU
 communicators. A `gpucomm` instance is created which represents a communicator
 of a single GPU in a group of GPU which will participate in collective
-operations. It is declared in [*buffer_collectives.h*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/src/gpuarray/buffer_collectives.h#L18).
+operations. It is declared in [*buffer_collectives.h*](https://github.com/Theano/libgpuarray/blob/master/src/gpuarray/buffer_collectives.h#L18).
 `gpucomm_new` needs to know about the `ctx` to be used and the user-defined
 rank of `ctx`'s device in the newly created group. Rank in a GPU group is user
 defined and is independent of hardware device number or MPI process rank. For
@@ -126,7 +126,7 @@ For convenience, all collective operations are checked upon results of the
 corresponding MPI collective operations. All collectives require a `gpucomm` as
 an argument and sync implicitly so that all `gpucomm`s that participate in a GPU
 group are called to a collective function. Collective
-operations and documentation exist in [*buffer_collectives.h*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/src/gpuarray/buffer_collectives.h).
+operations and documentation exist in [*buffer_collectives.h*](https://github.com/Theano/libgpuarray/blob/master/src/gpuarray/buffer_collectives.h).
 Also, in that file you will find definition of `_gpucomm_reduce_ops`, one of
 which is `GA_PROD` in example. Notice the similarity between **MPI** and **gpucomm**
 signature.
@@ -180,8 +180,8 @@ gpucontext_deref(ctx);
 
 Finally, resources are released.
 
-Complete testing code can be found in [*main.c*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/tests/main.c), [*device.c*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/tests/device.c), [*communicator.c*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/tests/communicator.c) and
-[*check_buffer_collectives.c*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/tests/check_buffer_collectives.c) files. Framework [**libcheck**](https://libcheck.github.io/check/)
+Complete testing code can be found in [*main.c*](https://github.com/Theano/libgpuarray/blob/master/tests/main.c), [*device.c*](https://github.com/Theano/libgpuarray/blob/master/tests/device.c), [*communicator.c*](https://github.com/Theano/libgpuarray/blob/master/tests/communicator.c) and
+[*check_buffer_collectives.c*](https://github.com/Theano/libgpuarray/blob/master/tests/check_buffer_collectives.c) files. Framework [**libcheck**](https://libcheck.github.io/check/)
 is used for C testing. Actual testing code contains setup and teardown functions, as well as
 preprocessor macros and tricks for easily testing for all data and operation
 types. From the example above, crucial error checking is missing for convenience.
@@ -246,7 +246,7 @@ if (rank == 0) {
 ```
 
 As before, results are checked upon MPI collectives' results. Collective
-operations for `GpuArray`s and documentation exist in [*collectives.h*](https://github.com/tsirif/libgpuarray/blob/feature/nccl/src/gpuarray/collectives.h).
+operations for `GpuArray`s and documentation exist in [*collectives.h*](https://github.com/Theano/libgpuarray/blob/master/src/gpuarray/collectives.h).
 In this example, `GpuArray_reduce` is a function used to perform the reduce
 collective operation on `GpuArray`s, while `GpuArray_reduce_from` is a function
 which can be used by non-root `gpucomm` ranks to participate in this collective.
@@ -302,7 +302,7 @@ libcheck forks and runs the tests in a subprocess. And it will happen that this
 subprocess will not be the "registered" MPI process, thus giving an error when a
 MPI command is issued with the expected MPI comm. To solve this, I turned off
 forking before running the tests through libcheck API. See
-[this](https://github.com/tsirif/libgpuarray/blob/feature/nccl/tests/main.c#L35).
+[this](https://github.com/Theano/libgpuarray/blob/master/tests/main.c#L35).
 
 Right now I am working in completing python support for collectives libgpuarray
 API in **pygpu**. There will be a continuation blog post as soon as I finish.
