@@ -1,6 +1,8 @@
 ---
 title: "Multi-GPU/Node interface in Platoon"
 date: 2016-08-06 02:56:00 +0300
+header:
+  teaser: platoon_architecture.png
 categories: COSA
 tags: GSoC-16 Python Theano Platoon Multi-GPU Multi-Node Training
 ---
@@ -68,7 +70,10 @@ computation device. By this I mean that a worker process will contain Theano
 code which act on a single device and will use a [**Worker**](https://github.com/tsirif/platoon/blob/feature/new-interface/platoon/worker.py)
 instance in order to exploit multi-GPU/node computation.
 
-![platoon architecture]({{ site.url }}/images/platoon_architecture.png)
+<figure>
+    <a href="/images/platoon_architecture.png"><img src="/images/platoon_architecture.png"></a>
+    <figcaption>Platoon deployment diagram.</figcaption>
+</figure>
 
 By default, someone who wishes to write code for training a model with
 **Platoon** must write the code which will run for worker processes. Theano
@@ -80,24 +85,24 @@ caused by calls to **Platoon**'s interface. While developing training code, the
 user must create the corresponding Theano GPU shared variables which will be used
 as arguments to **Platoon**'s new interface.
 
-> ```
+> ```python
 > import os
 > from platoon.worker import Worker
 > import theano
 > import numpy as np
 >
-> # instantiate a worker
+> # Instantiate a worker
 > worker = Worker(control_port=5567)
-> # how many workers are there across all hosts
+> # How many workers are there across all hosts
 > total_nw = int(os.environ['PLATOON_TEST_WORKERS_NUM'])
 >
-> # make Theano shared variables for input and output
+> # Create Theano shared variables for input and output
 > inp = np.arange(32, dtype='float64')
 > sinp = theano.shared(inp)
 > out = np.empty_like(inp)
 > sout = theano.shared(out)
 >
-> # execute interface
+> # Call to interface
 > worker.all_reduce(sinp, '+', sout)
 >
 > expected = total_nw * inp
@@ -124,7 +129,7 @@ from this operation is received in the same shared buffer. When the MPI
 operation has finished, all workers write back concurrently the result from the
 shared buffer to the destination GpuArray in their GPUs.
 
-> ```
+> ```python
 > # Execute collective operation in local NCCL communicator world
 > res = self._regional_comm.all_reduce(src, op, dest)
 >

@@ -46,7 +46,7 @@ this instance:
 
 * **Reduce**
 
-```
+```python
 def reduce(self, GpuArray src not None, op, GpuArray dest=None, int root=-1)
     """Reduce collective operation for ranks in a communicator world.
 
@@ -78,7 +78,7 @@ the `src` array result will be created an returned.
 
 * **AllReduce**
 
-```
+```python
 def all_reduce(self, GpuArray src not None, op, GpuArray dest=None)
     """AllReduce collective operation for ranks in a communicator world.
 
@@ -105,7 +105,7 @@ returned.
 
 * **ReduceScatter**
 
-```
+```python
 def reduce_scatter(self, GpuArray src not None, op, GpuArray dest=None)
     """ReduceScatter collective operation for ranks in a communicator world.
 
@@ -134,7 +134,7 @@ has size equal to 1, then it will be omitted.
 
 * **Broadcast**
 
-```
+```python
 def broadcast(self, GpuArray array not None, int root=-1)
     """Broadcast collective operation for ranks in a communicator world.
 
@@ -157,7 +157,7 @@ the clique.
 
 * **AllGather**
 
-```
+```python
 def all_gather(self, GpuArray src not None, GpuArray dest=None,
                unsigned int nd_up=1)
     """AllGather collective operation for ranks in a communicator world.
