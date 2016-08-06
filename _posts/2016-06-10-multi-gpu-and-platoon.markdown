@@ -1,5 +1,5 @@
 ---
-title: "Multi gpu and Platoon"
+title: "Multi-GPU and Platoon"
 date: 2016-06-11 02:23:00 +0300
 categories: COSA
 tags: GSoC-16 Python Theano Multi-GPU CUDA OpenCL Training Deep-Learning

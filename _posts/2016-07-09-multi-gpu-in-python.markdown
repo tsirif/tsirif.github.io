@@ -1,5 +1,5 @@
 ---
-title: "Multi GPU in Python"
+title: "Multi-GPU in Python"
 date: 2016-07-09 02:47:00 +0300
 categories: COSA
 tags: GSoC-16 Python Theano Multi-GPU CUDA
