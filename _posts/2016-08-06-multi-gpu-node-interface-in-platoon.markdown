@@ -19,9 +19,9 @@ In order to use it, a worker file needs to be provided. A worker file defines
 the training process of a single set of model parameters in a parallel and
 distributed manner. Optionally and in case you want to extend the distributed
 computation capabilities of the training process, you are encouraged to provide
-a controller file which extends the default one ([**platoon.controller**](https://github.com/tsirif/platoon/blob/feature/new-interface/platoon/controller.py) module) in
-this framework. User must invoke the
-[*platoon2-launcher*](https://github.com/tsirif/platoon/blob/feature/new-interface/scripts/platoon2-launcher)
+a controller file which extends the default one ([**platoon.channel.controller**](https://github.com/tsirif/platoon/blob/feature/new-interface/platoon/channel/controller.py)
+module) in this framework. User must invoke the
+[*platoon-launcher*](https://github.com/tsirif/platoon/blob/feature/new-interface/scripts/platoon-launcher)
 script in order to start training with the new interface.
 
 **Platoon** is configured through the command-line arguments of this launcher and in
@@ -37,8 +37,8 @@ environmentals or configuration files.
 
 *e.g. usage*:
 
-- `platoon2-launcher lstm -D cuda0 cuda3` (explicit config)
-- `platoon2-launcher lstm`  (config with envs/files - may be multi-node)
+- `platoon-launcher lstm -D cuda0 cuda3` (explicit config)
+- `platoon-launcher lstm`  (config with envs/files - may be multi-node)
 
 If multi-node is explicitly specified through command-line arguments, extra
 configuration through appropriate environmentals per host or files needs to be
@@ -47,7 +47,7 @@ are given the same way they are given in MPI's `mpiexec`.
 
 *e.g. usage*:
 
-- `platoon2-launcher lstm -nw 2 2 -H lisa0 lisa1` (2 gpus on lisa0 and 2 gpus on lisa1)
+- `platoon-launcher lstm -H lisa0 lisa1` (gpus on lisa0 and gpus on lisa1)
 
 Please notice that this launcher is used to set up the new worker interface (the old
 is still usable - but not in multi-node configs). The new worker interface
@@ -67,7 +67,7 @@ controller processes in other hosts for computing. In addition, there are as
 many worker processes in each host as there are devices which participate in the
 computation procedure. Each worker process is responsible for a single
 computation device. By this I mean that a worker process will contain Theano
-code which act on a single device and will use a [**Worker**](https://github.com/tsirif/platoon/blob/feature/new-interface/platoon/worker.py)
+code which act on a single device and will use a [**Worker**](https://github.com/tsirif/platoon/blob/feature/new-interface/platoon/channel/worker.py)
 instance in order to exploit multi-GPU/node computation.
 
 <figure>
@@ -82,37 +82,39 @@ device. This device is configured for the worker process by the
 `THEANO_FLAGS="device=<...>"` environmental variable which is set by the launching procedure.
 Among single GPU computation there will be multi-GPU/node computations which are
 caused by calls to **Platoon**'s interface. While developing training code, the
-user must create the corresponding Theano GPU shared variables which will be used
+user must have access to the corresponding *pygpu.gpuarray.GpuArray(s)* which will be used
 as arguments to **Platoon**'s new interface.
 
 > ```python
 > import os
 > from platoon.worker import Worker
-> import theano
+> from pygpu.gpuarray import asarray
 > import numpy as np
 >
 > # Instantiate a worker
 > worker = Worker(control_port=5567)
+> # Get GPU context from worker
+> gpuctx = worker.gpuctx
 > # How many workers are there across all hosts
 > total_nw = int(os.environ['PLATOON_TEST_WORKERS_NUM'])
 >
 > # Create Theano shared variables for input and output
 > inp = np.arange(32, dtype='float64')
-> sinp = theano.shared(inp)
+> sinp = asarray(inp, context=gpuctx)
 > out = np.empty_like(inp)
-> sout = theano.shared(out)
+> sout = asarray(out, context=gpuctx)
 >
 > # Call to interface
 > worker.all_reduce(sinp, '+', sout)
 >
 > expected = total_nw * inp
-> actual = sout.get_value()
+> actual = np.asarray(sout)
 > assert np.allclose(expected, actual)
 > ```
 > Minimal example code for a worker process
 
 When a call to
-[*worker.all_reduce*](https://github.com/tsirif/platoon/blob/feature/new-interface/platoon/worker.py#L297)
+[*worker.all_reduce*](https://github.com/tsirif/platoon/blob/feature/new-interface/platoon/channel/worker.py#L329)
 is made, the internal `pygpu.gpuarray.GpuArray`s are fetched and used as
 arguments to the corresponding AllReduce collective operation in a local
 **pygpu** GPU communicator world. This GPU comm world is local in a sense that
@@ -131,33 +133,34 @@ shared buffer to the destination GpuArray in their GPUs.
 
 > ```python
 > # Execute collective operation in local NCCL communicator world
-> res = self._regional_comm.all_reduce(src, op, dest)
+> res = self._local_comm.all_reduce(src, op, dest)
+>
+> if dest is not None:
+>     res = dest
+> res.sync()
 >
 > # Create new shared buffer which corresponds to result GpuArray buffer
-> if dest is None:
->     self.new_linked_shared(res)
-> else:
->     if dest not in self.shared_arrays:
->         self.new_linked_shared(dest)
->     res = dest
-> res_array = self.shared_arrays[res]
+> if self._multinode:
+>     res_array = self.shared(res)
 >
-> self.lock()
-> first = self.send_req("platoon-am_i_first")
-> if first:
->     # Copy from GpuArray to shared memory buffer
->     internal_res.read(res_array)
+>     self.lock()
+>     first = self.send_req("platoon-am_i_first")
+>     if first:
+>         # Copy from GpuArray to shared memory buffer
+>         res.read(res_array)
+>         res.sync()
 >
->     # Request from controller to perform the same collective operation
->     # in MPI communicator world using shared memory buffer
->     self.send_req("platoon-all_reduce", info={'shmem': self._shmem_names[res],
->                                               'dtype': str(internal_res.dtype),
->                                               'op': op})
-> self.unlock()
+>         # Request from controller to perform the same collective operation
+>         # in MPI communicator world using shared memory buffer
+>         self.send_req("platoon-all_reduce", info={'shmem': self._shmem_names[res.size * res.itemsize],
+>                                                   'dtype': str(internal_res.dtype),
+>                                                   'op': op})
+>     self.unlock()
 >
-> # Concurrently copy from shared memory back to result GpuArray
-> # after Controller has finished global collective operation
-> internal_res.write(res_array)
+>     # Concurrently copy from shared memory back to result GpuArray
+>     # after Controller has finished global collective operation
+>     res.write(res_array)
+>     res.sync()
 >
 > if dest is None:
 >     return res
@@ -173,4 +176,4 @@ This way **Platoon** will also provide a high-level gallery of reusable
 training algorithms for multi-GPU/node systems.
 
 > Till then, keep on coding  
-> Tsirif
+> Tsirif, 08-06-2016
