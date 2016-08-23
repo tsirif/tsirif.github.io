@@ -2,7 +2,7 @@
 title: "Multi-GPU and Platoon"
 date: 2016-06-11 02:23:00 +0300
 categories: COSA
-tags: GSoC-16 Python Theano Multi-GPU CUDA OpenCL Training Deep-Learning
+tags: GSoC-16 Python Theano Multi-GPU CUDA OpenCL Optimization Deep-Learning
 ---
 [**Theano**](http://deeplearning.net/software/theano/) has began to develop two
 relatively new frameworks to extend her functionality for her user, as well as for
