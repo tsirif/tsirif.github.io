@@ -15,6 +15,7 @@
       const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
       document.documentElement.dataset.theme = next;
       try { localStorage.setItem('theme', next); } catch {}
+      window.dispatchEvent(new CustomEvent('theme-change', { detail: next }));
       syncLabel();
     });
 

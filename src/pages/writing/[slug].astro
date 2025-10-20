@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Giscus from "../../components/Giscus.astro";
 import { getCollection, getEntryBySlug } from "astro:content";
 
 export async function getStaticPaths() {
@@ -33,4 +34,5 @@ const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
   <Content />
 
   <!-- Giscus mount point (later) -->
+  <Giscus />
 </BaseLayout>

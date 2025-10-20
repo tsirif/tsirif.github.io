@@ -21,11 +21,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    {import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN && (
+      <>
+        <script defer data-domain={import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js"></script>
+        <script is:inline>
+          window.plausible = window.plausible || function(){ (window.plausible.q = window.plausible.q || []).push(arguments) }
+        </script>
+      </>
+    )}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} • {Astro.site?.hostname}</title>
     <meta name="description" content={description} />
-    <meta name="color-scheme" content="light dark">
+    <meta name="color-scheme" content="light dark" />
     <link rel="canonical" href={canonical.href} />
     <link rel="alternate" type="application/json" href="/agents.json">
     <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />

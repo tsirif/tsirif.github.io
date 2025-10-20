@@ -2,14 +2,27 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import EntryCard from "../../components/EntryCard.astro";
+import ProjectsFilter from "../../components/ProjectsFilter.jsx";
 
 const posts = (await getCollection("writing"))
   .sort((a,b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
+
+// Data for the filter island
+const items = posts.map(p => ({
+  id: p.slug,
+  title: p.data.title,
+  summary: p.data.summary || "",
+  keywords: (p.data.keywords || []).map(t => String(t).toLowerCase()),
+  date: p.data.date,
+}));
 ---
 
 <BaseLayout title="Writing" wide={true} description="Essays, opinions, and explainers.">
   <h1>Writing</h1>
   <p class="muted">Clean cards, no bullets. Title opens the post; <em>More</em> unfolds a short teaser.</p>
+
+  <!-- Filter/search island -->
+  <ProjectsFilter client:load items={items} />
 
   <div class="projects-grid" style="margin-top: 24px;">
     {posts.map((p) => <EntryCard entry={p} kind="writing" />)}
