@@ -64,8 +64,11 @@ a.link:hover, a.link:focus-visible {
   font-size: 1.25rem;
 }
 .subbrand{
+  font-family: "Space Mono", ui-monospace, monospace;
+  font-weight: 400;
+  letter-spacing: 0.01em;
   font-size: 0.95rem;
-  color: var(--muted);
+  color: var(--muted);                                 /* softer tone */
 }
 .nav{
   display: flex;

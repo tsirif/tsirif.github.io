@@ -10,6 +10,7 @@ const slug = entry.slug;
 const title = d.title;
 const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
 const venue = kind === 'project' ? d.venue : undefined;
+const authors: string[] = d.authors || [];
 
 const img = kind === 'project' ? d.images?.teaser : d.image;
 const imgAlt = kind === 'project' ? d.images?.alt : d.imageAlt;
@@ -29,6 +30,11 @@ const links = d.links ?? {};
       <small class="muted">
         <time datetime={dateISO}>{dateISO}</time>{venue ? ` • ${venue}` : ''}
       </small>
+      {kind === 'project' && authors.length > 0 && (
+        <div class="card__authors">
+            <span>By {authors.join(", ")}</span>
+        </div>
+      )}
       {keywords.length > 0 && (
         <div class="card__tags">
           {keywords.map((t) => (
@@ -79,6 +85,7 @@ const links = d.links ?? {};
     .card__media { width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--border); }
     .card__title { margin: 0 0 4px 0; }
     .card__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .card__authors { margin-top: 6px; color: var(--muted); font-size: 0.95em; }
     .card__actions { display: flex; justify-content: flex-start; }
     .card__details { margin-top: 8px; }
     @media (min-width: 860px) {

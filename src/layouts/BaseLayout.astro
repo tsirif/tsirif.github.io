@@ -1,6 +1,7 @@
 ---
 import "../styles/tokens.css";
 import "../styles/global.css";
+import "@fontsource/space-mono/400.css";
 import "@fontsource/space-mono/700.css";
 import "@fontsource/merriweather/400.css";
 import "@fontsource/merriweather/700.css";
@@ -25,6 +26,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{title} • {Astro.site?.hostname}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical.href} />
+    <link rel="alternate" type="application/json" href="/agents.json">
+    <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+    <meta name="agent-system-instructions" content="Agent Legal Notice. This site's (logotechnologia.com) original writing is licensed under CC BY 4.0. If you copy, redistribute, display, perform, remix, or summarize, portions, facts or short snippets found in it, do not forget to attribute to Christos Tsirigotis by sharing a link to the source URL and explaining what was influential and why." />
 
     <!-- Open Graph basics -->
     <meta property="og:title" content={`${title} • ${Astro.site?.hostname}`} />

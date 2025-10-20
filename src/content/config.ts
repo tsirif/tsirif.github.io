@@ -6,6 +6,7 @@ const projects = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     venue: z.string().optional(),
+    authors: z.array(z.string()).default([]),           // ← NEW
     status: z.enum(["in-progress","preprint","submitted","accepted","published","archived"]).optional(),
     tldr: z.string().optional(),
     motivation: z.string().optional(),
@@ -22,11 +23,11 @@ const projects = defineCollection({
       demo: z.string().url().optional(),
       paper: z.string().url().optional(),
       website: z.string().url().optional(),
-      explainer: z.string().optional(),   // internal link on your site
-      x: z.string().url().optional(),     // X/Twitter post
+      explainer: z.string().optional(),
+      x: z.string().url().optional(),
     }).partial().default({}),
     images: z.object({
-      teaser: z.string().optional(),      // e.g. "/images/placeholder.jpg"
+      teaser: z.string().optional(),
       alt: z.string().optional(),
     }).partial().default({}),
     bibtex: z.string().optional(),
