@@ -26,35 +26,13 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Install, build, and upload your site output
+        uses: withastro/action@v4
         with:
-          node-version: 22
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
-          cache-dependency-path: ${{ env.BUILD_PATH }}/${{ steps.detect-package-manager.outputs.lockfile }}
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v5
-      - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-        working-directory: ${{ env.BUILD_PATH }}
-      # - name: Install, build, and upload your site output
-      #   uses: withastro/action@v4
-      #   # Optional inputs if you need them:
-      #   with:
-      #     path: .                # root of the Astro project
-      #     node-version: 22       # Node version for the build
-      #     package-manager: npm@latest
-      - name: Build with Astro
-        run: |
-          ${{ steps.detect-package-manager.outputs.runner }} astro build \
-            --site "${{ steps.pages.outputs.origin }}" \
-            --base "${{ steps.pages.outputs.base_path }}"
-        working-directory: ${{ env.BUILD_PATH }}
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ${{ env.BUILD_PATH }}/dist
+          path: .                # root of the Astro project
+          node-version: 22       # Node version for the build
+          package-manager: pnpm@latest  # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
+          build-cmd: pnpm run build  # build command for the Astro project
   deploy:
     needs: build
     runs-on: ubuntu-latest
