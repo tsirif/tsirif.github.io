@@ -25,6 +25,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} • {Astro.site?.hostname}</title>
     <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark">
     <link rel="canonical" href={canonical.href} />
     <link rel="alternate" type="application/json" href="/agents.json">
     <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
@@ -43,7 +44,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
             const apply = (mode) => { document.documentElement.dataset.theme = mode; };
             const saved = localStorage.getItem('theme'); // 'light' | 'dark' | null
             if (saved === 'light' || saved === 'dark') {
-                apply(saved);                    // manual override
+                apply(saved);                    // manual override persists
             } else {
                 const mq = window.matchMedia('(prefers-color-scheme: dark)');
                 apply(mq.matches ? 'dark' : 'light'); // initialize to system

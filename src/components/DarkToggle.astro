@@ -3,16 +3,23 @@
   (()=>{
     const btn = document.getElementById('theme-toggle');
     if (!btn) return;
-    const set = (mode) => {
-      document.documentElement.dataset.theme = mode;
-      try { localStorage.setItem('theme', mode); } catch {}
-      btn.textContent = mode === 'dark' ? 'Light' : 'Dark'; // show the action
+
+    // Just set the label to match current DOM state; do NOT write to localStorage here.
+    const syncLabel = () => {
+      const dark = document.documentElement.dataset.theme === 'dark';
+      btn.textContent = dark ? 'Light' : 'Dark'; // show the action
     };
-    // Initialize from current DOM attribute (set by head script)
-    const current = document.documentElement.dataset.theme || 'light';
-    set(current);
+    syncLabel();
+
     btn.addEventListener('click', () => {
-      set(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch {}
+      syncLabel();
     });
+
+    // Optional: if you ever enable view transitions or partial reloads,
+    // re-sync label after swap:
+    window.addEventListener?.('astro:after-swap', syncLabel);
   })();
 </script>
