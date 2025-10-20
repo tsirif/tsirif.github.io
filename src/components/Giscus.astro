@@ -1,12 +1,12 @@
 ---
-const repo       = import.meta.env.PUBLIC_GISCUS_REPO;
-const repoId     = import.meta.env.PUBLIC_GISCUS_REPO_ID;
-const category   = import.meta.env.PUBLIC_GISCUS_CATEGORY;
-const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
+const repo       = import.meta.env.PUBLIC_GISCUS_REPO;        // e.g., "tsirif/tsirif.github.io"
+const repoId     = import.meta.env.PUBLIC_GISCUS_REPO_ID;     // from giscus.app
+const category   = import.meta.env.PUBLIC_GISCUS_CATEGORY;    // visible name, e.g. "General"
+const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID; // from giscus.app
 
-// Pick the pair you like; these match your palette well:
-const lightTheme = 'light';             // GitHub Light
-const darkTheme  = 'transparent_dark';  // Transparent Dark
+// Theme pairing that matches your palette well:
+const lightTheme = 'light_protanopia';             // GitHub Light
+const darkTheme  = 'dark_protanopia';  // lets your dark background show through
 ---
 
 {(repo && repoId && category && categoryId) ? (
@@ -17,6 +17,8 @@ const darkTheme  = 'transparent_dark';  // Transparent Dark
       data-repo-id={repoId}
       data-category={category}
       data-category-id={categoryId}
+      data-strict="0"
+      data-input-position="top"
       data-mapping="pathname"
       data-reactions-enabled="1"
       data-emit-metadata="0"
@@ -27,27 +29,55 @@ const darkTheme  = 'transparent_dark';  // Transparent Dark
     </script>
     <noscript><em>Enable JavaScript to view comments powered by Giscus.</em></noscript>
 
-    <!-- Align Giscus theme to site theme on load and on toggle -->
     <script is:inline>
       (() => {
+        // Set the theme on the giscus iframe, safely
         const setTheme = (mode) => {
-          const theme = (mode === 'dark') ? {JSON.stringify(darkTheme)} : {JSON.stringify(lightTheme)};
           const iframe = document.querySelector('iframe.giscus-frame');
-          iframe?.contentWindow?.postMessage({ giscus: { setConfig: { theme } } }, 'https://giscus.app');
+          if (!iframe) return; // will be handled by onload/observer below
+          const theme = mode === 'dark' ? darkTheme : lightTheme;
+          iframe.contentWindow?.postMessage(
+            { giscus: { setConfig: { theme } } },
+            'https://giscus.app'
+          );
         };
 
-        // Once the iframe is present, sync to the site's current theme
-        const syncOnce = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
-        const obs = new MutationObserver(() => {
-          if (document.querySelector('iframe.giscus-frame')) {
-            syncOnce();
-            obs.disconnect();
-          }
-        });
-        obs.observe(document.body, { childList: true, subtree: true });
+        // Sync once the iframe is actually loaded (not just inserted)
+        const syncToCurrent = () => {
+          const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+          setTheme(current);
+        };
 
-        // Keep syncing when your footer toggle fires the event
+        // If iframe is already in DOM, attach a 'load' listener; otherwise watch for it
+        const watchForIframe = () => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (iframe) {
+            // Some browsers may have it already loaded; still add a one-time 'load'
+            iframe.addEventListener('load', syncToCurrent, { once: true });
+            // Also try a microtask tick in case 'load' already fired
+            queueMicrotask(syncToCurrent);
+          } else {
+            const obs = new MutationObserver(() => {
+              const i = document.querySelector('iframe.giscus-frame');
+              if (i) {
+                i.addEventListener('load', syncToCurrent, { once: true });
+                queueMicrotask(syncToCurrent);
+                obs.disconnect();
+              }
+            });
+            obs.observe(document.body, { childList: true, subtree: true });
+          }
+        };
+
+        // Initial wiring
+        watchForIframe();
+
+        // Keep syncing on your footer toggle
         window.addEventListener('theme-change', (e) => setTheme(e.detail));
+
+        // If you later add client-side navigations (e.g., view transitions),
+        // re-sync after swaps:
+        window.addEventListener?.('astro:after-swap', syncToCurrent);
       })();
     </script>
   </>
