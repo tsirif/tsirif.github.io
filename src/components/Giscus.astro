@@ -10,77 +10,37 @@ const darkTheme  = 'dark_protanopia';  // lets your dark background show through
 ---
 
 {(repo && repoId && category && categoryId) ? (
-  <>
-    <script
-      src="https://giscus.app/client.js"
-      data-repo={repo}
-      data-repo-id={repoId}
-      data-category={category}
-      data-category-id={categoryId}
-      data-strict="0"
-      data-input-position="top"
-      data-mapping="pathname"
-      data-reactions-enabled="1"
-      data-emit-metadata="0"
-      data-theme="preferred_color_scheme"
-      data-lang="en"
-      crossorigin="anonymous"
-      async>
-    </script>
-    <noscript><em>Enable JavaScript to view comments powered by Giscus.</em></noscript>
+<div id="giscus_thread"></div>
+<script>
+  (function(){
+    const mode  = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    const theme = mode === 'dark' ? darkTheme : lightTheme;
 
-    <script is:inline>
-      (() => {
-        // Set the theme on the giscus iframe, safely
-        const setTheme = (mode) => {
-          const iframe = document.querySelector('iframe.giscus-frame');
-          if (!iframe) return; // will be handled by onload/observer below
-          const theme = mode === 'dark' ? darkTheme : lightTheme;
-          iframe.contentWindow?.postMessage(
-            { giscus: { setConfig: { theme } } },
-            'https://giscus.app'
-          );
-        };
+    const s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.setAttribute('data-repo', 'tsirif/tsirif.github.io');
+    s.setAttribute('data-repo-id', '…');
+    s.setAttribute('data-category', 'General');
+    s.setAttribute('data-category-id', '…');
+    s.setAttribute('data-mapping', 'pathname');
+    s.setAttribute('data-reactions-enabled', '1');
+    s.setAttribute('data-emit-metadata', '0');
+    s.setAttribute('data-lang', 'en');
+    s.setAttribute('data-theme', theme);   // initial theme via data-theme
+    document.getElementById('giscus_thread').appendChild(s);
 
-        // Sync once the iframe is actually loaded (not just inserted)
-        const syncToCurrent = () => {
-          const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
-          setTheme(current);
-        };
-
-        // If iframe is already in DOM, attach a 'load' listener; otherwise watch for it
-        const watchForIframe = () => {
-          const iframe = document.querySelector('iframe.giscus-frame');
-          if (iframe) {
-            // Some browsers may have it already loaded; still add a one-time 'load'
-            iframe.addEventListener('load', syncToCurrent, { once: true });
-            // Also try a microtask tick in case 'load' already fired
-            queueMicrotask(syncToCurrent);
-          } else {
-            const obs = new MutationObserver(() => {
-              const i = document.querySelector('iframe.giscus-frame');
-              if (i) {
-                i.addEventListener('load', syncToCurrent, { once: true });
-                queueMicrotask(syncToCurrent);
-                obs.disconnect();
-              }
-            });
-            obs.observe(document.body, { childList: true, subtree: true });
-          }
-        };
-
-        // Initial wiring
-        watchForIframe();
-
-        // Keep syncing on your footer toggle
-        window.addEventListener('theme-change', (e) => setTheme(e.detail));
-
-        // If you later add client-side navigations (e.g., view transitions),
-        // re-sync after swaps:
-        window.addEventListener?.('astro:after-swap', syncToCurrent);
-      })();
-    </script>
-  </>
+    // then keep syncing on toggle using setConfig.theme
+    window.addEventListener('theme-change', (e) => {
+      const t = e.detail === 'dark' ? darkTheme : lightTheme;
+      document.querySelector('iframe.giscus-frame')?.contentWindow?.postMessage(
+        { giscus: { setConfig: { theme: t } } },
+        'https://giscus.app'
+      );
+    });
+  })();
+</script>
 ) : (
   <p class="muted">Comments are not configured yet.</p>
 )}
