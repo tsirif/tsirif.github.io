@@ -35,22 +35,6 @@ const latestNews = news.slice(0,3);
   </section>
 
   <section style="margin-block: var(--gap-8);">
-    <h2>Featured Projects</h2>
-    <div class="projects-grid" style="margin-top: 16px;">
-      {featuredProjects.map((p) => <EntryCard entry={p} kind="project" />)}
-    </div>
-    <p style="margin-top:12px;"><a class="link" href="/projects/">See all projects →</a></p>
-  </section>
-
-  <section style="margin-block: var(--gap-8);">
-    <h2>Featured Writing</h2>
-    <div class="projects-grid" style="margin-top: 16px;">
-      {featuredPosts.map((p) => <EntryCard entry={p} kind="writing" />)}
-    </div>
-    <p style="margin-top:12px;"><a class="link" href="/writing/">See all writing →</a></p>
-  </section>
-
-  <section style="margin-block: var(--gap-8);">
     <h2>News</h2>
     <ul style="list-style:none; padding:0; margin:0;">
       {latestNews.map((n) => {
@@ -64,5 +48,21 @@ const latestNews = news.slice(0,3);
       })}
     </ul>
     <p style="margin-top:12px;"><a class="link" href="/news/">See more news →</a></p>
+  </section>
+
+  <section style="margin-block: var(--gap-8);">
+    <h2>Featured Projects</h2>
+    <div class="projects-grid" style="margin-top: 16px;">
+      {featuredProjects.map((p) => <EntryCard entry={p} kind="project" />)}
+    </div>
+    <p style="margin-top:12px;"><a class="link" href="/projects/">See all projects →</a></p>
+  </section>
+
+  <section style="margin-block: var(--gap-8);">
+    <h2>Featured Writing</h2>
+    <div class="projects-grid" style="margin-top: 16px;">
+      {featuredPosts.map((p) => <EntryCard entry={p} kind="writing" />)}
+    </div>
+    <p style="margin-top:12px;"><a class="link" href="/writing/">See all writing →</a></p>
   </section>
 </BaseLayout>
