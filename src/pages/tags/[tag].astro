@@ -1,6 +1,15 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-const { tag } = Astro.params;
+
+/** TEMP: generate zero tag pages so the build passes.
+ *  Replace this with the real version once Content Collections are in.
+ */
+export async function getStaticPaths() {
+  return [];
+}
+
+// don't read Astro.params yet; there are no tag pages generated
+// const { tag } = Astro.params;
 ---
 
 <BaseLayout title={`Tag: ${tag}`} description={`Items tagged ${tag}`}>
