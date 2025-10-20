@@ -1,46 +1,48 @@
 ---
-const repo       = import.meta.env.PUBLIC_GISCUS_REPO;        // e.g., "tsirif/tsirif.github.io"
-const repoId     = import.meta.env.PUBLIC_GISCUS_REPO_ID;     // from giscus.app
-const category   = import.meta.env.PUBLIC_GISCUS_CATEGORY;    // visible name, e.g. "General"
-const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID; // from giscus.app
+const repo      = import.meta.env.PUBLIC_GISCUS_REPO;
+const repoId    = import.meta.env.PUBLIC_GISCUS_REPO_ID;
+const category  = import.meta.env.PUBLIC_GISCUS_CATEGORY;
+const categoryId= import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
 
-// Theme pairing that matches your palette well:
-const lightTheme = 'light_protanopia';             // GitHub Light
-const darkTheme  = 'dark_protanopia';  // lets your dark background show through
+// Initial theme from document on mount (fallback to 'preferred_color_scheme')
+const initialTheme = "preferred_color_scheme";
 ---
 
-{(repo && repoId && category && categoryId) ? (
-<div id="giscus_thread"></div>
-<script>
-  (function(){
-    const mode  = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
-    const theme = mode === 'dark' ? darkTheme : lightTheme;
+{repo && repoId && category && categoryId ? (
+  <>
+    <script
+      src="https://giscus.app/client.js"
+      data-repo={repo}
+      data-repo-id={repoId}
+      data-category={category}
+      data-category-id={categoryId}
+      data-mapping="pathname"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-theme={initialTheme}
+      data-input-position="top"
+      data-loading="lazy"
+      data-lang="en"
+      crossorigin="anonymous"
+      async>
+    </script>
+    <noscript><em>Enable JavaScript to view comments powered by Giscus.</em></noscript>
+    <script is:inline>
+      // Sync Giscus theme to site theme when user toggles
+      (function(){
+        const sendTheme = (mode) => {
+          const theme = (mode === 'dark') ? 'dark_protanopia' : 'light_protanopia';
+          const iframe = document.querySelector('iframe.giscus-frame');
+          iframe?.contentWindow?.postMessage({ giscus: { setConfig: { theme } } }, 'https://giscus.app');
+        };
+        // On initial hydration, align with current site theme
+        sendTheme(document.documentElement.dataset.theme);
 
-    const s = document.createElement('script');
-    s.src = 'https://giscus.app/client.js';
-    s.async = true;
-    s.crossOrigin = 'anonymous';
-    s.setAttribute('data-repo', 'tsirif/tsirif.github.io');
-    s.setAttribute('data-repo-id', '…');
-    s.setAttribute('data-category', 'General');
-    s.setAttribute('data-category-id', '…');
-    s.setAttribute('data-mapping', 'pathname');
-    s.setAttribute('data-reactions-enabled', '1');
-    s.setAttribute('data-emit-metadata', '0');
-    s.setAttribute('data-lang', 'en');
-    s.setAttribute('data-theme', theme);   // initial theme via data-theme
-    document.getElementById('giscus_thread').appendChild(s);
-
-    // then keep syncing on toggle using setConfig.theme
-    window.addEventListener('theme-change', (e) => {
-      const t = e.detail === 'dark' ? darkTheme : lightTheme;
-      document.querySelector('iframe.giscus-frame')?.contentWindow?.postMessage(
-        { giscus: { setConfig: { theme: t } } },
-        'https://giscus.app'
-      );
-    });
-  })();
-</script>
+        // Listen to our site-level theme event from the DarkToggle
+        window.addEventListener('theme-change', (e) => sendTheme(e.detail));
+      })();
+    </script>
+  </>
 ) : (
   <p class="muted">Comments are not configured yet.</p>
 )}
