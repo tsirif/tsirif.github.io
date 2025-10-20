@@ -1,74 +1,56 @@
 ---
-const repo       = import.meta.env.PUBLIC_GISCUS_REPO;        // e.g., "tsirif/tsirif.github.io"
-const repoId     = import.meta.env.PUBLIC_GISCUS_REPO_ID;     // from giscus.app
-const category   = import.meta.env.PUBLIC_GISCUS_CATEGORY;     // e.g., "General" (visible name)
-const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;  // from giscus.app
+const repo       = import.meta.env.PUBLIC_GISCUS_REPO;
+const repoId     = import.meta.env.PUBLIC_GISCUS_REPO_ID;
+const category   = import.meta.env.PUBLIC_GISCUS_CATEGORY;
+const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
 
-const lightTheme = 'light';
-const darkTheme  = 'transparent_dark';
+// Pick the pair you like; these match your palette well:
+const lightTheme = 'light';             // GitHub Light
+const darkTheme  = 'transparent_dark';  // Transparent Dark
 ---
 
-{(repo && repoId && category && categoryId) ? <div id="giscus_thread" /> : (
+{(repo && repoId && category && categoryId) ? (
+  <>
+    <script
+      src="https://giscus.app/client.js"
+      data-repo={repo}
+      data-repo-id={repoId}
+      data-category={category}
+      data-category-id={categoryId}
+      data-mapping="pathname"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-theme="preferred_color_scheme"
+      data-lang="en"
+      crossorigin="anonymous"
+      async>
+    </script>
+    <noscript><em>Enable JavaScript to view comments powered by Giscus.</em></noscript>
+
+    <!-- Align Giscus theme to site theme on load and on toggle -->
+    <script is:inline>
+      (() => {
+        const setTheme = (mode) => {
+          const theme = (mode === 'dark') ? {JSON.stringify(darkTheme)} : {JSON.stringify(lightTheme)};
+          const iframe = document.querySelector('iframe.giscus-frame');
+          iframe?.contentWindow?.postMessage({ giscus: { setConfig: { theme } } }, 'https://giscus.app');
+        };
+
+        // Once the iframe is present, sync to the site's current theme
+        const syncOnce = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+        const obs = new MutationObserver(() => {
+          if (document.querySelector('iframe.giscus-frame')) {
+            syncOnce();
+            obs.disconnect();
+          }
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
+
+        // Keep syncing when your footer toggle fires the event
+        window.addEventListener('theme-change', (e) => setTheme(e.detail));
+      })();
+    </script>
+  </>
+) : (
   <p class="muted">Comments are not configured yet.</p>
 )}
-
-<script is:inline>
-  (() => {
-    const cfg = {
-      repo:       {JSON.stringify(repo)},
-      repoId:     {JSON.stringify(repoId)},
-      category:   {JSON.stringify(category)},
-      categoryId: {JSON.stringify(categoryId)},
-      mapping: "pathname",
-      reactionsEnabled: "1",
-      emitMetadata: "0",
-      lang: "en"
-    };
-
-    const LIGHT = {JSON.stringify(lightTheme)};
-    const DARK  = {JSON.stringify(darkTheme)};
-
-    const container = document.getElementById('giscus_thread');
-    if (!container || !cfg.repo || !cfg.repoId || !cfg.category || !cfg.categoryId) return;
-
-    const currentMode  = (document.documentElement.dataset.theme === 'dark') ? 'dark' : 'light';
-    const currentTheme = currentMode === 'dark' ? DARK : LIGHT;
-
-    // Inject giscus with the correct initial theme
-    const s = document.createElement('script');
-    s.src = 'https://giscus.app/client.js';
-    s.async = true;
-    s.crossOrigin = 'anonymous';
-    s.setAttribute('data-repo', cfg.repo);
-    s.setAttribute('data-repo-id', cfg.repoId);
-    s.setAttribute('data-category', cfg.category);
-    s.setAttribute('data-category-id', cfg.categoryId);
-    s.setAttribute('data-mapping', cfg.mapping);
-    s.setAttribute('data-reactions-enabled', cfg.reactionsEnabled);
-    s.setAttribute('data-emit-metadata', cfg.emitMetadata);
-    s.setAttribute('data-lang', cfg.lang);
-    s.setAttribute('data-theme', currentTheme);
-    container.appendChild(s);
-
-    const setGiscusTheme = (mode) => {
-      const theme = (mode === 'dark') ? DARK : LIGHT;
-      const iframe = document.querySelector('iframe.giscus-frame');
-      iframe?.contentWindow?.postMessage(
-        { giscus: { setConfig: { theme } } },
-        'https://giscus.app'
-      );
-    };
-
-    // Sync on your site toggle
-    window.addEventListener('theme-change', (e) => setGiscusTheme(e.detail));
-
-    // One-time sync after the iframe appears (in case of race)
-    const obs = new MutationObserver(() => {
-      if (document.querySelector('iframe.giscus-frame')) {
-        setGiscusTheme(currentMode);
-        obs.disconnect();
-      }
-    });
-    obs.observe(container, { childList: true, subtree: true });
-  })();
-</script>
