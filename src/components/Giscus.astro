@@ -4,45 +4,76 @@ const repoId    = import.meta.env.PUBLIC_GISCUS_REPO_ID;
 const category  = import.meta.env.PUBLIC_GISCUS_CATEGORY;
 const categoryId= import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
 
-// Initial theme from document on mount (fallback to 'preferred_color_scheme')
-const initialTheme = "preferred_color_scheme";
+// Pick the pair you prefer:
+const lightTheme = 'light';             // GitHub Light
+const darkTheme  = 'transparent_dark';  // Transparent Dark
+// Alternatives: 'dark_dimmed', 'dark', 'light_high_contrast', etc. (see giscus.app)
 ---
 
-{repo && repoId && category && categoryId ? (
-  <>
-    <script
-      src="https://giscus.app/client.js"
-      data-repo={repo}
-      data-repo-id={repoId}
-      data-category={category}
-      data-category-id={categoryId}
-      data-mapping="pathname"
-      data-reactions-enabled="1"
-      data-emit-metadata="0"
-      data-theme={initialTheme}
-      data-input-position="top"
-      data-loading="lazy"
-      data-lang="en"
-      crossorigin="anonymous"
-      async>
-    </script>
-    <noscript><em>Enable JavaScript to view comments powered by Giscus.</em></noscript>
-    <script is:inline>
-      // Sync Giscus theme to site theme when user toggles
-      (function(){
-        const sendTheme = (mode) => {
-          const theme = (mode === 'dark') ? 'dark' : 'light';
-          const iframe = document.querySelector('iframe.giscus-frame');
-          iframe?.contentWindow?.postMessage({ giscus: { setConfig: { theme } } }, 'https://giscus.app');
-        };
-        // On initial hydration, align with current site theme
-        sendTheme(document.documentElement.dataset.theme);
-
-        // Listen to our site-level theme event from the DarkToggle
-        window.addEventListener('theme-change', (e) => sendTheme(e.detail));
-      })();
-    </script>
-  </>
+{(repo && repoId && category && categoryId) ? (
+  <div id="giscus_thread" />
 ) : (
   <p class="muted">Comments are not configured yet.</p>
 )}
+
+<script is:inline>
+  (() => {
+    const cfg = {
+      repo: "{repo}",
+      repoId: "{repoId}",
+      category: "{category}",
+      categoryId: "{categoryId}",
+      mapping: "pathname",
+      reactionsEnabled: "1",
+      emitMetadata: "0",
+      lang: "en"
+    };
+
+    const LIGHT = "{lightTheme}";
+    const DARK  = "{darkTheme}";
+
+    const container = document.getElementById('giscus_thread');
+    if (!container || !cfg.repo || !cfg.repoId || !cfg.category || !cfg.categoryId) return;
+
+    const currentMode = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    const currentTheme = currentMode === 'dark' ? DARK : LIGHT;
+
+    // Inject giscus with the correct initial theme
+    const s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.setAttribute('data-repo', cfg.repo);
+    s.setAttribute('data-repo-id', cfg.repoId);
+    s.setAttribute('data-category', cfg.category);
+    s.setAttribute('data-category-id', cfg.categoryId);
+    s.setAttribute('data-mapping', cfg.mapping);
+    s.setAttribute('data-reactions-enabled', cfg.reactionsEnabled);
+    s.setAttribute('data-emit-metadata', cfg.emitMetadata);
+    s.setAttribute('data-lang', cfg.lang);
+    s.setAttribute('data-theme', currentTheme);
+    container.appendChild(s);
+
+    // Helper to switch theme after load
+    const setGiscusTheme = (mode) => {
+      const theme = (mode === 'dark') ? DARK : LIGHT;
+      const iframe = document.querySelector('iframe.giscus-frame');
+      iframe?.contentWindow?.postMessage(
+        { giscus: { setConfig: { theme } } },
+        'https://giscus.app'
+      );
+    };
+
+    // Sync when your footer toggle fires
+    window.addEventListener('theme-change', (e) => setGiscusTheme(e.detail));
+
+    // In case the page loads before the iframe is ready, sync once after it appears
+    const obs = new MutationObserver(() => {
+      if (document.querySelector('iframe.giscus-frame')) {
+        setGiscusTheme(currentMode);
+        obs.disconnect();
+      }
+    });
+    obs.observe(container, { childList: true, subtree: true });
+  })();
+</script>
