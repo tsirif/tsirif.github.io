@@ -1,30 +1,19 @@
-<button class="btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
-  Dark
-</button>
+<button class="btn" id="theme-toggle" type="button" aria-label="Toggle color scheme">Dark</button>
 
 <script>
   const btn = document.currentScript?.previousElementSibling;
-  if (btn) {
-    const apply = (mode) => {
-      if (mode === 'dark') {
-        document.documentElement.dataset.theme = 'dark';
-        btn.textContent = 'Light';
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-        btn.textContent = 'Dark';
-      }
+  if (!btn) { /* no-op */ }
+  else {
+    const set = (mode) => {
+      document.documentElement.dataset.theme = mode;
+      try { localStorage.setItem('theme', mode); } catch {}
+      btn.textContent = mode === 'dark' ? 'Light' : 'Dark'; // show the action
     };
-
-    // init
-    const pref = localStorage.getItem('theme');
-    if (pref) apply(pref);
-    else apply(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
+    // Initialize from current DOM attribute (set by the head script)
+    const current = document.documentElement.dataset.theme || 'light';
+    set(current);
     btn.addEventListener('click', () => {
-      const isDark = document.documentElement.dataset.theme === 'dark';
-      const next = isDark ? 'light' : 'dark';
-      try { localStorage.setItem('theme', next); } catch {}
-      apply(next);
+      set(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
     });
   }
 </script>

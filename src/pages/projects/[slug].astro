@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, getEntryBySlug } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("projects");
+  return entries.map((e) => ({ params: { slug: e.slug } }));
+}
+
+const { slug } = Astro.params;
+const project = await getEntryBySlug("projects", slug!);
+if (!project) throw new Error("Project not found: " + slug);
+const { Content } = await project.render();
+const d = project.data;
+const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
+---
+
+<BaseLayout title={d.title} description={d.tldr || d.abstract || ""}>
+  <h1>{d.title}</h1>
+  <p class="muted"><time datetime={dateISO}>{dateISO}</time>{d.venue ? ` • ${d.venue}` : ""}{d.status ? ` • ${d.status}` : ""}</p>
+
+  {d.images?.teaser && (
+    <figure style="margin-block:16px;">
+      <img src={d.images.teaser} alt={d.images.alt || ""} />
+      {d.images?.alt && (<figcaption>{d.images.alt}</figcaption>)}
+    </figure>
+  )}
+
+  {d.tldr && (<p><strong>TL;DR:</strong> {d.tldr}</p>)}
+
+  {d.motivation && (<p><strong>Motivation:</strong> {d.motivation}</p>)}
+
+  {d.abstract && (<p><strong>Abstract:</strong> {d.abstract}</p>)}
+
+  {(d.links?.paper || d.links?.code || d.links?.demo || d.links?.website || d.links?.explainer) && (
+    <p>
+      {d.links.paper && (<a class="link" href={d.links.paper}>Paper</a>)}{d.links.paper && ' • '}
+      {d.links.code && (<a class="link" href={d.links.code}>Code</a>)}{d.links.code && ' • '}
+      {d.links.demo && (<a class="link" href={d.links.demo}>Demo</a>)}{d.links.demo && ' • '}
+      {d.links.website && (<a class="link" href={d.links.website}>Project site</a>)}{d.links.website && ' • '}
+      {d.links.explainer && (<a class="link" href={d.links.explainer}>Explainer</a>)}
+    </p>
+  )}
+
+  {d.bibtex && (
+    <details style="margin-block:12px;">
+      <summary class="link" style="cursor:pointer;">BibTeX</summary>
+      <pre style="overflow:auto; border:1px solid var(--border); padding:12px; border-radius:6px;"><code>{d.bibtex}</code></pre>
+    </details>
+  )}
+
+  <hr style="border:0; border-top:1px solid var(--border); margin: 24px 0;" />
+
+  <Content />
+
+  <!-- Giscus can be added here later when you provide the repo/category ids -->
+</BaseLayout>

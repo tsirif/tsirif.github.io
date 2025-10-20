@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, getEntryBySlug } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("writing");
+  return entries.map((e) => ({ params: { slug: e.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = await getEntryBySlug("writing", slug!);
+if (!post) throw new Error("Post not found: " + slug);
+const { Content } = await post.render();
+const d = post.data;
+const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
+---
+
+<BaseLayout title={d.title} description={d.summary || ""}>
+  <h1>{d.title}</h1>
+  <p class="muted"><time datetime={dateISO}>{dateISO}</time></p>
+
+  {d.image && (
+    <figure style="margin-block:16px;">
+      <img src={d.image} alt={d.imageAlt || ""} />
+      {d.imageAlt && (<figcaption>{d.imageAlt}</figcaption>)}
+    </figure>
+  )}
+
+  {d.summary && (<p><strong>Summary:</strong> {d.summary}</p>)}
+
+  <hr style="border:0; border-top:1px solid var(--border); margin: 24px 0;" />
+
+  <Content />
+
+  <!-- Giscus mount point (later) -->
+</BaseLayout>

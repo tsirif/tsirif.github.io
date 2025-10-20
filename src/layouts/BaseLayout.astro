@@ -34,12 +34,20 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 
     <!-- Set theme before paint if user has a saved preference -->
     <script>
-      (() => {
+    (() => {
         try {
-          const t = localStorage.getItem('theme');
-          if (t) document.documentElement.dataset.theme = t;
+        const apply = (mode) => { document.documentElement.dataset.theme = mode; };
+        const saved = localStorage.getItem('theme'); // 'light' | 'dark' | null
+        if (saved === 'light' || saved === 'dark') {
+            apply(saved);                    // manual override
+        } else {
+            const mq = window.matchMedia('(prefers-color-scheme: dark)');
+            apply(mq.matches ? 'dark' : 'light');      // initialize to system
+            // If user hasn't chosen manually, follow future system changes too:
+            mq.addEventListener?.('change', (e) => apply(e.matches ? 'dark' : 'light'));
+        }
         } catch {}
-      })();
+    })();
     </script>
     <!-- Plausible (add later)
     <script defer data-domain="logotechnologia.com" src="https://plausible.io/js/script.js"></script>

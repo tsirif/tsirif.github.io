@@ -1,23 +1,23 @@
 ---
 import DarkToggle from "./DarkToggle.astro";
 
+// Order (left-to-right): About · Projects · Writing · Contact
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/projects/", label: "Projects" },
+  { href: "/about/",   label: "About" },
+  { href: "/projects/",label: "Projects" },
   { href: "/writing/", label: "Writing" },
-  { href: "/news/", label: "News" },
-  { href: "/about/", label: "About" },
   { href: "/contact/", label: "Contact" },
-  { href: "/cv/", label: "CV" },
 ];
 
 const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.pathname + "/";
 ---
 
 <header class="header" role="banner">
-  <div class="brand">
-    <a class="link" href="/">logotechnologia</a>
+  <div class="header__brand">
+    <a class="brand link" href="/">logotechnologia</a>
+    <div class="subbrand">Christos Tsirigotis</div>
   </div>
+
   <nav class="nav" aria-label="Primary">
     {links.map((l) => (
       <a class="link" href={l.href} aria-current={path === l.href ? "page" : undefined}>

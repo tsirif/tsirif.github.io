@@ -1,0 +1,129 @@
+---
+/** Generic card for a project or a writing post. */
+interface Props {
+  entry: any;                 // CollectionEntry<'projects' | 'writing'> (kept loose for brevity)
+  kind: 'project' | 'writing';
+}
+const { entry, kind } = Astro.props;
+const d = entry.data || {};
+const slug = entry.slug;
+
+const title = d.title;
+const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
+const venue = kind === 'project' ? d.venue : undefined;
+
+const img = kind === 'project' ? d.images?.teaser : d.image;
+const imgAlt = kind === 'project' ? d.images?.alt : d.imageAlt;
+
+const keywords: string[] = d.keywords || [];
+const url = kind === 'project' ? `/projects/${slug}/` : `/writing/${slug}/`;
+
+const detailsId = `${kind}-details-${slug}`;
+const tldr = d.tldr ?? d.summary ?? '';
+const impact = d.impact ?? {};
+const links = d.links ?? {};
+---
+
+<article class="card">
+  <div class="card__top">
+    <div class="card__meta">
+      <h3 class="card__title"><a class="link" href={url}>{title}</a></h3>
+      <small class="muted">
+        <time datetime={dateISO}>{dateISO}</time>
+        {venue ? ` • ${venue}` : ''}
+      </small>
+      {keywords.length > 0 && (
+        <div class="card__tags">
+          {keywords.map((t) => (
+            <a class="tag" href={`/tags/${String(t).toLowerCase()}/`}>{t}</a>
+          ))}
+        </div>
+      )}
+    </div>
+
+    {img && (
+      <a href={url} aria-label={`Open ${title}`}>
+        <img class="card__media" src={img} alt={imgAlt || ''} loading="lazy" decoding="async" />
+      </a>
+    )}
+  </div>
+
+  <div class="card__actions">
+    <button class="btn btn--ghost small"
+            id={`toggle-${detailsId}`}
+            aria-expanded="false"
+            aria-controls={detailsId}>
+      More
+    </button>
+  </div>
+
+  <div id={detailsId} class="card__details" hidden>
+    {tldr && (<p><strong>TL;DR:</strong> {tldr}</p>)}
+
+    {kind === 'project' && (d.status || Object.keys(impact).length > 0) && (
+      <p class="muted">
+        {d.status ? (<><strong>Status:</strong> {d.status}. </>) : null}
+        {impact.citations ? (<><strong>Citations:</strong> {impact.citations}. </>) : null}
+        {impact.github_stars ? (<><strong>GitHub stars:</strong> {impact.github_stars}. </>) : null}
+        {impact.downloads ? (<><strong>Downloads:</strong> {impact.downloads}. </>) : null}
+      </p>
+    )}
+
+    {(links.code || links.demo || links.paper || links.website || links.explainer || links.x) && (
+      <p>
+        {links.paper && (<a class="link" href={links.paper}>Paper</a>)}{links.paper && ' • '}
+        {links.code && (<a class="link" href={links.code}>Code</a>)}{links.code && ' • '}
+        {links.demo && (<a class="link" href={links.demo}>Demo</a>)}{links.demo && ' • '}
+        {links.website && (<a class="link" href={links.website}>Project site</a>)}{links.website && ' • '}
+        {links.explainer && (<a class="link" href={links.explainer}>Explainer</a>)}{links.explainer && ' • '}
+        {links.x && (<a class="link" href={links.x}>X post</a>)}
+      </p>
+    )}
+  </div>
+
+  <style>
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+    .card__top {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .card__media {
+      width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--border);
+    }
+    .card__title { margin: 0 0 4px 0; }
+    .card__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .card__actions { display: flex; justify-content: flex-start; }
+    .card__details { margin-top: 8px; }
+    @media (min-width: 860px) {
+      .card__top {
+        grid-template-columns: 1fr 280px;
+        align-items: start;
+      }
+    }
+  </style>
+
+  <script>
+    const id = {detailsId: "%%ID%%"};
+    // Astro will replace %%ID%% at compile with the literal detailsId
+  </script>
+  <!-- Inline script with the real id -->
+  <script is:inline>
+    (()=>{
+      const btn = document.getElementById("toggle-{detailsId}");
+      const panel = document.getElementById("{detailsId}");
+      if (!btn || !panel) return;
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        panel.hidden = expanded;
+      });
+    })();
+  </script>
+</article>

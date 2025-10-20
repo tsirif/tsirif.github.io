@@ -1,5 +1,5 @@
 :root {
-  /* Colors — light */
+  /* Light theme (default) */
   --paper: #FAF9F7;
   --ink: #111111;
   --muted: #666666;
@@ -14,7 +14,7 @@
   --fs-h3: clamp(18px, 3.8vw, 28px);
   --tracking-mono: 0.012em;
 
-  /* Layout */
+  /* Layout tokens */
   --radius: 8px;
   --gap-1: 0.25rem;
   --gap-2: 0.5rem;
@@ -25,22 +25,20 @@
   --gap-8: 3rem;
 }
 
-/* Dark mode (pref) */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #0E0F12;
-    --ink: #EDEDED;
-    --muted: #A0A0A0;
-    --border: rgba(255,255,255,0.12);
-    --accent: #7FA1FF;
-  }
-}
-
-/* Dark mode (manual override) */
+/* Dark theme overrides when manually set */
 :root[data-theme="dark"] {
   --paper: #0E0F12;
   --ink: #EDEDED;
   --muted: #A0A0A0;
   --border: rgba(255,255,255,0.12);
   --accent: #7FA1FF;
+}
+
+/* Optional explicit light override, for completeness */
+:root[data-theme="light"] {
+  --paper: #FAF9F7;
+  --ink: #111111;
+  --muted: #666666;
+  --border: rgba(0,0,0,0.08);
+  --accent: #2752ff;
 }

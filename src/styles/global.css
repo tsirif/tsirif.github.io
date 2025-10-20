@@ -42,16 +42,52 @@ a.link:hover, a.link:focus-visible {
 .wrapper--wide { max-width: min(1100px, 92vw); margin-inline: auto; padding-inline: clamp(16px, 4vw, 32px); }
 
 /* Header / Nav */
-.header {
-  display: flex; align-items: center; justify-content: space-between;
+/* Header / Nav */
+.header{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
   gap: var(--gap-3);
   padding: 12px clamp(16px, 4vw, 32px);
   border-bottom: 1px solid var(--border);
 }
-.brand { font-family: "Space Mono", ui-monospace, monospace; font-weight: 700; letter-spacing: 0.02em; }
-.nav { display: flex; flex-wrap: wrap; gap: 12px; }
-.nav a { padding: 8px 6px; }
-.nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 4px; }
+
+.header__brand{
+  display: flex;
+  flex-direction: column;
+  align-items: center;        /* centers "Christos Tsirigotis" under "logotechnologia" */
+  gap: 2px;
+}
+
+.brand{
+  font-family: "Space Mono", ui-monospace, monospace;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  font-size: 1.25rem;
+}
+
+.subbrand{
+  font-size: 0.95rem;
+  color: var(--muted);        /* softer tone */
+}
+
+.nav{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.nav a{ padding: 8px 6px; }
+.nav a[aria-current="page"]{ text-decoration: underline; text-underline-offset: 4px; }
+
+/* Mobile: stack nav below the brand; center it for symmetry */
+@media (max-width: 720px){
+  .header{ grid-template-columns: 1fr; justify-items: center; }
+  .nav{ justify-content: center; }
+}
 
 /* Footer */
 .footer {
@@ -68,6 +104,8 @@ a.link:hover, a.link:focus-visible {
   text-decoration: none; cursor: pointer;
 }
 .btn:hover, .btn:focus-visible { background: var(--ink); color: var(--paper); }
+.btn.small { padding: 6px 10px; font-size: 0.9em; }
+.btn--ghost { border-color: var(--border); }
 
 /* Tag chips */
 .tag {
