@@ -131,3 +131,15 @@ a.link:hover, a.link:focus-visible {
 /* Media */
 figure { margin: 0; }
 figcaption { color: var(--muted); font-size: 0.9em; margin-top: 4px; }
+
+/* Toolbar for filters/search */
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; }
+.toolbar input[type="search"] {
+  border: 1px solid var(--border); background: transparent; color: var(--ink);
+  padding: 8px 10px; border-radius: 6px; min-width: 220px;
+}
+.toolbar select {
+  border: 1px solid var(--border); background: transparent; color: var(--ink);
+  padding: 8px 10px; border-radius: 6px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
