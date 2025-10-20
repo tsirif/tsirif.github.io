@@ -23,11 +23,18 @@ const items = posts.map(p => ({
 </p>
   <p class="muted">Use filters to narrow down; sorting and relevance will reorder the list.</p>
 
-  <WritingFilter client:load items={items} />
+  <WritingFilter
+    client:load
+    items={items}
+    listSelector="#writing-list"
+    counterSelector="#writing-count"
+    emptySelector="#writing-empty"
+  />
 
   <p id="writing-empty" class="muted" hidden style="margin: 12px 0;">No results match.</p>
 
-  <div class="projects-grid" data-list="writing" style="margin-top: 16px;">
+  <div class="projects-grid" id="writing-list" data-list="writing" style="margin-top:16px;">
     {posts.map((p) => <EntryCard entry={p} kind="writing" />)}
   </div>
+
 </BaseLayout>

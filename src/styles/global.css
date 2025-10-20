@@ -37,6 +37,9 @@ a.link:hover, a.link:focus-visible {
   text-decoration-thickness: 2px; text-decoration-color: var(--ink);
 }
 
+/* Guarantee hidden elements are not displayed, regardless of resets */
+[hidden] { display: none !important; }
+
 /* Layout helpers */
 .wrapper { max-width: 70ch; margin-inline: auto; padding-inline: clamp(16px, 4vw, 32px); }
 .wrapper--wide { max-width: min(1100px, 92vw); margin-inline: auto; padding-inline: clamp(16px, 4vw, 32px); }

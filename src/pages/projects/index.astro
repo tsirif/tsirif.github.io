@@ -22,11 +22,18 @@ const items = projects.map(p => ({
   <h1>Projects & Publications</h1>
   <p class="muted">Use filters to narrow down; sorting and relevance will reorder the list.</p>
 
-  <ProjectsFilter client:load items={items} />
+  <ProjectsFilter
+    client:load
+    items={items}
+    listSelector="#projects-list"
+    counterSelector="#projects-count"
+    emptySelector="#projects-empty"
+  />
 
   <p id="projects-empty" class="muted" hidden style="margin: 12px 0;">No results match.</p>
 
-  <div class="projects-grid" data-list="projects" style="margin-top: 16px;">
+  <div class="projects-grid" id="projects-list" data-list="projects" style="margin-top:16px;">
     {projects.map((p) => <EntryCard entry={p} kind="project" />)}
   </div>
+
 </BaseLayout>

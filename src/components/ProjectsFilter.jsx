@@ -96,7 +96,13 @@ export default function ProjectsFilter({
 
   // Apply visibility + DOM reordering to SSR cards
   useEffect(() => {
-    const container = document.querySelector(listSelector);
+    let container = document.querySelector(listSelector);
+    if (!container) {
+        // Fallbacks to avoid a hard failure if the attribute isn't present
+        container =
+        document.querySelector('.projects-grid[data-list="projects"]') ||
+        document.querySelector('.projects-grid'); // last resort (be careful if multiple grids exist)
+    }
     if (!container) return;
 
     const cards = Array.from(container.querySelectorAll('[data-slug]'));
@@ -105,17 +111,17 @@ export default function ProjectsFilter({
     // Show/hide
     const show = new Set(visibleIds);
     cards.forEach(el => {
-      const id = el.getAttribute('data-slug');
-      el.hidden = !show.has(id);
+        const id = el.getAttribute('data-slug');
+        el.hidden = !show.has(id);
     });
 
-    // Reorder in the DOM to match current ids
+    // Reorder DOM to match ids
     visibleIds.forEach(id => {
-      const el = byId.get(id);
-      if (el) container.appendChild(el);
+        const el = byId.get(id);
+        if (el) container.appendChild(el);
     });
 
-    // Empty message + counter
+    // Empty + counter
     const empty = document.querySelector(emptySelector);
     if (empty) empty.hidden = visibleIds.length > 0;
 
