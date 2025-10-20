@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Projects & Publications" wide={true} description="Projects, publications, demos, and explainers.">
+  <h1>Projects & Publications</h1>
+  <p class="muted">Reverse‑chronological list with filters & search (coming next).</p>
+
+  <div class="projects-grid" style="margin-top: 24px;">
+    <!-- Placeholder cards (replace with Content Collections later) -->
+    <article style="border:1px solid var(--border); padding:16px; border-radius: var(--radius);">
+      <h3><a class="link" href="#">Sample Project Title</a></h3>
+      <small class="muted">2025 • Venue</small>
+      <p style="margin-top:8px;">A short TL;DR in a personal creator tone, shown on expand.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+        <span class="tag">retrieval</span><span class="tag">information‑theory</span>
+      </div>
+    </article>
+
+    <article style="border:1px solid var(--border); padding:16px; border-radius: var(--radius);">
+      <h3><a class="link" href="#">Another Sample</a></h3>
+      <small class="muted">2024 • Preprint</small>
+      <p style="margin-top:8px;">Once Content Collections are set, these cards will render from MDX.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+        <span class="tag">embeddings</span><span class="tag">robustness</span>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

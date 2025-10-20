@@ -1,0 +1,29 @@
+---
+import DarkToggle from "./DarkToggle.astro";
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/projects/", label: "Projects" },
+  { href: "/writing/", label: "Writing" },
+  { href: "/news/", label: "News" },
+  { href: "/about/", label: "About" },
+  { href: "/contact/", label: "Contact" },
+  { href: "/cv/", label: "CV" },
+];
+
+const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.pathname + "/";
+---
+
+<header class="header" role="banner">
+  <div class="brand">
+    <a class="link" href="/">logotechnologia</a>
+  </div>
+  <nav class="nav" aria-label="Primary">
+    {links.map((l) => (
+      <a class="link" href={l.href} aria-current={path === l.href ? "page" : undefined}>
+        {l.label}
+      </a>
+    ))}
+    <DarkToggle />
+  </nav>
+</header>

@@ -1,16 +1,24 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Home" description="Ideas, systems, and writing.">
+  <section style="margin-block: var(--gap-8);">
+    <h1>Ideas, systems, and writing.</h1>
+    <p class="muted">A minimal, book‑inspired personal site with projects, publications, and essays.</p>
+    <div style="display:flex; gap: 12px; margin-top: 16px;">
+      <a class="btn" href="/projects/">Browse Projects</a>
+      <a class="btn" href="/writing/">Read Writing</a>
+    </div>
+  </section>
+
+  <section style="margin-block: var(--gap-8);">
+    <h2>Featured</h2>
+    <p class="muted">Add featured projects and recent writing here after we wire content.</p>
+  </section>
+
+  <section style="margin-block: var(--gap-8);">
+    <h2>News</h2>
+    <p class="muted">Short announcements will appear here.</p>
+  </section>
+</BaseLayout>

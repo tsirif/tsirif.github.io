@@ -1,0 +1,56 @@
+---
+import "../styles/tokens.css";
+import "../styles/global.css";
+import "@fontsource/space-mono/700.css";
+import "@fontsource/merriweather/400.css";
+import "@fontsource/merriweather/700.css";
+
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  wide?: boolean; // allow wider pages
+}
+const { title = "Home", description = "Personal site", wide = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} • {Astro.site?.hostname}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+
+    <!-- Open Graph basics -->
+    <meta property="og:title" content={`${title} • ${Astro.site?.hostname}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical.href} />
+
+    <!-- Set theme before paint if user has a saved preference -->
+    <script>
+      (() => {
+        try {
+          const t = localStorage.getItem('theme');
+          if (t) document.documentElement.dataset.theme = t;
+        } catch {}
+      })();
+    </script>
+    <!-- Plausible (add later)
+    <script defer data-domain="logotechnologia.com" src="https://plausible.io/js/script.js"></script>
+    -->
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main" class={wide ? "wrapper--wide" : "wrapper"}>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

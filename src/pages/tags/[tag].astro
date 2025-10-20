@@ -1,0 +1,9 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const { tag } = Astro.params;
+---
+
+<BaseLayout title={`Tag: ${tag}`} description={`Items tagged ${tag}`}>
+  <h1>Tag: {tag}</h1>
+  <p class="muted">This page will list projects and posts sharing the tag.</p>
+</BaseLayout>
