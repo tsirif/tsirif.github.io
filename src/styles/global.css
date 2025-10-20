@@ -132,7 +132,7 @@ a.link:hover, a.link:focus-visible {
 figure { margin: 0; }
 figcaption { color: var(--muted); font-size: 0.9em; margin-top: 4px; }
 
-/* Toolbar for filters/search */
+/* Filter toolbar + toggle */
 .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; }
 .toolbar input[type="search"] {
   border: 1px solid var(--border); background: transparent; color: var(--ink);
@@ -142,4 +142,4 @@ figcaption { color: var(--muted); font-size: 0.9em; margin-top: 4px; }
   border: 1px solid var(--border); background: transparent; color: var(--ink);
   padding: 8px 10px; border-radius: 6px;
 }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-toggle { display: flex; align-items: center; gap: 8px; }

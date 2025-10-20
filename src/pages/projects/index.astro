@@ -7,7 +7,6 @@ import ProjectsFilter from "../../components/ProjectsFilter.jsx";
 const projects = (await getCollection("projects"))
   .sort((a,b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
 
-// Data for the filter island
 const items = projects.map(p => ({
   id: p.slug,
   title: p.data.title,
@@ -15,23 +14,19 @@ const items = projects.map(p => ({
   abstract: p.data.abstract || "",
   keywords: (p.data.keywords || []).map(t => String(t).toLowerCase()),
   date: p.data.date,
-  impact: {
-    citations: p.data.impact?.citations || 0,
-    github_stars: p.data.impact?.github_stars || 0,
-  }
+  impact: { citations: p.data.impact?.citations || 0, github_stars: p.data.impact?.github_stars || 0 }
 }));
 ---
 
-
 <BaseLayout title="Projects & Publications" wide={true} description="Projects, publications, demos, explainers.">
   <h1>Projects & Publications</h1>
-  <p class="muted">Search and filter; click <em>More</em> to unfold details; click title to open the full page.</p>
+  <p class="muted">Use filters to narrow down; sorting and relevance will reorder the list.</p>
 
-  <!-- Filter/search island -->
   <ProjectsFilter client:load items={items} />
 
-  <!-- SSR cards (the island shows/hides these) -->
-  <div class="projects-grid" style="margin-top: 16px;">
+  <p id="projects-empty" class="muted" hidden style="margin: 12px 0;">No results match.</p>
+
+  <div class="projects-grid" data-list="projects" style="margin-top: 16px;">
     {projects.map((p) => <EntryCard entry={p} kind="project" />)}
   </div>
 </BaseLayout>

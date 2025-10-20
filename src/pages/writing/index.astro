@@ -2,29 +2,29 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import EntryCard from "../../components/EntryCard.astro";
-import ProjectsFilter from "../../components/ProjectsFilter.jsx";
+import WritingFilter from "../../components/WritingFilter.jsx";
 
 const posts = (await getCollection("writing"))
   .sort((a,b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
 
-// Data for the filter island
 const items = posts.map(p => ({
   id: p.slug,
   title: p.data.title,
   summary: p.data.summary || "",
   keywords: (p.data.keywords || []).map(t => String(t).toLowerCase()),
-  date: p.data.date,
+  date: p.data.date
 }));
 ---
 
-<BaseLayout title="Writing" wide={true} description="Essays, opinions, and explainers.">
+<BaseLayout title="Writing" wide={true} description="Essays, opinions, explainers.">
   <h1>Writing</h1>
-  <p class="muted">Clean cards, no bullets. Title opens the post; <em>More</em> unfolds a short teaser.</p>
+  <p class="muted">Use filters to narrow down; sorting and relevance will reorder the list.</p>
 
-  <!-- Filter/search island -->
-  <ProjectsFilter client:load items={items} />
+  <WritingFilter client:load items={items} />
 
-  <div class="projects-grid" style="margin-top: 24px;">
+  <p id="writing-empty" class="muted" hidden style="margin: 12px 0;">No results match.</p>
+
+  <div class="projects-grid" data-list="writing" style="margin-top: 16px;">
     {posts.map((p) => <EntryCard entry={p} kind="writing" />)}
   </div>
 </BaseLayout>
