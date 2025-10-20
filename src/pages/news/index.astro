@@ -1,11 +1,24 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const items = (await getCollection("news"))
+  .sort((a,b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
 ---
 
-<BaseLayout title="News" description="Short updates and announcements.">
+<BaseLayout title="News" description="Updates & announcements.">
   <h1>News</h1>
-  <ul>
-    <li>2025‑10‑10 — Site scaffold published.</li>
-    <li>2025‑10‑12 — Design system added.</li>
+  <ul style="list-style:none; padding:0; margin:0;">
+    {items.map((n) => {
+      const d = n.data;
+      const dateISO = new Date(d.date).toISOString().slice(0,10);
+      return (
+        <li style="padding:12px 0; border-bottom:1px solid var(--border);">
+          <div><strong>{d.title}</strong></div>
+          <small class="muted"><time datetime={dateISO}>{dateISO}</time></small>
+          <p style="margin:6px 0 0 0;">{d.body}</p>
+        </li>
+      );
+    })}
   </ul>
 </BaseLayout>

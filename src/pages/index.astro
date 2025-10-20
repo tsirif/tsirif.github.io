@@ -1,24 +1,68 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import EntryCard from "../components/EntryCard.astro";
+
+const allProjects = (await getCollection("projects"))
+  .sort((a,b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
+const allPosts = (await getCollection("writing"))
+  .sort((a,b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
+const news = (await getCollection("news"))
+  .sort((a,b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
+
+// Pick up to 3 featured; if fewer exist, fill with most recent
+const pickFeatured = (arr) => {
+  const feat = arr.filter((x) => x.data.featured).slice(0,3);
+  if (feat.length >= 3) return feat;
+  const used = new Set(feat.map((x)=>x.slug));
+  const fill = arr.filter((x)=>!used.has(x.slug)).slice(0, 3 - feat.length);
+  return [...feat, ...fill];
+};
+const featuredProjects = pickFeatured(allProjects);
+const featuredPosts = pickFeatured(allPosts);
+const latestNews = news.slice(0,3);
 ---
 
-<BaseLayout title="Home" description="Ideas, systems, and writing.">
+<BaseLayout title="Home" description="Ideas, systems, and writing." wide={true}>
   <section style="margin-block: var(--gap-8);">
     <h1>Ideas, systems, and writing.</h1>
     <p class="muted">A minimal, book‑inspired personal site with projects, publications, and essays.</p>
-    <div style="display:flex; gap: 12px; margin-top: 16px;">
+    <div style="display:flex; gap: 12px; margin-top: 16px; flex-wrap:wrap;">
       <a class="btn" href="/projects/">Browse Projects</a>
       <a class="btn" href="/writing/">Read Writing</a>
+      <a class="btn" href="/about/">About</a>
     </div>
   </section>
 
   <section style="margin-block: var(--gap-8);">
-    <h2>Featured</h2>
-    <p class="muted">Add featured projects and recent writing here after we wire content.</p>
+    <h2>Featured Projects</h2>
+    <div class="projects-grid" style="margin-top: 16px;">
+      {featuredProjects.map((p) => <EntryCard entry={p} kind="project" />)}
+    </div>
+    <p style="margin-top:12px;"><a class="link" href="/projects/">See all projects →</a></p>
+  </section>
+
+  <section style="margin-block: var(--gap-8);">
+    <h2>Featured Writing</h2>
+    <div class="projects-grid" style="margin-top: 16px;">
+      {featuredPosts.map((p) => <EntryCard entry={p} kind="writing" />)}
+    </div>
+    <p style="margin-top:12px;"><a class="link" href="/writing/">See all writing →</a></p>
   </section>
 
   <section style="margin-block: var(--gap-8);">
     <h2>News</h2>
-    <p class="muted">Short announcements will appear here.</p>
+    <ul style="list-style:none; padding:0; margin:0;">
+      {latestNews.map((n) => {
+        const d = n.data; const dateISO = new Date(d.date).toISOString().slice(0,10);
+        return (
+          <li style="padding:12px 0; border-bottom:1px solid var(--border);">
+            <div><strong>{d.title}</strong> · <small class="muted"><time datetime={dateISO}>{dateISO}</time></small></div>
+            <p style="margin:6px 0 0 0;">{d.body}</p>
+          </li>
+        );
+      })}
+    </ul>
+    <p style="margin-top:12px;"><a class="link" href="/news/">See more news →</a></p>
   </section>
 </BaseLayout>

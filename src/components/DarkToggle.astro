@@ -1,19 +1,18 @@
 <button class="btn" id="theme-toggle" type="button" aria-label="Toggle color scheme">Dark</button>
-
-<script>
-  const btn = document.currentScript?.previousElementSibling;
-  if (!btn) { /* no-op */ }
-  else {
+<script is:inline>
+  (()=>{
+    const btn = document.getElementById('theme-toggle');
+    if (!btn) return;
     const set = (mode) => {
       document.documentElement.dataset.theme = mode;
       try { localStorage.setItem('theme', mode); } catch {}
       btn.textContent = mode === 'dark' ? 'Light' : 'Dark'; // show the action
     };
-    // Initialize from current DOM attribute (set by the head script)
+    // Initialize from current DOM attribute (set by head script)
     const current = document.documentElement.dataset.theme || 'light';
     set(current);
     btn.addEventListener('click', () => {
       set(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
     });
-  }
+  })();
 </script>

@@ -1,12 +1,9 @@
 ---
-import DarkToggle from "./DarkToggle.astro";
-
-// Order (left-to-right): About · Projects · Writing · Contact
 const links = [
-  { href: "/about/",   label: "About" },
-  { href: "/projects/",label: "Projects" },
-  { href: "/writing/", label: "Writing" },
-  { href: "/contact/", label: "Contact" },
+  { href: "/about/",    label: "About" },
+  { href: "/projects/", label: "Projects" },
+  { href: "/writing/",  label: "Writing" },
+  { href: "/contact/",  label: "Contact" },
 ];
 
 const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.pathname + "/";
@@ -24,6 +21,5 @@ const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.p
         {l.label}
       </a>
     ))}
-    <DarkToggle />
   </nav>
 </header>

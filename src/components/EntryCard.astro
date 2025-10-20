@@ -1,7 +1,6 @@
 ---
-/** Generic card for a project or a writing post. */
 interface Props {
-  entry: any;                 // CollectionEntry<'projects' | 'writing'> (kept loose for brevity)
+  entry: any;
   kind: 'project' | 'writing';
 }
 const { entry, kind } = Astro.props;
@@ -18,7 +17,6 @@ const imgAlt = kind === 'project' ? d.images?.alt : d.imageAlt;
 const keywords: string[] = d.keywords || [];
 const url = kind === 'project' ? `/projects/${slug}/` : `/writing/${slug}/`;
 
-const detailsId = `${kind}-details-${slug}`;
 const tldr = d.tldr ?? d.summary ?? '';
 const impact = d.impact ?? {};
 const links = d.links ?? {};
@@ -29,8 +27,7 @@ const links = d.links ?? {};
     <div class="card__meta">
       <h3 class="card__title"><a class="link" href={url}>{title}</a></h3>
       <small class="muted">
-        <time datetime={dateISO}>{dateISO}</time>
-        {venue ? ` • ${venue}` : ''}
+        <time datetime={dateISO}>{dateISO}</time>{venue ? ` • ${venue}` : ''}
       </small>
       {keywords.length > 0 && (
         <div class="card__tags">
@@ -49,15 +46,10 @@ const links = d.links ?? {};
   </div>
 
   <div class="card__actions">
-    <button class="btn btn--ghost small"
-            id={`toggle-${detailsId}`}
-            aria-expanded="false"
-            aria-controls={detailsId}>
-      More
-    </button>
+    <button class="btn btn--ghost small" data-toggle type="button" aria-expanded="false">More</button>
   </div>
 
-  <div id={detailsId} class="card__details" hidden>
+  <div class="card__details" data-details hidden>
     {tldr && (<p><strong>TL;DR:</strong> {tldr}</p>)}
 
     {kind === 'project' && (d.status || Object.keys(impact).length > 0) && (
@@ -82,47 +74,30 @@ const links = d.links ?? {};
   </div>
 
   <style>
-    .card {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      display: grid;
-      gap: 12px;
-    }
-    .card__top {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-    .card__media {
-      width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--border);
-    }
+    .card { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: grid; gap: 12px; }
+    .card__top { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .card__media { width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--border); }
     .card__title { margin: 0 0 4px 0; }
     .card__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
     .card__actions { display: flex; justify-content: flex-start; }
     .card__details { margin-top: 8px; }
     @media (min-width: 860px) {
-      .card__top {
-        grid-template-columns: 1fr 280px;
-        align-items: start;
-      }
+      .card__top { grid-template-columns: 1fr 280px; align-items: start; }
     }
   </style>
 
-  <script>
-    const id = {detailsId: "%%ID%%"};
-    // Astro will replace %%ID%% at compile with the literal detailsId
-  </script>
-  <!-- Inline script with the real id -->
   <script is:inline>
-    (()=>{
-      const btn = document.getElementById("toggle-{detailsId}");
-      const panel = document.getElementById("{detailsId}");
+    (() => {
+      const card = document.currentScript?.closest('.card');
+      if (!card) return;
+      const btn = card.querySelector('[data-toggle]');
+      const panel = card.querySelector('[data-details]');
       if (!btn || !panel) return;
       btn.addEventListener('click', () => {
         const expanded = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', String(!expanded));
         panel.hidden = expanded;
+        btn.textContent = expanded ? 'More' : 'Less';
       });
     })();
   </script>
