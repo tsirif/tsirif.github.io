@@ -1,41 +1,37 @@
 ---
-const repo      = import.meta.env.PUBLIC_GISCUS_REPO;
-const repoId    = import.meta.env.PUBLIC_GISCUS_REPO_ID;
-const category  = import.meta.env.PUBLIC_GISCUS_CATEGORY;
-const categoryId= import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
+const repo       = import.meta.env.PUBLIC_GISCUS_REPO;        // e.g., "tsirif/tsirif.github.io"
+const repoId     = import.meta.env.PUBLIC_GISCUS_REPO_ID;     // from giscus.app
+const category   = import.meta.env.PUBLIC_GISCUS_CATEGORY;     // e.g., "General" (visible name)
+const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;  // from giscus.app
 
-// Pick the pair you prefer:
-const lightTheme = 'light';             // GitHub Light
-const darkTheme  = 'transparent_dark';  // Transparent Dark
-// Alternatives: 'dark_dimmed', 'dark', 'light_high_contrast', etc. (see giscus.app)
+const lightTheme = 'light';
+const darkTheme  = 'transparent_dark';
 ---
 
-{(repo && repoId && category && categoryId) ? (
-  <div id="giscus_thread" />
-) : (
+{(repo && repoId && category && categoryId) ? <div id="giscus_thread" /> : (
   <p class="muted">Comments are not configured yet.</p>
 )}
 
 <script is:inline>
   (() => {
     const cfg = {
-      repo: "{repo}",
-      repoId: "{repoId}",
-      category: "{category}",
-      categoryId: "{categoryId}",
+      repo:       {JSON.stringify(repo)},
+      repoId:     {JSON.stringify(repoId)},
+      category:   {JSON.stringify(category)},
+      categoryId: {JSON.stringify(categoryId)},
       mapping: "pathname",
       reactionsEnabled: "1",
       emitMetadata: "0",
       lang: "en"
     };
 
-    const LIGHT = "{lightTheme}";
-    const DARK  = "{darkTheme}";
+    const LIGHT = {JSON.stringify(lightTheme)};
+    const DARK  = {JSON.stringify(darkTheme)};
 
     const container = document.getElementById('giscus_thread');
     if (!container || !cfg.repo || !cfg.repoId || !cfg.category || !cfg.categoryId) return;
 
-    const currentMode = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    const currentMode  = (document.documentElement.dataset.theme === 'dark') ? 'dark' : 'light';
     const currentTheme = currentMode === 'dark' ? DARK : LIGHT;
 
     // Inject giscus with the correct initial theme
@@ -54,7 +50,6 @@ const darkTheme  = 'transparent_dark';  // Transparent Dark
     s.setAttribute('data-theme', currentTheme);
     container.appendChild(s);
 
-    // Helper to switch theme after load
     const setGiscusTheme = (mode) => {
       const theme = (mode === 'dark') ? DARK : LIGHT;
       const iframe = document.querySelector('iframe.giscus-frame');
@@ -64,10 +59,10 @@ const darkTheme  = 'transparent_dark';  // Transparent Dark
       );
     };
 
-    // Sync when your footer toggle fires
+    // Sync on your site toggle
     window.addEventListener('theme-change', (e) => setGiscusTheme(e.detail));
 
-    // In case the page loads before the iframe is ready, sync once after it appears
+    // One-time sync after the iframe appears (in case of race)
     const obs = new MutationObserver(() => {
       if (document.querySelector('iframe.giscus-frame')) {
         setGiscusTheme(currentMode);
