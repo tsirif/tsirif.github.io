@@ -87,7 +87,7 @@ export default function ProjectsFilter({ items }) {
     <div className="toolbar" role="region" aria-label="Project filters">
       <input
         type="search"
-        placeholder="Search title, TL;DR, abstract…"
+        placeholder="Search content…"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         aria-label="Search projects"
@@ -96,7 +96,7 @@ export default function ProjectsFilter({ items }) {
       <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort projects">
         <option value="newest">Newest</option>
         <option value="citations">Most cited</option>
-        <option value="stars">Most GitHub stars</option>
+        // <option value="stars">Most GitHub stars</option>
       </select>
 
       <button className="btn btn--ghost small" onClick={clearFilters} type="button">Clear</button>
