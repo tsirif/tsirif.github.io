@@ -6,7 +6,8 @@ export async function GET({ site }) {
     getCollection('writing'),
   ]);
 
-  const origin = (site && site.toString()) || 'https://tsirif.github.io';
+  // const origin = (site && site.toString()) || 'https://tsirif.github.io';
+  const origin = (site && site.toString()) || 'https://logotechnologia.com';
 
   const esc = (s = '') =>
     String(s)

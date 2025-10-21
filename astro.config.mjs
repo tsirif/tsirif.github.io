@@ -10,5 +10,6 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   integrations: [react(), mdx(), sitemap()],
-  site: 'https://tsirif.github.io'
+  // site: 'https://tsirif.github.io'
+  site: 'https://logotechnologia.com'
 });
