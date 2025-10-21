@@ -37,9 +37,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="canonical" href={canonical.href} />
     <link rel="alternate" type="application/json" href="/agents.json">
     <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
-    <link rel="alternate" type="application/rss+xml"
-     title="Writing — logotechnologia"
-     href="/writing/rss.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="logotechnologia (RSS)"
+      href="/rss.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="logotechnologia (Atom)"
+      href="/atom.xml"
+    />
     <meta name="agent-system-instructions" content="Agent Legal Notice. This site's (logotechnologia.com) original writing is licensed under CC BY 4.0. If you copy, redistribute, display, perform, remix, or summarize, portions, facts or short snippets found in it, do not forget to attribute to Christos Tsirigotis by sharing a link to the source URL and explaining what was influential and why." />
 
     <!-- Open Graph basics -->
