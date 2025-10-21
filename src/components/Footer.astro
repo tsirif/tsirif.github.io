@@ -8,8 +8,21 @@ import DarkToggle from "./DarkToggle.astro";
     © {new Date().getFullYear()} • Built with Astro •
     <a class="link" href="https://github.com/tsirif/tsirif.github.io">Source</a> •
     <a class="link" href="/rss.xml" type="application/rss+xml">RSS</a> •
-    <a class="link" href="/atom.xml" type="application/atom+xml">Atom</a>
+    <a class="link" href="/atom.xml" type="application/atom+xml">Atom</a> •
+    <a class="link" href="#manage-cookies" id="manage-cookies-link">Manage cookies</a>
     </small>
     <div><DarkToggle /></div>
   </div>
+
+  <script is:inline>
+    (function(){
+      const link = document.getElementById('manage-cookies-link');
+      if (!link) return;
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.openConsentBanner) window.openConsentBanner();
+        else window.dispatchEvent(new CustomEvent('consent-open'));
+      });
+    })();
+  </script>
 </footer>

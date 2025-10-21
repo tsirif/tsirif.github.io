@@ -26,15 +26,18 @@
   (function(){
     const KEY = 'ga_consent';
     const el = document.getElementById('consent-banner');
+    const accept = document.getElementById('consent-accept');
+    const reject = document.getElementById('consent-reject');
+
     if (!el) return;
 
+    // Show only if no prior choice
     let stored = null;
     try { stored = localStorage.getItem(KEY); } catch(e) {}
-    if (!stored) { el.hidden = false; } // show only if no prior choice
+    if (!stored) { el.hidden = false; }
 
     const setConsent = (value) => {
       try { localStorage.setItem(KEY, value); } catch(e) {}
-      // Update Consent Mode at runtime
       if (window.gtag) {
         const granted = (value === 'granted');
         window.gtag('consent', 'update', {
@@ -47,9 +50,24 @@
       el.hidden = true;
     };
 
-    const accept = document.getElementById('consent-accept');
-    const reject = document.getElementById('consent-reject');
     accept?.addEventListener('click', () => setConsent('granted'));
     reject?.addEventListener('click', () => setConsent('denied'));
+
+    // Close on Escape (does not change stored choice)
+    document.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape' && !el.hidden) {
+        el.hidden = true;
+      }
+    });
+
+    // Expose a safe API to (re)open the banner on demand
+    window.openConsentBanner = () => {
+      el.hidden = false;
+      // Move focus to Accept for quick keyboard/AT interaction
+      setTimeout(() => accept?.focus(), 0);
+    };
+
+    // Also respond to a custom event
+    window.addEventListener('consent-open', () => window.openConsentBanner());
   })();
 </script>
