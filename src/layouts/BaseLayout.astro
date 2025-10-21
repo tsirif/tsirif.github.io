@@ -8,6 +8,7 @@ import "@fontsource/merriweather/700.css";
 
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import ConsentBanner from "../components/ConsentBanner.astro";
 
 interface Props {
   title?: string;
@@ -16,6 +17,7 @@ interface Props {
 }
 const { title = "Home", description = "Personal site", wide = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 ---
 
 <!DOCTYPE html>
@@ -74,9 +76,61 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
             } catch {}
         })();
     </script>
-    <!-- Plausible (add later)
-    <script defer data-domain="logotechnologia.com" src="https://plausible.io/js/script.js"></script>
-    -->
+    <!-- Google Analytics -->
+    <!-- GA4 Consent Mode v2: define dataLayer/gtag and set default consent BEFORE loading gtag.js -->
+    <script is:inline>
+    // Create dataLayer + gtag shim
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+
+    (function(){
+        // Read a previous choice (set by the banner). Values: 'granted' | 'denied'
+        var stored = null;
+        try { stored = localStorage.getItem('ga_consent'); } catch (e) {}
+
+        // Safer global default: denied until user accepts
+        var analyticsDefault = (stored === 'granted') ? 'granted' : 'denied';
+
+        // Consent Mode v2 defaults (no ads here, keep ad_* denied)
+        gtag('consent', 'default', {
+        'analytics_storage': analyticsDefault,
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+        });
+
+        // ---------- Region-aware option (comment IN to use):
+        // Deny analytics by default in EEA/UK/CH; grant elsewhere by default.
+        // Google applies this server-side based on visitor location.
+        gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+        }, {
+        'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']
+        });
+        // Then set a global "granted" default (applies to everyone else):
+        gtag('consent', 'default', {
+        'analytics_storage': 'granted',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+        });
+    })();
+    </script>
+    {GA_ID && (
+    <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
+        <script is:inline>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        // Basic page view (Astro is multi-page; this fires on every navigation)
+        gtag('config', {GA_ID}, { page_path: location.pathname });
+        </script>
+    </>
+    )}
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
@@ -85,5 +139,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       <slot />
     </main>
     <Footer />
+    <ConsentBanner />
   </body>
 </html>

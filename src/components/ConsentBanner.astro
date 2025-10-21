@@ -1,0 +1,55 @@
+<div id="consent-banner" class="consent" role="dialog" aria-live="polite" aria-label="Cookie consent" hidden>
+  <div class="consent__inner">
+    <p class="consent__text">
+      We use Google Analytics to understand how this site is used. You can accept or reject analytics cookies.
+    </p>
+    <div class="consent__actions">
+      <button type="button" class="btn" id="consent-accept">Accept</button>
+      <button type="button" class="btn btn--ghost" id="consent-reject">Reject</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .consent {
+    position: fixed; inset-inline: 12px; bottom: 12px; z-index: 9999;
+    border: 1px solid var(--border); background: var(--paper); color: var(--ink);
+    border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  }
+  .consent__inner { padding: 12px 14px; display: grid; gap: 10px; align-items: center; }
+  .consent__text { margin: 0; }
+  .consent__actions { display: flex; gap: 8px; }
+  @media (min-width: 640px){ .consent__inner { grid-template-columns: 1fr auto; } }
+</style>
+
+<script is:inline>
+  (function(){
+    const KEY = 'ga_consent';
+    const el = document.getElementById('consent-banner');
+    if (!el) return;
+
+    let stored = null;
+    try { stored = localStorage.getItem(KEY); } catch(e) {}
+    if (!stored) { el.hidden = false; } // show only if no prior choice
+
+    const setConsent = (value) => {
+      try { localStorage.setItem(KEY, value); } catch(e) {}
+      // Update Consent Mode at runtime
+      if (window.gtag) {
+        const granted = (value === 'granted');
+        window.gtag('consent', 'update', {
+          'analytics_storage': granted ? 'granted' : 'denied',
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied'
+        });
+      }
+      el.hidden = true;
+    };
+
+    const accept = document.getElementById('consent-accept');
+    const reject = document.getElementById('consent-reject');
+    accept?.addEventListener('click', () => setConsent('granted'));
+    reject?.addEventListener('click', () => setConsent('denied'));
+  })();
+</script>
