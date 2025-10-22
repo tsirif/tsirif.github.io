@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
   <rect width="100%" height="100%" fill="#FAF9F7"/>
-  <text x="60" y="360" font-family="Space Mono, ui-monospace, monospace" font-weight="700" font-size="84" fill="#111111">logotechnologia</text>
-  <text x="60" y="430" font-family="Merriweather, Georgia, serif" font-size="32" fill="#666666">Artificial Intelligence Research</text>
+  <text x="60" y="360" font-family="Space Mono" font-weight="700" font-size="84" fill="#111111">logotechnologia</text>
+  <text x="60" y="430" font-family="Merriweather" font-size="32" fill="#666666">Artificial Intelligence Research</text>
 </svg>

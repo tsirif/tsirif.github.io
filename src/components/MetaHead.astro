@@ -4,7 +4,7 @@ interface Props {
   description?: string;
   image?: string; // root-relative or absolute
 }
-const { title, description = "", image = "/og-default.svg" } = Astro.props;
+const { title, description = "", image = "/og-default.png" } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const img = image?.startsWith("http") ? image : new URL(image, Astro.site).href;
 ---
