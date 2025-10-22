@@ -4,7 +4,7 @@ interface Props {
   kind: 'project' | 'writing';
 }
 
-import { Image } from "astro:assets";
+// import { Image } from "astro:assets";
 
 const { entry, kind } = Astro.props;
 const d = entry.data || {};
@@ -17,7 +17,7 @@ const authors: string[] = d.authors || [];
 
 const img = kind === 'project' ? d.images?.teaser : d.image;
 const imgAlt = kind === 'project' ? d.images?.alt : d.imageAlt;
-const localTeaser = img && img.startsWith("/") ? await import(`../..${img}`) : null;
+// const localTeaser = img && img.startsWith("/") ? await import(`../..${img}`) : null;
 
 const keywords: string[] = d.keywords || [];
 const url = kind === 'project' ? `/projects/${slug}/` : `/writing/${slug}/`;
