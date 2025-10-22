@@ -97,68 +97,85 @@ const authors: string[] = d.authors || [];
 
   <style>
     .card {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px;
-      display: grid;
-      grid-template-rows: auto auto; /* title row + content row */
-      gap: 8px;                      /* tighter */
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;                    /* tighter */
+    display: grid;
+    grid-template-rows: auto auto;    /* title row + content row */
+    gap: 8px;
     }
 
+    /* Title spans full width */
     .card__title { margin: 0; }
 
-    /* Content row: 1fr left + small teaser right (only when media is visible) */
+    /* === Content row: left meta + small teaser right (only when image is visible) === */
     .card__row {
-      --teaser-w: 220px; /* tweak this width to taste (fits GIFs too) */
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      align-items: start;
+    --teaser-w: 200px;                /* ← tweak this (e.g., 180–240) to taste */
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: start;
     }
     @media (min-width: 860px) {
-      /* Two columns only if media-wrap is present AND visible */
-      .card__row.has-media { grid-template-columns: 1fr var(--teaser-w); }
-      .card__row:has(.card__media-wrap:not([hidden])) { grid-template-columns: 1fr var(--teaser-w); }
+    .card__row.has-media { grid-template-columns: 1fr var(--teaser-w); }
+    .card__row:has(.card__media-wrap:not([hidden])) { grid-template-columns: 1fr var(--teaser-w); }
     }
 
-    .card__meta { display: block; }
-    .card__authors { margin-top: 6px; color: var(--muted); font-size: 0.95em; }
-    .card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-    .card .tag{ font-size: 0.85em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; }
+    /* === Meta column becomes a grid; we control spacing with row-gap, not margins === */
+    .card__meta {
+    display: grid;
+    row-gap: 6px;                     /* global vertical rhythm */
+    align-content: start;
+    }
+    .card__meta > * { margin: 0; }      /* kill default P/div margins */
+    /* remove any bottom margin from the very last element in the meta column */
+    .card__meta > :last-child { margin-bottom: 0 !important; }
 
-    .card__links { margin: 6px 0 0 0; font-size: 0.95em; }
+    /* Authors line + tags + links now follow the grid spacing, not their own margins */
+    .card__authors { color: var(--muted); font-size: 0.95em; }
+    .card__tags    { display: flex; flex-wrap: wrap; gap: 6px; }
+    .card .tag     { font-size: 0.85em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; }
+    .card__links   { font-size: 0.95em; }
 
-    /* Teaser image: small fixed column, preserves aspect, crops gently */
+    /* Teaser image (only when present) */
     .card__media { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
 
-    /* Details are collapsed by default — no margins => no whitespace */
+    /* === Collapsible details INSIDE meta column === */
     .card__details {
-      margin-top: 0;
-      max-height: 0;
-      overflow: clip;
-      opacity: 0;
-      transition: max-height .25s ease, opacity .2s ease, margin-top .2s ease;
+    /* absolutely no space when collapsed */
+    max-height: 0;
+    overflow: hidden;                 /* wide support vs 'clip' */
+    opacity: 0;
+    /* no margins at all while collapsed */
+    margin: 0 !important;
+    transition: max-height .25s ease, opacity .2s ease;
     }
+    .card__details > * { margin: 0 0 8px 0; }     /* tidy spacing when open */
+    .card__details > *:last-child { margin-bottom: 0; }
+
     @media (prefers-reduced-motion: reduce) {
-      .card__details { transition: none; }
+    .card__details { transition: none; }
     }
 
-    /* Desktop hover/focus reveals (no button needed) */
+    /* Desktop hover/focus reveals; keep it tight by not adding extra margins */
     @media (hover: hover) and (pointer: fine) {
-      .card__actions { display: none; }
-      .card:hover .card__details,
-      .card:focus-within .card__details {
+    .card__actions { display: none; }
+    .card:hover .card__details,
+    .card:focus-within .card__details {
         max-height: 1000px;
         opacity: 1;
-        margin-top: 8px;   /* add spacing only when expanded */
-      }
+    }
     }
 
     /* Mobile/explicit open */
     .card.is-open .card__details {
-      max-height: 1000px;
-      opacity: 1;
-      margin-top: 8px;
+    max-height: 1000px;
+    opacity: 1;
+    }
+
+    /* Optional: slightly smaller gap on large screens for denser look */
+    @media (min-width: 860px) {
+    .card { gap: 6px; }               /* title↔content gap */
     }
   </style>
 
