@@ -1,6 +1,6 @@
 ---
 interface Props {
-  entry: any;
+  entry: any;                  // CollectionEntry<'projects' | 'writing'>
   kind: 'project' | 'writing';
 }
 const { entry, kind } = Astro.props;
@@ -25,18 +25,18 @@ const authors: string[] = d.authors || [];
 
 <article class="card" data-slug={slug}>
 
-  <!-- CHANGE: .card__top will only become 2 columns if it has a *visible* media wrapper -->
-  <div class="card__top">
+  <!-- Row 1: Title spans full width -->
+  <h3 class="card__title"><a class="link" href={url}>{title}</a></h3>
+
+  <!-- Row 2: Left = meta (+ collapsible details), Right = small teaser (if it loads) -->
+  <div class="card__row">
     <div class="card__meta">
-      <h3 class="card__title"><a class="link" href={url}>{title}</a></h3>
       <small class="muted">
         <time datetime={dateISO}>{dateISO}</time>{venue ? ` • ${venue}` : ''}
       </small>
 
       {kind === 'project' && authors.length > 0 && (
-        <div class="card__authors">
-          <span>By {authors.join(", ")}</span>
-        </div>
+        <div class="card__authors">By {authors.join(", ")}</div>
       )}
 
       {keywords.length > 0 && (
@@ -57,10 +57,27 @@ const authors: string[] = d.authors || [];
           {links.x && (<a class="link" href={links.x} rel="noopener noreferrer">X post</a>)}
         </p>
       )}
+
+      <!-- Collapsible details now live inside the left column (no grid row => no reserved gap) -->
+      <div class="card__details">
+        {tldr && (<p class="card__tldr"><strong>TL;DR:</strong> {tldr}</p>)}
+        {kind === 'project' && (d.status || Object.keys(impact).length > 0) && (
+          <p class="muted card__impact">
+            {d.status ? (<><strong>Status:</strong> {d.status}. </>) : null}
+            {impact.citations ? (<><strong>Citations:</strong> {impact.citations}. </>) : null}
+            {impact.github_stars ? (<><strong>GitHub stars:</strong> {impact.github_stars}. </>) : null}
+            {impact.downloads ? (<><strong>Downloads:</strong> {impact.downloads}. </>) : null}
+          </p>
+        )}
+      </div>
+
+      <!-- Mobile/touch toggle; hidden on hover-capable devices -->
+      <div class="card__actions">
+        <button class="btn btn--ghost small" data-toggle type="button" aria-expanded="false">More</button>
+      </div>
     </div>
 
     {img && (
-      <!-- CHANGE: wrap media so we can hide it on load error -->
       <div class="card__media-wrap">
         <a href={url} aria-label={`Open ${title}`}>
           <img
@@ -69,86 +86,79 @@ const authors: string[] = d.authors || [];
             alt={imgAlt || ''}
             loading="lazy"
             decoding="async"
-            width="640"
-            height="360"
-            sizes="(max-width: 860px) 92vw, 280px"
+            width="320"
+            height="180"
+            sizes="(max-width: 900px) 92vw, 220px"
           />
         </a>
       </div>
     )}
   </div>
 
-  <!-- Actions: visible on touch/mobile; hidden on hover-capable devices -->
-  <div class="card__actions">
-    <button class="btn btn--ghost small" data-toggle type="button" aria-expanded="false">More</button>
-  </div>
-
-  <div class="card__details">
-    {tldr && (<p><strong>TL;DR:</strong> {tldr}</p>)}
-    {kind === 'project' && (d.status || Object.keys(impact).length > 0) && (
-      <p class="muted">
-        {d.status ? (<><strong>Status:</strong> {d.status}. </>) : null}
-        {impact.citations ? (<><strong>Citations:</strong> {impact.citations}. </>) : null}
-        {impact.github_stars ? (<><strong>GitHub stars:</strong> {impact.github_stars}. </>) : null}
-        {impact.downloads ? (<><strong>Downloads:</strong> {impact.downloads}. </>) : null}
-      </p>
-    )}
-  </div>
-
   <style>
-    .card { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: grid; gap: 10px; }
-    .card__top { display: grid; grid-template-columns: 1fr; gap: 12px; }
-
-    /* CHANGE: two columns only when a *visible* media wrapper exists */
-    @media (min-width: 860px) {
-      .card__top.has-media { grid-template-columns: 1fr 280px; align-items: start; }
-      /* modern browsers: :has fallback to class above; both are fine */
-      .card__top:has(.card__media-wrap:not([hidden])) { grid-template-columns: 1fr 280px; align-items: start; }
-    }
-
-    .card__media {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      border-radius: 6px;
+    .card {
       border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      display: grid;
+      grid-template-rows: auto auto; /* title row + content row */
+      gap: 8px;                      /* tighter */
     }
 
-    .card__title { margin: 0 0 4px 0; }
+    .card__title { margin: 0; }
+
+    /* Content row: 1fr left + small teaser right (only when media is visible) */
+    .card__row {
+      --teaser-w: 220px; /* tweak this width to taste (fits GIFs too) */
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (min-width: 860px) {
+      /* Two columns only if media-wrap is present AND visible */
+      .card__row.has-media { grid-template-columns: 1fr var(--teaser-w); }
+      .card__row:has(.card__media-wrap:not([hidden])) { grid-template-columns: 1fr var(--teaser-w); }
+    }
+
+    .card__meta { display: block; }
     .card__authors { margin-top: 6px; color: var(--muted); font-size: 0.95em; }
     .card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
     .card .tag{ font-size: 0.85em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; }
-    .card__links{ margin-top: 6px; font-size: 0.95em; }
 
-    .card__actions { display: flex; justify-content: flex-start; }
+    .card__links { margin: 6px 0 0 0; font-size: 0.95em; }
 
-    /* DETAILS: collapsed by default; smooth but respectful of reduced motion */
+    /* Teaser image: small fixed column, preserves aspect, crops gently */
+    .card__media { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
+
+    /* Details are collapsed by default — no margins => no whitespace */
     .card__details {
-      margin-top: 8px;
+      margin-top: 0;
       max-height: 0;
       overflow: clip;
       opacity: 0;
-      transition: max-height .25s ease, opacity .2s ease;
+      transition: max-height .25s ease, opacity .2s ease, margin-top .2s ease;
     }
     @media (prefers-reduced-motion: reduce) {
       .card__details { transition: none; }
     }
 
-    /* Desktop: reveal on hover/focus; no button */
+    /* Desktop hover/focus reveals (no button needed) */
     @media (hover: hover) and (pointer: fine) {
       .card__actions { display: none; }
       .card:hover .card__details,
       .card:focus-within .card__details {
         max-height: 1000px;
         opacity: 1;
+        margin-top: 8px;   /* add spacing only when expanded */
       }
     }
 
-    /* Mobile or explicit open */
+    /* Mobile/explicit open */
     .card.is-open .card__details {
       max-height: 1000px;
       opacity: 1;
+      margin-top: 8px;
     }
   </style>
 
@@ -157,10 +167,9 @@ const authors: string[] = d.authors || [];
       const card = document.currentScript?.closest('.card');
       if (!card) return;
 
-      // Mobile toggle
+      // Toggle for touch/mobile
       const btn = card.querySelector('[data-toggle]');
-      const details = card.querySelector('.card__details');
-      if (btn && details) {
+      if (btn) {
         btn.addEventListener('click', () => {
           const open = card.classList.toggle('is-open');
           btn.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -168,24 +177,21 @@ const authors: string[] = d.authors || [];
         });
       }
 
-      // CHANGE: collapse media column if image never loads
-      const top   = card.querySelector('.card__top');
-      const wrap  = card.querySelector('.card__media-wrap');
-      const imgEl = wrap?.querySelector('img');
+      // Collapse media column if the image fails to load; also mark when it exists
+      const row  = card.querySelector('.card__row');
+      const wrap = card.querySelector('.card__media-wrap');
+      const img  = wrap?.querySelector('img');
 
       const updateCols = () => {
-        if (!top) return;
+        if (!row) return;
         const hasMedia = !!(wrap && !wrap.hasAttribute('hidden'));
-        top.classList.toggle('has-media', hasMedia); // fallback for browsers without :has
+        row.classList.toggle('has-media', hasMedia); // fallback for browsers without :has
       };
 
-      if (imgEl) {
-        // If browser already tried loading, detect failure immediately
-        if (imgEl.complete && imgEl.naturalWidth === 0) {
-          wrap.setAttribute('hidden', '');
-        }
-        imgEl.addEventListener('error', () => { wrap.setAttribute('hidden', ''); updateCols(); });
-        imgEl.addEventListener('load',  () => { wrap.removeAttribute('hidden'); updateCols(); });
+      if (img) {
+        if (img.complete && img.naturalWidth === 0) { wrap.setAttribute('hidden', ''); }
+        img.addEventListener('error', () => { wrap.setAttribute('hidden', ''); updateCols(); });
+        img.addEventListener('load',  () => { wrap.removeAttribute('hidden'); updateCols(); });
       }
       updateCols();
     })();
