@@ -23,3 +23,13 @@ const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.p
     ))}
   </nav>
 </header>
+
+<script is:inline>
+  (() => {
+    const el = document.querySelector('header.header');
+    if (!el) return;
+    const onScroll = () => el.classList.toggle('is-stuck', window.scrollY > 2);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>

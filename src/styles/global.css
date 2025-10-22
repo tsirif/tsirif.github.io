@@ -46,17 +46,26 @@ a.link:hover, a.link:focus-visible {
 
 /* Header / Nav */
 .header{
+  position: sticky;         /* stays in view while scrolling */
+  top: env(safe-area-inset-top, 0);
+  z-index: 1000;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: var(--gap-3);
   padding: 12px clamp(16px, 4vw, 32px);
+  background: var(--paper); /* solid background so content doesn't show through */
   border-bottom: 1px solid var(--border);
 }
+
+.header.is-stuck{           /* subtle elevation once you scroll */
+  box-shadow: 0 1px 0 var(--border), 0 .5rem 1rem rgba(0,0,0,.03);
+}
+
 .header__brand{
   display: flex;
   flex-direction: column;
-  align-items: center;        /* centers name under logotechnologia */
+  align-items: center;
   gap: 2px;
 }
 .brand{
@@ -71,7 +80,7 @@ a.link:hover, a.link:focus-visible {
   font-weight: 400;
   letter-spacing: 0.01em;
   font-size: 0.95rem;
-  color: var(--muted);                                 /* softer tone */
+  color: var(--muted);
 }
 .nav{
   display: flex;
@@ -82,7 +91,7 @@ a.link:hover, a.link:focus-visible {
 }
 .nav a{
   padding: 8px 6px;
-  font-family: "Space Mono", ui-monospace, monospace; /* Space Mono for nav */
+  font-family: "Space Mono", ui-monospace, monospace;
   letter-spacing: 0.01em;
 }
 .nav a[aria-current="page"]{ text-decoration: underline; text-underline-offset: 4px; }
@@ -91,6 +100,9 @@ a.link:hover, a.link:focus-visible {
   .header{ grid-template-columns: 1fr; justify-items: center; }
   .nav{ justify-content: center; }
 }
+
+/* When skipping to content, avoid header overlap on anchor jumps */
+#main{ scroll-margin-top: 80px; }
 
 /* Footer */
 .footer {
@@ -114,7 +126,7 @@ a.link:hover, a.link:focus-visible {
 .tag {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px;
-  font-size: 0.9em; color: var(--muted);
+  font-size: 0.9em; color: var(--muted); text-decoration: none;
 }
 .tag[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 

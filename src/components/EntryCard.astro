@@ -1,11 +1,9 @@
 ---
+/** Generic card for a project or a writing post. */
 interface Props {
-  entry: any;
+  entry: any;                 // CollectionEntry<'projects' | 'writing'>
   kind: 'project' | 'writing';
 }
-
-// import { Image } from "astro:assets";
-
 const { entry, kind } = Astro.props;
 const d = entry.data || {};
 const slug = entry.slug;
@@ -13,11 +11,9 @@ const slug = entry.slug;
 const title = d.title;
 const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
 const venue = kind === 'project' ? d.venue : undefined;
-const authors: string[] = d.authors || [];
 
 const img = kind === 'project' ? d.images?.teaser : d.image;
 const imgAlt = kind === 'project' ? d.images?.alt : d.imageAlt;
-// const localTeaser = img && img.startsWith("/") ? await import(`../..${img}`) : null;
 
 const keywords: string[] = d.keywords || [];
 const url = kind === 'project' ? `/projects/${slug}/` : `/writing/${slug}/`;
@@ -25,20 +21,24 @@ const url = kind === 'project' ? `/projects/${slug}/` : `/writing/${slug}/`;
 const tldr = d.tldr ?? d.summary ?? '';
 const impact = d.impact ?? {};
 const links = d.links ?? {};
+const authors: string[] = d.authors || [];
 ---
 
 <article class="card" data-slug={slug}>
+
   <div class="card__top">
     <div class="card__meta">
       <h3 class="card__title"><a class="link" href={url}>{title}</a></h3>
       <small class="muted">
         <time datetime={dateISO}>{dateISO}</time>{venue ? ` • ${venue}` : ''}
       </small>
+
       {kind === 'project' && authors.length > 0 && (
         <div class="card__authors">
-            <span>By {authors.join(", ")}</span>
+          <span>By {authors.join(", ")}</span>
         </div>
       )}
+
       {keywords.length > 0 && (
         <div class="card__tags">
           {keywords.map((t) => (
@@ -46,38 +46,42 @@ const links = d.links ?? {};
           ))}
         </div>
       )}
+
+      {(links.code || links.demo || links.paper || links.website || links.explainer || links.x) && (
+        <p class="card__links">
+          {links.paper && (<a class="link" href={links.paper} rel="noopener noreferrer">Paper</a>)}{links.paper && ' • '}
+          {links.code && (<a class="link" href={links.code} rel="noopener noreferrer">Code</a>)}{links.code && ' • '}
+          {links.demo && (<a class="link" href={links.demo} rel="noopener noreferrer">Demo</a>)}{links.demo && ' • '}
+          {links.website && (<a class="link" href={links.website} rel="noopener noreferrer">Project site</a>)}{links.website && ' • '}
+          {links.explainer && (<a class="link" href={links.explainer}>Explainer</a>)}{links.explainer && ' • '}
+          {links.x && (<a class="link" href={links.x} rel="noopener noreferrer">X post</a>)}
+        </p>
+      )}
     </div>
 
-    <!-- {localTeaser ? (                                                                                                           -->
-    <!-- <a href={url} aria-label={`Open ${title}`}>                                                                                -->
-    <!--     <Image src={localTeaser.default} alt={imgAlt || ""} widths={[360, 640, 960]} sizes="(max-width: 900px) 92vw, 640px" /> -->
-    <!-- </a>                                                                                                                       -->
-    <!-- ) : img && (                                                                                                               -->
-    <!-- <a href={url} aria-label={`Open ${title}`}>                                                                                -->
-    <!--     <img class="card__media" src={img} alt={imgAlt || ''} loading="lazy" decoding="async" />                               -->
-    <!-- </a>                                                                                                                       -->
-    <!-- )}                                                                                                                         -->
     {img && (
-    <a href={url} aria-label={`Open ${title}`}>
+      <a href={url} aria-label={`Open ${title}`}>
         <img
-        class="card__media"
-        src={img}
-        alt={imgAlt || ''}
-        loading="lazy"
-        decoding="async"
-        width="640"
-        height="360"
-        sizes="(max-width: 860px) 92vw, 280px"
+          class="card__media"
+          src={img}
+          alt={imgAlt || ''}
+          loading="lazy"
+          decoding="async"
+          width="640"
+          height="360"
+          sizes="(max-width: 860px) 92vw, 280px"
         />
-    </a>
+      </a>
     )}
   </div>
 
+  <!-- Actions: visible on touch/mobile; hidden on hover-capable devices -->
   <div class="card__actions">
     <button class="btn btn--ghost small" data-toggle type="button" aria-expanded="false">More</button>
   </div>
 
-  <div class="card__details" data-details hidden>
+  <!-- Details (collapsed by default; shown on hover/focus or when is-open) -->
+  <div class="card__details">
     {tldr && (<p><strong>TL;DR:</strong> {tldr}</p>)}
 
     {kind === 'project' && (d.status || Object.keys(impact).length > 0) && (
@@ -88,53 +92,64 @@ const links = d.links ?? {};
         {impact.downloads ? (<><strong>Downloads:</strong> {impact.downloads}. </>) : null}
       </p>
     )}
-
-    {(links.code || links.demo || links.paper || links.website || links.explainer || links.x) && (
-      <p>
-        {links.paper && (<a class="link" href={links.paper}>Paper</a>)}{links.paper && ' • '}
-        {links.code && (<a class="link" href={links.code}>Code</a>)}{links.code && ' • '}
-        {links.demo && (<a class="link" href={links.demo}>Demo</a>)}{links.demo && ' • '}
-        {links.website && (<a class="link" href={links.website}>Project site</a>)}{links.website && ' • '}
-        {links.explainer && (<a class="link" href={links.explainer}>Explainer</a>)}{links.explainer && ' • '}
-        {links.x && (<a class="link" href={links.x}>X post</a>)}
-      </p>
-    )}
   </div>
 
   <style>
     .card { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: grid; gap: 12px; }
     .card__top { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    /* .card__media { width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--border); } */
     .card__media {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;     /* reserve space to avoid layout shift */
-    object-fit: cover;        /* crop gracefully */
-    border-radius: 6px;
-    border: 1px solid var(--border);
+      width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover;
+      border-radius: 6px; border: 1px solid var(--border);
     }
     .card__title { margin: 0 0 4px 0; }
-    .card__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
     .card__authors { margin-top: 6px; color: var(--muted); font-size: 0.95em; }
+    .card__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    /* Make tags smaller & more discreet inside cards */
+    .card .tag{ font-size: 0.85em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; }
+    .card__links{ margin-top: 8px; font-size: 0.95em; }
+
     .card__actions { display: flex; justify-content: flex-start; }
-    .card__details { margin-top: 8px; }
+    /* Collapsed details (no [hidden]; we use CSS states for hover/focus/toggle) */
+    .card__details {
+      margin-top: 8px;
+      max-height: 0;
+      overflow: clip;
+      opacity: 0;
+      transition: max-height .25s ease, opacity .2s ease;
+    }
+
+    /* Desktop: reveal on hover/focus */
+    @media (hover: hover) and (pointer: fine) {
+      .card__actions { display: none; }                     /* hide button on desktop */
+      .card:hover .card__details,
+      .card:focus-within .card__details {
+        max-height: 1000px;
+        opacity: 1;
+      }
+    }
+
+    /* Mobile or when explicitly opened */
+    .card.is-open .card__details {
+      max-height: 1000px;
+      opacity: 1;
+    }
+
     @media (min-width: 860px) {
       .card__top { grid-template-columns: 1fr 280px; align-items: start; }
     }
   </style>
 
+  <!-- Mobile toggle: adds/removes .is-open on the card -->
   <script is:inline>
     (() => {
       const card = document.currentScript?.closest('.card');
       if (!card) return;
       const btn = card.querySelector('[data-toggle]');
-      const panel = card.querySelector('[data-details]');
-      if (!btn || !panel) return;
+      if (!btn) return;
       btn.addEventListener('click', () => {
-        const expanded = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', String(!expanded));
-        panel.hidden = expanded;
-        btn.textContent = expanded ? 'More' : 'Less';
+        const open = card.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? 'Less' : 'More';
       });
     })();
   </script>
