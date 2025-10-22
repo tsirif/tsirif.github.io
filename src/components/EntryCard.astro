@@ -1,7 +1,6 @@
 ---
-/** Generic card for a project or a writing post. */
 interface Props {
-  entry: any;                 // CollectionEntry<'projects' | 'writing'>
+  entry: any;
   kind: 'project' | 'writing';
 }
 const { entry, kind } = Astro.props;
@@ -26,6 +25,7 @@ const authors: string[] = d.authors || [];
 
 <article class="card" data-slug={slug}>
 
+  <!-- CHANGE: .card__top will only become 2 columns if it has a *visible* media wrapper -->
   <div class="card__top">
     <div class="card__meta">
       <h3 class="card__title"><a class="link" href={url}>{title}</a></h3>
@@ -60,18 +60,21 @@ const authors: string[] = d.authors || [];
     </div>
 
     {img && (
-      <a href={url} aria-label={`Open ${title}`}>
-        <img
-          class="card__media"
-          src={img}
-          alt={imgAlt || ''}
-          loading="lazy"
-          decoding="async"
-          width="640"
-          height="360"
-          sizes="(max-width: 860px) 92vw, 280px"
-        />
-      </a>
+      <!-- CHANGE: wrap media so we can hide it on load error -->
+      <div class="card__media-wrap">
+        <a href={url} aria-label={`Open ${title}`}>
+          <img
+            class="card__media"
+            src={img}
+            alt={imgAlt || ''}
+            loading="lazy"
+            decoding="async"
+            width="640"
+            height="360"
+            sizes="(max-width: 860px) 92vw, 280px"
+          />
+        </a>
+      </div>
     )}
   </div>
 
@@ -80,10 +83,8 @@ const authors: string[] = d.authors || [];
     <button class="btn btn--ghost small" data-toggle type="button" aria-expanded="false">More</button>
   </div>
 
-  <!-- Details (collapsed by default; shown on hover/focus or when is-open) -->
   <div class="card__details">
     {tldr && (<p><strong>TL;DR:</strong> {tldr}</p>)}
-
     {kind === 'project' && (d.status || Object.keys(impact).length > 0) && (
       <p class="muted">
         {d.status ? (<><strong>Status:</strong> {d.status}. </>) : null}
@@ -95,21 +96,34 @@ const authors: string[] = d.authors || [];
   </div>
 
   <style>
-    .card { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: grid; gap: 12px; }
+    .card { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: grid; gap: 10px; }
     .card__top { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    .card__media {
-      width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover;
-      border-radius: 6px; border: 1px solid var(--border);
+
+    /* CHANGE: two columns only when a *visible* media wrapper exists */
+    @media (min-width: 860px) {
+      .card__top.has-media { grid-template-columns: 1fr 280px; align-items: start; }
+      /* modern browsers: :has fallback to class above; both are fine */
+      .card__top:has(.card__media-wrap:not([hidden])) { grid-template-columns: 1fr 280px; align-items: start; }
     }
+
+    .card__media {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
     .card__title { margin: 0 0 4px 0; }
     .card__authors { margin-top: 6px; color: var(--muted); font-size: 0.95em; }
-    .card__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    /* Make tags smaller & more discreet inside cards */
+    .card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
     .card .tag{ font-size: 0.85em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; }
-    .card__links{ margin-top: 8px; font-size: 0.95em; }
+    .card__links{ margin-top: 6px; font-size: 0.95em; }
 
     .card__actions { display: flex; justify-content: flex-start; }
-    /* Collapsed details (no [hidden]; we use CSS states for hover/focus/toggle) */
+
+    /* DETAILS: collapsed by default; smooth but respectful of reduced motion */
     .card__details {
       margin-top: 8px;
       max-height: 0;
@@ -117,10 +131,13 @@ const authors: string[] = d.authors || [];
       opacity: 0;
       transition: max-height .25s ease, opacity .2s ease;
     }
+    @media (prefers-reduced-motion: reduce) {
+      .card__details { transition: none; }
+    }
 
-    /* Desktop: reveal on hover/focus */
+    /* Desktop: reveal on hover/focus; no button */
     @media (hover: hover) and (pointer: fine) {
-      .card__actions { display: none; }                     /* hide button on desktop */
+      .card__actions { display: none; }
       .card:hover .card__details,
       .card:focus-within .card__details {
         max-height: 1000px;
@@ -128,29 +145,49 @@ const authors: string[] = d.authors || [];
       }
     }
 
-    /* Mobile or when explicitly opened */
+    /* Mobile or explicit open */
     .card.is-open .card__details {
       max-height: 1000px;
       opacity: 1;
     }
-
-    @media (min-width: 860px) {
-      .card__top { grid-template-columns: 1fr 280px; align-items: start; }
-    }
   </style>
 
-  <!-- Mobile toggle: adds/removes .is-open on the card -->
   <script is:inline>
     (() => {
       const card = document.currentScript?.closest('.card');
       if (!card) return;
+
+      // Mobile toggle
       const btn = card.querySelector('[data-toggle]');
-      if (!btn) return;
-      btn.addEventListener('click', () => {
-        const open = card.classList.toggle('is-open');
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        btn.textContent = open ? 'Less' : 'More';
-      });
+      const details = card.querySelector('.card__details');
+      if (btn && details) {
+        btn.addEventListener('click', () => {
+          const open = card.classList.toggle('is-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          btn.textContent = open ? 'Less' : 'More';
+        });
+      }
+
+      // CHANGE: collapse media column if image never loads
+      const top   = card.querySelector('.card__top');
+      const wrap  = card.querySelector('.card__media-wrap');
+      const imgEl = wrap?.querySelector('img');
+
+      const updateCols = () => {
+        if (!top) return;
+        const hasMedia = !!(wrap && !wrap.hasAttribute('hidden'));
+        top.classList.toggle('has-media', hasMedia); // fallback for browsers without :has
+      };
+
+      if (imgEl) {
+        // If browser already tried loading, detect failure immediately
+        if (imgEl.complete && imgEl.naturalWidth === 0) {
+          wrap.setAttribute('hidden', '');
+        }
+        imgEl.addEventListener('error', () => { wrap.setAttribute('hidden', ''); updateCols(); });
+        imgEl.addEventListener('load',  () => { wrap.removeAttribute('hidden'); updateCols(); });
+      }
+      updateCols();
     })();
   </script>
 </article>
