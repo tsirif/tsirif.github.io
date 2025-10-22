@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const projects = await getCollection("projects");
+const posts    = await getCollection("writing");
+
+const counts = new Map<string, number>();
+function addAll(list:any[], pick:(e:any)=>string[]|undefined) {
+  for (const e of list) {
+    const ks = pick(e) || [];
+    for (const k of ks) {
+      const tag = String(k).toLowerCase();
+      counts.set(tag, (counts.get(tag) || 0) + 1);
+    }
+  }
+}
+
+addAll(projects, (e) => e.data.keywords);
+addAll(posts,    (e) => e.data.keywords);
+
+const tags = Array.from(counts.entries())
+  .sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+---
+
+<BaseLayout title="Tags" wide={true} description="Browse topics across projects and writing.">
+  <h1>Tags</h1>
+  <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;">
+    {tags.length
+      ? tags.map(([tag, n]) => (
+          <a class="tag" href={`/tags/${tag}/`}>{tag} <small class="muted">({n})</small></a>
+        ))
+      : <p class="muted">No tags yet.</p>}
+  </div>
+</BaseLayout>

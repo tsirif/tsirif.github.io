@@ -1,0 +1,9 @@
+# robots.txt for https://logotechnologia.com
+User-agent: *
+Allow: /
+
+# Internal build assets that don't need indexing
+Disallow: /_astro/
+
+# Primary sitemap (index points to the numbered parts)
+Sitemap: https://logotechnologia.com/sitemap-index.xml

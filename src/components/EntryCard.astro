@@ -3,6 +3,9 @@ interface Props {
   entry: any;
   kind: 'project' | 'writing';
 }
+
+import { Image } from "astro:assets";
+
 const { entry, kind } = Astro.props;
 const d = entry.data || {};
 const slug = entry.slug;
@@ -14,6 +17,7 @@ const authors: string[] = d.authors || [];
 
 const img = kind === 'project' ? d.images?.teaser : d.image;
 const imgAlt = kind === 'project' ? d.images?.alt : d.imageAlt;
+const localTeaser = img && img.startsWith("/") ? await import(`../..${img}`) : null;
 
 const keywords: string[] = d.keywords || [];
 const url = kind === 'project' ? `/projects/${slug}/` : `/writing/${slug}/`;
@@ -44,10 +48,28 @@ const links = d.links ?? {};
       )}
     </div>
 
+    <!-- {localTeaser ? (                                                                                                           -->
+    <!-- <a href={url} aria-label={`Open ${title}`}>                                                                                -->
+    <!--     <Image src={localTeaser.default} alt={imgAlt || ""} widths={[360, 640, 960]} sizes="(max-width: 900px) 92vw, 640px" /> -->
+    <!-- </a>                                                                                                                       -->
+    <!-- ) : img && (                                                                                                               -->
+    <!-- <a href={url} aria-label={`Open ${title}`}>                                                                                -->
+    <!--     <img class="card__media" src={img} alt={imgAlt || ''} loading="lazy" decoding="async" />                               -->
+    <!-- </a>                                                                                                                       -->
+    <!-- )}                                                                                                                         -->
     {img && (
-      <a href={url} aria-label={`Open ${title}`}>
-        <img class="card__media" src={img} alt={imgAlt || ''} loading="lazy" decoding="async" />
-      </a>
+    <a href={url} aria-label={`Open ${title}`}>
+        <img
+        class="card__media"
+        src={img}
+        alt={imgAlt || ''}
+        loading="lazy"
+        decoding="async"
+        width="640"
+        height="360"
+        sizes="(max-width: 860px) 92vw, 280px"
+        />
+    </a>
     )}
   </div>
 
@@ -82,7 +104,15 @@ const links = d.links ?? {};
   <style>
     .card { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: grid; gap: 12px; }
     .card__top { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    .card__media { width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--border); }
+    /* .card__media { width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--border); } */
+    .card__media {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;     /* reserve space to avoid layout shift */
+    object-fit: cover;        /* crop gracefully */
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    }
     .card__title { margin: 0 0 4px 0; }
     .card__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
     .card__authors { margin-top: 6px; color: var(--muted); font-size: 0.95em; }

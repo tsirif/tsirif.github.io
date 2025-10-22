@@ -8,14 +8,16 @@ import "@fontsource/merriweather/700.css";
 
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import MetaHead from "../components/MetaHead.astro";
 import ConsentBanner from "../components/ConsentBanner.astro";
 
 interface Props {
   title?: string;
   description?: string;
-  wide?: boolean; // allow wider pages
+  wide?: boolean;
+  ogImage?: string; // NEW
 }
-const { title = "Home", description = "Personal site", wide = false } = Astro.props;
+const { title = "Home", description = "Personal site", wide = false, ogImage } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 ---
@@ -33,7 +35,8 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     )}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} • {Astro.site?.hostname}</title>
+    <!-- <title>{title} • {Astro.site?.hostname}</title> -->
+    <MetaHead title={`${title} • logotechnologia`} description={description} image={ogImage} />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="light dark" />
     <link rel="canonical" href={canonical.href} />

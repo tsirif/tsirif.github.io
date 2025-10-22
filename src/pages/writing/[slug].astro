@@ -16,7 +16,7 @@ const d = post.data;
 const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
 ---
 
-<BaseLayout title={d.title} description={d.summary || ""}>
+<BaseLayout title={d.title} description={d.summary || ""} ogImage={d.image}>
   <h1>{d.title}</h1>
   <p class="muted"><time datetime={dateISO}>{dateISO}</time></p>
 
