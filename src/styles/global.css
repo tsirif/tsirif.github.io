@@ -25,7 +25,7 @@ h1, h2 {
 h1 { font-size: var(--fs-h1); }
 h2 { font-size: var(--fs-h2); }
 h3 {
-  font: 600 var(--fs-h3)/1.15 "Noto Serif Display", "Noto Serif", Georgia, "Times New Roman", serif;
+  font: 600 var(--fs-h3)/1.15 "Noto Serif", Georgia, "Times New Roman", serif;
   color: var(--ink);
   letter-spacing: var(--tracking-mono);
   line-height: 1.15;

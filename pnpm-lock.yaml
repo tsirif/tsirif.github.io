@@ -20,13 +20,7 @@ importers:
       '@astrojs/sitemap':
         specifier: ^3.6.0
         version: 3.6.0
-      '@fontsource/merriweather':
-        specifier: ^5.2.11
-        version: 5.2.11
       '@fontsource/noto-serif':
-        specifier: ^5.2.9
-        version: 5.2.9
-      '@fontsource/noto-serif-display':
         specifier: ^5.2.9
         version: 5.2.9
       '@fontsource/space-mono':
@@ -342,12 +336,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
-
-  '@fontsource/merriweather@5.2.11':
-    resolution: {integrity: sha512-ZiIMeUh5iT8d73o6xlSF8GKgjV5pgiFrufYc5jZTVAfExtWKqM2vQHnsqXSFMv4ELhAcjt6Vf+5T3oVGXhAizQ==}
-
-  '@fontsource/noto-serif-display@5.2.9':
-    resolution: {integrity: sha512-4fv1funwSCBuYInBUrnjoW5FLcx9zr+yg3tKgHL+9o7wdwizT3dD7gbm1EnBROdXSnQlIJwITlNI44syfJay9w==}
 
   '@fontsource/noto-serif@5.2.9':
     resolution: {integrity: sha512-A2b7XBo0dSxxTZg95Ap/HLinXq1pEM8PzSvbBFtPMZM5/1BLKEU1dR+PBnLixvOdcC7mup+/NjmyLryQ1E9WeA==}
@@ -2189,10 +2177,6 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.11':
     optional: true
-
-  '@fontsource/merriweather@5.2.11': {}
-
-  '@fontsource/noto-serif-display@5.2.9': {}
 
   '@fontsource/noto-serif@5.2.9': {}
 
