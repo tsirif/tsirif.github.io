@@ -9,7 +9,7 @@ a { color: inherit; }
 /* Body & default typography */
 body {
   background: var(--paper);
-  font: 400 var(--fs-body)/var(--lh-body) "Merriweather", Georgia, "Times New Roman", serif;
+  font: 400 var(--fs-body)/var(--lh-body) "Noto Serif", Georgia, "Times New Roman", serif;
   color: var(--ink);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -23,8 +23,9 @@ h1, h2 {
   margin-block: 0.75em 0.35em;
 }
 h3 {
-  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-family: "Noto Serif Display", "Noto Serif", Georgia, "Times New Roman", serif;
   color: var(--ink);
+  letter-spacing: var(--tracking-mono);
   line-height: 1.15;
   margin-block: 0.75em 0.35em;
   text-rendering: optimizeLegibility;
