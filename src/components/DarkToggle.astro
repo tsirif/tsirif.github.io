@@ -5,13 +5,24 @@
 </button>
 
 <style>
+  /* Override any .btn defaults that add padding/line-height */
   .icon-only{
-    width: 36px; height: 36px; display: grid; place-items: center;
+    inline-size: 36px;
+    block-size: 36px;
+    padding: 0;                      /* <— important */
     border-radius: 6px;
+    display: inline-grid;
+    place-items: center;             /* centers content both axes */
   }
-  .icon-only i{ display: none; line-height:1; font-size: 18px; color: var(--muted); }
+  .icon-only i{
+    display: block;
+    line-height: 0;                  /* no baseline wobble */
+    font-size: 18px;
+    color: var(--muted);
+  }
   :root:not([data-theme="dark"]) [data-icon="sun"] { display: inline-block; }
   :root[data-theme="dark"]        [data-icon="moon"]{ display: inline-block; }
+  [data-icon="sun"], [data-icon="moon"] { display: none; }
   .icon-only:hover i { color: var(--ink); }
 </style>
 
