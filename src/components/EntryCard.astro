@@ -31,20 +31,12 @@ const authors: string[] = d.authors || [];
   <!-- Row 2: Left = meta (+ collapsible details), Right = small teaser (if it loads) -->
   <div class="card__row">
     <div class="card__meta">
-      <small class="muted">
+      <small>
         <time datetime={dateISO}>{dateISO}</time>{venue ? ` • ${venue}` : ''}
       </small>
 
       {kind === 'project' && authors.length > 0 && (
         <div class="card__authors">By {authors.join(", ")}</div>
-      )}
-
-      {keywords.length > 0 && (
-        <div class="card__tags">
-          {keywords.map((t) => (
-            <a class="tag" href={`/tags/${String(t).toLowerCase()}/`}>{t}</a>
-          ))}
-        </div>
       )}
 
       {(links.code || links.demo || links.paper || links.website || links.explainer || links.x) && (
@@ -58,9 +50,17 @@ const authors: string[] = d.authors || [];
         </p>
       )}
 
+      {keywords.length > 0 && (
+        <div class="card__tags">
+          {keywords.map((t) => (
+            <a class="tag" href={`/tags/${String(t).toLowerCase()}/`}>{t}</a>
+          ))}
+        </div>
+      )}
+
       <!-- Collapsible details now live inside the left column (no grid row => no reserved gap) -->
       <div class="card__details">
-        {tldr && (<p class="card__tldr"><strong>TL;DR:</strong> {tldr}</p>)}
+        {tldr && (<p class="card__tldr">{tldr}</p>)}
         {kind === 'project' && (d.status || Object.keys(impact).length > 0) && (
           <p class="muted card__impact">
             {d.status ? (<><strong>Status:</strong> {d.status}. </>) : null}
@@ -132,7 +132,7 @@ const authors: string[] = d.authors || [];
     .card__meta > :last-child { margin-bottom: 0 !important; }
 
     /* Authors line + tags + links now follow the grid spacing, not their own margins */
-    .card__authors { color: var(--muted); font-size: 0.95em; }
+    .card__authors { color: var(--ink); font-size: 0.95em; }
     .card__tags    { display: flex; flex-wrap: wrap; gap: 6px; }
     .card .tag     { font-size: 0.85em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; }
     .card__links   { font-size: 0.95em; }

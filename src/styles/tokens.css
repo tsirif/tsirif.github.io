@@ -50,13 +50,13 @@
 /* Light theme (warm neutral, soft contrast) */
 :root[data-theme="light"] {
   color-scheme: light;
-  --paper:        #F7F6F3;   /* page background */
+  --paper:        #FAF9F7;   /* page background */
   --surface:      #FFFFFF;   /* cards */
   --ink:          #14161A;   /* primary text */
-  --muted:        #666B73;   /* secondary text */
+  --muted:        #969997;   /* secondary text */
   --border:       #E6E3DC;
-  --accent:       #2F6FED;   /* link/brand */
-  --accent-visited:#6E59D9;
+  --accent:       #14161A;   /* link/brand */
+  --accent-visited:#14161A;
 }
 
 /* Dark theme (smooth charcoal, readable ink) */
@@ -65,7 +65,7 @@
   --paper:        #323232;
   --surface:      #14171C;
   --ink:          #E9EAEC;
-  --muted:        #A3A8B2;
+  --muted:        #969997;
   --border:       #22262D;
   --accent:       #E9EAEC;
   --accent-visited:#E9EAEC;
