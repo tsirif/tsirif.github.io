@@ -29,13 +29,15 @@ p { margin-block: 0.5em 1em; color: var(--ink); }
 small, .muted { color: var(--muted); }
 
 /* Links */
-a.link {
-  text-underline-offset: 2px; text-decoration-thickness: 1px;
-  text-decoration-color: color-mix(in oklab, var(--ink), transparent 70%);
+/* Neutral link styling: same color as text, with an underline */
+a, a.link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: 3px;
 }
-a.link:hover, a.link:focus-visible {
-  text-decoration-thickness: 2px; text-decoration-color: var(--ink);
-}
+a:visited, a.link:visited { color: inherit; }
+a:hover, a:focus-visible { text-decoration-thickness: 2px; }
 
 /* Guarantee hidden elements are not displayed, regardless of resets */
 [hidden] { display: none !important; }
