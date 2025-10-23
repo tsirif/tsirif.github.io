@@ -1,6 +1,6 @@
 ---
 import { SOCIALS } from "../data/socials";
-const { size = 22 } = Astro.props;
+const { size = 24 } = Astro.props;
 ---
 
 <nav class={`socials`} aria-label="Social links">
@@ -15,20 +15,58 @@ const { size = 22 } = Astro.props;
          data-domain={isEmail ? [...s.domain].reverse().join("") : undefined}    /* reversed */
          aria-label={s.label} title={s.label}>
         <i class={s.icon} aria-hidden="true"></i>
-        <!-- <span class="sr-only">{s.label}</span> -->
+        <span class="sr-only">{s.label}</span>
       </a>
     );
   })}
 </nav>
 
 <style>
-  .socials { display: flex; gap: 10px; align-items: center; }
-  .social { display: inline-grid; place-items: center; width: {size}px; height: {size}px; color: var(--ink); border-radius: 6px;
+  /* .socials { display: flex; gap: 10px; align-items: center; }                                                                                           */
+  /* .social { display: inline-grid; place-items: center; inline-size: {size}px; width: {size}px; height: {size}px; color: var(--ink); border-radius: 6px; */
+  /* }                                                                                                                                                     */
+
+  /* .social i { font-size: {Math.round(size * 0.9)}px; line-height: 1; display: block; text-decoration-color: color-mix(in oklab, var(--ink), transparent 70%); */
+  /* text-underline-offset: 2px; text-decoration-thickness: 1px;                                                                                                 */
+  /* }                                                                                                                                                           */
+  /* .social:hover i, .social:focus-visible i { text-decoration-thickness: 2px; text-decoration-color: var(--ink); }                                             */
+  .socials { --social-size: ${size}px; display: flex; gap: 10px; align-items: center; }
+
+  /* the clickable box */
+  .social {
+    display:inline-grid;
+    place-items:center;
+    inline-size: var(--social-size);
+    block-size: var(--social-size);
+    min-inline-size: var(--social-size);
+    padding: 0;
+    border-radius: 6px;
+    color: var(--muted);
+    transition: color .12s ease, transform .08s ease;
   }
-  .social i { font-size: {Math.round(size * 0.9)}px; text-decoration-color: color-mix(in oklab, var(--ink), transparent 70%);
-  text-underline-offset: 2px; text-decoration-thickness: 1px;
+
+  /* icon sizing: keep it a little smaller than the container */
+  .social i {
+    font-size: calc(var(--social-size) * 0.62); /* tune: 0.6–0.75 works well */
+    line-height: 1;
+    display:block;
+    color: currentColor;
   }
-  .social:hover i, .social:focus-visible i { text-decoration-thickness: 2px; text-decoration-color: var(--ink); }
+
+  /* hover / focus */
+  .social:hover, .social:focus-visible {
+    color: var(--ink);
+    transform: translateY(-2px); /* micro-lift; small and quick */
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .social { transition: none; transform: none; }
+  }
+
+  /* visually-hidden accessible text */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
 </style>
 
 <script is:inline>
