@@ -1,5 +1,4 @@
 ---
-import SocialIcons from "./SocialIcons.astro";
 import DarkToggle from "./DarkToggle.astro";
 
 const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.pathname + "/";
@@ -15,8 +14,7 @@ const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.p
     <a class="link" href="/about/">About</a>
     <a class="link" href="/projects/">Projects</a>
     <a class="link" href="/writing/">Writing</a>
-    <!-- <a href="/contact/">Contact</a> -->
-    <SocialIcons size={22} />
+    <a class="link" href="/#short-about">Contact</a>
     <DarkToggle />
   </nav>
 </header>
