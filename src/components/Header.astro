@@ -1,10 +1,12 @@
 ---
-const links = [
-  { href: "/about/",    label: "About" },
-  { href: "/projects/", label: "Projects" },
-  { href: "/writing/",  label: "Writing" },
-  { href: "/contact/",  label: "Contact" },
-];
+import SocialIcons from "./SocialIcons.astro";
+import DarkToggle from "./DarkToggle.astro";
+// const links = [
+//   { href: "/about/",    label: "About" },
+//   { href: "/projects/", label: "Projects" },
+//   { href: "/writing/",  label: "Writing" },
+//   { href: "/contact/",  label: "Contact" },
+// ];
 
 const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.pathname + "/";
 ---
@@ -16,11 +18,17 @@ const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.p
   </div>
 
   <nav class="nav" aria-label="Primary">
-    {links.map((l) => (
-      <a class="link" href={l.href} aria-current={path === l.href ? "page" : undefined}>
-        {l.label}
-      </a>
-    ))}
+    <!-- {links.map((l) => (                                                                  -->
+    <!--   <a class="link" href={l.href} aria-current={path === l.href ? "page" : undefined}> -->
+    <!--     {l.label}                                                                        -->
+    <!--   </a>                                                                               -->
+    <!-- ))}                                                                                  -->
+    <a href="/about/">About</a>
+    <a href="/projects/">Projects</a>
+    <a href="/writing/">Writing</a>
+    <!-- <a href="/contact/">Contact</a> -->
+    <SocialIcons size={20} />
+    <DarkToggle />
   </nav>
 </header>
 

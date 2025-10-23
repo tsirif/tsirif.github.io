@@ -1,10 +1,12 @@
 :root {
   /* Light theme (default) */
-  --paper: #FAF9F7;
-  --ink: #111111;
-  --muted: #666666;
-  --border: rgba(0,0,0,0.08);
-  --accent: #2752ff;
+  --paper:        #F7F6F3;   /* page background */
+  --surface:      #FFFFFF;   /* cards */
+  --ink:          #14161A;   /* primary text */
+  --muted:        #666B73;   /* secondary text */
+  --border:       #E6E3DC;
+  --accent:       #2F6FED;   /* link/brand */
+  --accent-visited:#6E59D9;
 
   /* Typography scale (fluid) */
   --fs-body: clamp(16px, 1.6vw, 18px);
@@ -41,4 +43,28 @@
   --muted: #666666;
   --border: rgba(0,0,0,0.08);
   --accent: #2752ff;
+}
+
+/* Light theme (warm neutral, soft contrast) */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --paper:        #F7F6F3;   /* page background */
+  --surface:      #FFFFFF;   /* cards */
+  --ink:          #14161A;   /* primary text */
+  --muted:        #666B73;   /* secondary text */
+  --border:       #E6E3DC;
+  --accent:       #2F6FED;   /* link/brand */
+  --accent-visited:#6E59D9;
+}
+
+/* Dark theme (smooth charcoal, readable ink) */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:        #0F1115;
+  --surface:      #14171C;
+  --ink:          #E9EAEC;
+  --muted:        #A3A8B2;
+  --border:       #22262D;
+  --accent:       #8AB4F8;
+  --accent-visited:#B39DDB;
 }

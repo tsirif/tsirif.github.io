@@ -158,3 +158,22 @@ figcaption { color: var(--muted); font-size: 0.9em; margin-top: 4px; }
   padding: 8px 10px; border-radius: 6px;
 }
 .filter-toggle { display: flex; align-items: center; gap: 8px; }
+
+/* Smooth, opt-in theme animation */
+:root.theme-anim, :root.theme-anim * {
+  transition:
+    background-color .25s ease,
+    color            .25s ease,
+    border-color     .25s ease,
+    fill             .25s ease,
+    stroke           .25s ease !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root.theme-anim, :root.theme-anim * { transition: none !important; }
+}
+
+/* Hook color vars everywhere they matter */
+body { background: var(--paper); color: var(--ink); }
+a.link { color: var(--accent); }
+a.link:visited { color: var(--accent-visited); }
+hr, .card, .tag, .footer, .header { border-color: var(--border); }

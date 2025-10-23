@@ -1,0 +1,46 @@
+---
+import { SOCIALS } from "../data/socials";
+const { size = 22, className = "" } = Astro.props;
+---
+
+<nav class={`socials ${className}`} aria-label="Social links">
+  {SOCIALS.map((s) => {
+    const isEmail = s.kind === "email";
+    return (
+      <a class="social"
+         href={isEmail ? "/contact/" : s.href}
+         target={isEmail ? undefined : "_blank"}
+         rel={isEmail ? undefined : "noopener noreferrer"}
+         data-user={isEmail ? [...s.user].reverse().join("") : undefined}        /* reversed */
+         data-domain={isEmail ? [...s.domain].reverse().join("") : undefined}    /* reversed */
+         aria-label={s.label} title={s.label}>
+        <i class={s.icon} aria-hidden="true"></i>
+        <span class="sr-only">{s.label}</span>
+      </a>
+    );
+  })}
+</nav>
+
+<style>
+  .socials { display: flex; gap: 10px; align-items: center; }
+  .social { display: inline-grid; place-items: center; width: {size}px; height: {size}px; color: var(--muted); border-radius: 6px; }
+  .social:hover, .social:focus-visible { color: var(--ink); }
+  .social i { font-size: {Math.round(size * 0.9)}px; line-height: 1; }
+</style>
+
+<script is:inline>
+  // Assemble "mailto:" only on click; user/domain were reversed in HTML
+  document.currentScript?.previousElementSibling?.querySelectorAll('.social[data-user]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      // If JS is enabled, build a mailto target and navigate there
+      const u = el.getAttribute('data-user')?.split('').reverse().join('');
+      const d = el.getAttribute('data-domain')?.split('').reverse().join('');
+      if (u && d) {
+        e.preventDefault();
+        const addr = `${u}@${d}`;
+        const mailto = `mailto:${addr}`;
+        window.location.href = mailto;
+      }
+    }, { passive: false });
+  });
+</script>
