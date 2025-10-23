@@ -51,22 +51,26 @@
 :root[data-theme="light"] {
   color-scheme: light;
   --paper:        #FAF9F7;   /* page background */
+  --ink:          #1A1A1A;   /* primary text */
   --surface:      #FFFFFF;   /* cards */
-  --ink:          #14161A;   /* primary text */
-  --muted:        #969997;   /* secondary text */
+  --muted:        #646765;   /* secondary text */
+  --sel-surface:  #2B2B2B;
+  --sel-ink:      #FFFFFF;
   --border:       #E6E3DC;
-  --accent:       #14161A;   /* link/brand */
-  --accent-visited:#14161A;
+  --accent:       #1A1A1A;   /* link/brand */
+  --accent-visited:#1A1A1A;
 }
 
 /* Dark theme (smooth charcoal, readable ink) */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --paper:        #323232;
-  --surface:      #14171C;
-  --ink:          #E9EAEC;
-  --muted:        #969997;
+  --paper:        #353535;
+  --ink:          #FFFFFF;
+  --surface:      #2B2B2B;
+  --muted:        #B7B7B7;
+  --sel-surface:  #E7E7E7;
+  --sel-ink:      #000000;
   --border:       #22262D;
-  --accent:       #E9EAEC;
-  --accent-visited:#E9EAEC;
+  --accent:       #FFFFFF;
+  --accent-visited:#FFFFFF;
 }

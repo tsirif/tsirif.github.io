@@ -127,7 +127,7 @@ a.link:hover, a.link:focus-visible {
   background: transparent; color: var(--ink); border-radius: 6px;
   text-decoration: none; cursor: pointer;
 }
-.btn:hover, .btn:focus-visible { background: var(--ink); color: var(--paper); }
+.btn:hover, .btn:focus-visible { background: var(--ink); color: var(--sel-ink); }
 .btn.small { padding: 6px 10px; font-size: 0.9em; }
 .btn--ghost { border-color: var(--border); }
 
@@ -135,9 +135,9 @@ a.link:hover, a.link:focus-visible {
 .tag {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px;
-  font-size: 0.9em; color: var(--muted); text-decoration: none;
+  font-size: 0.9em; background: var(--surface); color: var(--muted); text-decoration: none;
 }
-.tag[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.tag[aria-pressed="true"] { background: var(--sel-surface); border-color: var(--sel-surface); color: var(--sel-ink); }
 
 /* Grid for projects */
 .projects-grid {
