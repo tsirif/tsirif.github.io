@@ -22,8 +22,10 @@ h1, h2 {
   line-height: 1.15;
   margin-block: 0.75em 0.35em;
 }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
 h3 {
-  font-family: "Noto Serif Display", "Noto Serif", Georgia, "Times New Roman", serif;
+  font: 600 var(--fs-h3)/1.15 "Noto Serif Display", "Noto Serif", Georgia, "Times New Roman", serif;
   color: var(--ink);
   letter-spacing: var(--tracking-mono);
   line-height: 1.15;
@@ -31,9 +33,6 @@ h3 {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
-h1 { font-size: var(--fs-h1); }
-h2 { font-size: var(--fs-h2); }
-h3 { font-size: var(--fs-h3); }
 
 p { margin-block: 0.5em 1em; color: var(--ink); }
 small, .muted { color: var(--muted); }
