@@ -15,7 +15,7 @@ const { size = 22, className = "" } = Astro.props;
          data-domain={isEmail ? [...s.domain].reverse().join("") : undefined}    /* reversed */
          aria-label={s.label} title={s.label}>
         <i class={s.icon} aria-hidden="true"></i>
-        <span class="sr-only">{s.label}</span>
+        <!-- <span class="sr-only">{s.label}</span> -->
       </a>
     );
   })}
