@@ -186,3 +186,11 @@ body { background: var(--paper); color: var(--ink); }
 a.link { color: var(--accent); }
 a.link:visited { color: var(--accent-visited); }
 hr, .card, .tag, .footer, .header { border-color: var(--border); }
+
+/* Offset anchor targets so sticky header doesn't cover them */
+.anchor { scroll-margin-top: 84px; }  /* adjust to your header height */
+
+/* Optional: smooth scroll for people who haven't requested reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within { scroll-behavior: smooth; }
+}
