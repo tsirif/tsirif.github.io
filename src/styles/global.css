@@ -9,15 +9,22 @@ a { color: inherit; }
 /* Body & default typography */
 body {
   background: var(--paper);
-  color: var(--ink);
   font: 400 var(--fs-body)/var(--lh-body) "Merriweather", Georgia, "Times New Roman", serif;
+  color: var(--ink);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 {
+h1, h2 {
   font-family: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
+  color: var(--ink);
   letter-spacing: var(--tracking-mono);
+  line-height: 1.15;
+  margin-block: 0.75em 0.35em;
+}
+h3 {
+  font: 700 var(--fs-body)/var(--lh-body) "Merriweather", Georgia, "Times New Roman", serif;
+  color: var(--ink);
   line-height: 1.15;
   margin-block: 0.75em 0.35em;
 }
@@ -174,6 +181,6 @@ figcaption { color: var(--muted); font-size: 0.9em; margin-top: 4px; }
 
 /* Hook color vars everywhere they matter */
 body { background: var(--paper); color: var(--ink); }
-/* a.link { color: var(--accent); }                 */
-/* a.link:visited { color: var(--accent-visited); } */
+a.link { color: var(--accent); }
+a.link:visited { color: var(--accent-visited); }
 hr, .card, .tag, .footer, .header { border-color: var(--border); }

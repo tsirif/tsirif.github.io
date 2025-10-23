@@ -27,23 +27,25 @@
   --gap-8: 3rem;
 }
 
-/* Dark theme overrides when manually set */
-:root[data-theme="dark"] {
-  --paper: #0E0F12;
-  --ink: #EDEDED;
-  --muted: #A0A0A0;
-  --border: rgba(255,255,255,0.12);
-  --accent: #7FA1FF;
-}
+/* [> Dark theme overrides when manually set <]             */
+/* :root[data-theme="dark"] {                               */
+/*   --paper: #0E0F12;                                      */
+/*   --ink: #EDEDED;                                        */
+/*   --muted: #A0A0A0;                                      */
+/*   --border: rgba(255,255,255,0.12);                      */
+/*   --accent: #7FA1FF;                                     */
+/*   --accent-visited:#6E59D9;                              */
+/* }                                                        */
 
-/* Optional explicit light override, for completeness */
-:root[data-theme="light"] {
-  --paper: #FAF9F7;
-  --ink: #111111;
-  --muted: #666666;
-  --border: rgba(0,0,0,0.08);
-  --accent: #2752ff;
-}
+/* [> Optional explicit light override, for completeness <] */
+/* :root[data-theme="light"] {                              */
+/*   --paper: #FAF9F7;                                      */
+/*   --ink: #111111;                                        */
+/*   --muted: #666666;                                      */
+/*   --border: rgba(0,0,0,0.08);                            */
+/*   --accent: #2752ff;                                     */
+/*   --accent-visited:#6E59D9;                              */
+/* }                                                        */
 
 /* Light theme (warm neutral, soft contrast) */
 :root[data-theme="light"] {
@@ -60,11 +62,11 @@
 /* Dark theme (smooth charcoal, readable ink) */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --paper:        #0F1115;
+  --paper:        #323232;
   --surface:      #14171C;
   --ink:          #E9EAEC;
   --muted:        #A3A8B2;
   --border:       #22262D;
-  --accent:       #8AB4F8;
-  --accent-visited:#B39DDB;
+  --accent:       #E9EAEC;
+  --accent-visited:#E9EAEC;
 }

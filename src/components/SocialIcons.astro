@@ -1,9 +1,9 @@
 ---
 import { SOCIALS } from "../data/socials";
-const { size = 22, className = "" } = Astro.props;
+const { size = 22 } = Astro.props;
 ---
 
-<nav class={`socials ${className}`} aria-label="Social links">
+<nav class={`socials`} aria-label="Social links">
   {SOCIALS.map((s) => {
     const isEmail = s.kind === "email";
     return (
@@ -23,8 +23,11 @@ const { size = 22, className = "" } = Astro.props;
 
 <style>
   .socials { display: flex; gap: 10px; align-items: center; }
-  .social { display: inline-grid; place-items: center; width: {size}px; height: {size}px; color: var(--muted); border-radius: 6px; }
-  .social:hover, .social:focus-visible { color: var(--ink); }
+  .social { display: inline-grid; place-items: center; width: {size}px; height: {size}px; color: var(--ink); border-radius: 6px;
+  text-underline-offset: 2px; text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in oklab, var(--ink), transparent 70%);
+  }
+  .social:hover, .social:focus-visible { text-decoration-thickness: 2px; text-decoration-color: var(--ink); }
   .social i { font-size: {Math.round(size * 0.9)}px; line-height: 1; }
 </style>
 

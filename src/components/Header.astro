@@ -12,23 +12,14 @@ const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.p
   </div>
 
   <nav class="nav" aria-label="Primary">
-    <a href="/about/">About</a>
-    <a href="/projects/">Projects</a>
-    <a href="/writing/">Writing</a>
+    <a class="link" href="/about/">About</a>
+    <a class="link" href="/projects/">Projects</a>
+    <a class="link" href="/writing/">Writing</a>
     <!-- <a href="/contact/">Contact</a> -->
-    <SocialIcons className="header-socials" size={22} />
+    <SocialIcons size={22} />
     <DarkToggle />
   </nav>
 </header>
-
-<style>
-  .header-socials .social { width: 28px; height: 28px; } /* tidy tap area */
-  /* No visible labels: SocialIcons already uses a visually-hidden <span> for a11y */
-  .sr-only {                     /* ensure it's actually hidden */
-    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
-    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
-  }
-</style>
 
 <script is:inline>
   (() => {
