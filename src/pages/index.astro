@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import EntryCard from "../components/EntryCard.astro";
-import SocialIcons from "./SocialIcons.astro";
+import SocialIcons from "../components/SocialIcons.astro";
 
 const allProjects = (await getCollection("projects"))
   .sort((a,b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
