@@ -31,12 +31,12 @@ small, .muted { color: var(--muted); }
 /* Links */
 /* Neutral link styling: same color as text, with an underline */
 a, a.link {
-  color: inherit;
+  color: var(--ink);
   text-decoration: underline;
   text-decoration-color: currentColor;
   text-underline-offset: 3px;
 }
-a:visited, a.link:visited { color: inherit; }
+a:visited, a.link:visited { color: var(--ink); }
 a:hover, a:focus-visible { text-decoration-thickness: 2px; }
 
 /* Guarantee hidden elements are not displayed, regardless of resets */
