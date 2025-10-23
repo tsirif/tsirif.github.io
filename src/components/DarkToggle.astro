@@ -5,25 +5,25 @@
 </button>
 
 <style>
-  /* Override any .btn defaults that add padding/line-height */
+  /* Center perfectly and inherit colors */
   .icon-only{
     inline-size: 36px;
     block-size: 36px;
-    padding: 0;                      /* <— important */
+    padding: 0;
     border-radius: 6px;
     display: inline-grid;
-    place-items: center;             /* centers content both axes */
-  }
-  .icon-only i{
-    display: block;
-    line-height: 0;                  /* no baseline wobble */
-    font-size: 18px;
+    place-items: center;
     color: var(--muted);
   }
-  :root:not([data-theme="dark"]) [data-icon="sun"] { display: inline-block; }
-  :root[data-theme="dark"]        [data-icon="moon"]{ display: inline-block; }
-  [data-icon="sun"], [data-icon="moon"] { display: none; }
-  .icon-only:hover i { color: var(--ink); }
+  .icon-only:hover { color: var(--ink); }
+  .icon-only i{ line-height: 0; font-size: 18px; color: currentColor; }
+
+  /* Hide both by default, then reveal one based on <html data-theme> */
+  .icon-only [data-icon]{ display: none; }
+
+  /* IMPORTANT: use :global so Astro doesn’t scope these selectors */
+  :global(html[data-theme="dark"]) .icon-only [data-icon="moon"] { display: inline-block; }
+  :global(html:not([data-theme="dark"])) .icon-only [data-icon="sun"] { display: inline-block; }
 </style>
 
 <script is:inline>
