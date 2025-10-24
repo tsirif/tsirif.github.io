@@ -63,7 +63,7 @@ a.link:hover, a.link:focus-visible {
   align-items: center;
   gap: var(--gap-3);
   padding: 12px clamp(16px, 4vw, 32px);
-  background: var(--paper); /* solid background so content doesn't show through */
+  background: var(--surface); /* solid background so content doesn't show through */
   border-bottom: 1px solid var(--border);
 }
 
@@ -112,13 +112,6 @@ a.link:hover, a.link:focus-visible {
 
 /* When skipping to content, avoid header overlap on anchor jumps */
 #main{ scroll-margin-top: 80px; }
-
-/* Footer */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 24px clamp(16px, 4vw, 32px);
-  color: var(--muted);
-}
 
 /* Buttons */
 .btn {
