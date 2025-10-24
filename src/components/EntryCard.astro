@@ -41,11 +41,11 @@ const authors: string[] = d.authors || [];
 
       {(links.code || links.demo || links.paper || links.website || links.explainer || links.x) && (
         <p class="card__links">
-          {links.paper && (<a class="link" href={links.paper} rel="noopener noreferrer">Paper</a>)}{links.paper && ' • '}
-          {links.code && (<a class="link" href={links.code} rel="noopener noreferrer">Code</a>)}{links.code && ' • '}
-          {links.demo && (<a class="link" href={links.demo} rel="noopener noreferrer">Demo</a>)}{links.demo && ' • '}
-          {links.website && (<a class="link" href={links.website} rel="noopener noreferrer">Project site</a>)}{links.website && ' • '}
-          {links.explainer && (<a class="link" href={links.explainer}>Explainer</a>)}{links.explainer && ' • '}
+          {links.paper && (<a class="link" href={links.paper} rel="noopener noreferrer">Paper</a>)}{links.paper}
+          {links.code && (<a class="link" href={links.code} rel="noopener noreferrer">Code</a>)}{' • ' && links.code}
+          {links.demo && (<a class="link" href={links.demo} rel="noopener noreferrer">Demo</a>)}{' • ' && links.demo}
+          {links.website && (<a class="link" href={links.website} rel="noopener noreferrer">Project site</a>)}{' • ' && links.website}
+          {links.explainer && (<a class="link" href={links.explainer}>Explainer</a>)}{' • ' && links.explainer}
           {links.x && (<a class="link" href={links.x} rel="noopener noreferrer">X post</a>)}
         </p>
       )}
