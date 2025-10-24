@@ -1,9 +1,14 @@
 ---
+// SocialIcons.astro
 import { SOCIALS } from "../data/socials";
-const { size = 28, className = "" } = Astro.props; // default bigger
+
+// Pass a number (pixels) or a CSS length string. Defaults to 28px.
+const { size = 28, className = "" } = Astro.props;
 const px = typeof size === "number" ? `${size}px` : size;
 ---
-<nav class={`socials ${className}`} aria-label="Social links">
+
+<!-- Set the CSS var on the element so it always applies to descendants -->
+<nav class={`socials ${className}`} aria-label="Social links" style={`--social-size:${px}`}>
   {SOCIALS.map((s) => {
     const isEmail = s.kind === "email";
     return (
@@ -25,41 +30,34 @@ const px = typeof size === "number" ? `${size}px` : size;
 </nav>
 
 <style>
-  :root { --social-size: /* fallback */ 28px; }
-  /* allow the passed 'size' to set the CSS variable */
-  .socials { --social-size:px; display:flex; gap:10px; align-items:center; }
+  .socials {
+    display: flex; gap: 10px; align-items: center;
+  }
 
-  /* the clickable box */
+  /* Click target box — set both logical and physical sizes */
   .social {
-    display:inline-grid;
-    place-items:center;
-    inline-size: var(--social-size);
-    block-size: var(--social-size);
-    min-inline-size: var(--social-size);
-    padding: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    inline-size: var(--social-size);  block-size: var(--social-size);
+    width: var(--social-size);        height: var(--social-size);
+    min-inline-size: var(--social-size); min-block-size: var(--social-size);
+    padding: 0;                       /* neutralize any nav link padding */
     border-radius: 6px;
     color: var(--muted);
+    text-decoration: none;            /* avoid underlines on icons */
     transition: color .12s ease, transform .08s ease;
   }
+  .social:hover, .social:focus-visible { color: var(--ink); transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) { .social { transition: none; transform: none; } }
 
-  /* icon sizing: keep it a little smaller than the container */
-  .social i {
-    font-size: calc(var(--social-size) * 0.62); /* tune: 0.6–0.75 works well */
+  /* Icon glyphs — apply to element and ::before (FA/Academicons use pseudo) */
+  .social i,
+  .social i::before {
+    font-size: calc(var(--social-size) * 0.70) !important; /* 0.60–0.75 looks good */
     line-height: 1;
-    display:block;
-    color: currentColor;
+    color: currentColor !important;
   }
 
-  /* hover / focus */
-  .social:hover, .social:focus-visible {
-    color: var(--ink);
-    transform: translateY(-2px); /* micro-lift; small and quick */
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .social { transition: none; transform: none; }
-  }
-
-  /* visually-hidden accessible text */
+  /* Visually hidden label for a11y */
   .sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
@@ -67,15 +65,12 @@ const px = typeof size === "number" ? `${size}px` : size;
 </style>
 
 <script is:inline>
-  // mailto assembly (same as before)
+  // Assemble mailto at click-time (no raw email in HTML)
   document.currentScript?.previousElementSibling?.querySelectorAll('.social[data-user]').forEach((el) => {
     el.addEventListener('click', (e) => {
       const u = el.getAttribute('data-user')?.split('').reverse().join('');
       const d = el.getAttribute('data-domain')?.split('').reverse().join('');
-      if (u && d) {
-        e.preventDefault();
-        window.location.href = `mailto:${u}@${d}`;
-      }
+      if (u && d) { e.preventDefault(); window.location.href = `mailto:${u}@${d}`; }
     }, { passive: false });
   });
 </script>
