@@ -15,12 +15,12 @@ keywords:
   - audio-language
   - multi-modal
   - open-vocabulary
-  - contrastive-learning
+  - contrastive learning
   - localization
-  - spurious-correlations
+  - spurious correlations
   - out-of-distribution
-  - logit-adjustment
-tldr: "<strong>FLAM</strong> localizes sound events in time using frame‑level audio–text alignment. A <strong>logit‑adjusted</strong> contrastive training setup helps the model stay calibrated under long‑tail label imbalance and spurious correlations of detection labels with sound event descriptions. This enables state-of-the-art zero-shot and open-vocabulary sound event detection. Conceptually, this work consists a follow-up to the 2023 NeurIPS work <a class="link" href="/projects/group-robust/"><em>Group Robust Classification Without Any Group Information</em></a> regarding the training and inference methodology."
+  - logit adjustment
+tldr: '<strong>FLAM</strong> localizes sound events in time using frame‑level audio–text alignment. A <strong>logit‑adjusted</strong> contrastive training setup helps the model stay calibrated under long‑tail label imbalance and spurious correlations of detection labels with sound event descriptions. This enables state-of-the-art zero-shot and open-vocabulary sound event detection. Conceptually, this work consists a follow-up to the 2023 NeurIPS work <a class="link" href="/projects/group-robust/"><em>Group Robust Classification Without Any Group Information</em></a> regarding the training and inference methodology.'
 abstract: "Recent multi-modal audio-language models (ALMs) excel at text-audio retrieval but struggle with frame-wise audio understanding. Prior works use temporal-aware labels or unsupervised training to improve frame-wise capabilities, but they still lack fine-grained labeling capability to pinpoint when an event occurs. While traditional sound event detection models can precisely localize events, they are limited to pre-defined categories, making them ineffective for real-world scenarios with out-of-distribution events. In this work, we introduce FLAM, an open-vocabulary contrastive audio-language model capable of localizing specific sound events. FLAM employs a memory-efficient and calibrated frame-wise objective with logit adjustment to address spurious correlations, such as event dependencies and label imbalances during training. To enable frame-wise supervision, we leverage a large-scale dataset with diverse audio events, LLM-generated captions and simulation. Experimental results and case studies demonstrate that FLAM significantly improves the open-vocabulary localization capability while maintaining strong performance in global retrieval and downstream tasks."
 status: "accepted"
 impact: {}
@@ -35,12 +35,12 @@ images:
   alt: "FLAM frame-wise audio-language training schematic"
 featured: true
 bibtex: |
-@InProceedings{wu2025flam,
-  title = 	 {{FLAM}: Frame-Wise Language-Audio Modeling},
-  author =       {Wu, Yusong and Tsirigotis, Christos and Chen, Ke and Huang, Cheng-Zhi Anna and Courville, Aaron and Nieto, Oriol and Seetharaman, Prem and Salamon, Justin},
-  booktitle = 	 {Proceedings of the 42nd International Conference on Machine Learning},
-  year = 	 {2025},
-}
+    @InProceedings{wu2025flam,
+        title = 	 {{FLAM}: Frame-Wise Language-Audio Modeling},
+        author =       {Wu, Yusong and Tsirigotis, Christos and Chen, Ke and Huang, Cheng-Zhi Anna and Courville, Aaron and Nieto, Oriol and Seetharaman, Prem and Salamon, Justin},
+        booktitle = 	 {Proceedings of the 42nd International Conference on Machine Learning},
+        year = 	 {2025},
+    }
 
 ---
 
