@@ -1,0 +1,47 @@
+---
+title: "BiXSE: Improving Dense Retrieval via Probabilistic Graded Relevance Distillation"
+date: Oct 2025
+venue: "COLM 2025"
+authors:
+  - <strong>Christos Tsirigotis</strong>
+  - Vaibhav Adlakha
+  - João Monteiro
+  - Aaron Courville
+  - Perouz Taslakian
+keywords:
+  - retrieval
+  - LLM-as-Judge
+  - ranking
+tldr: "A pointwise ranking loss to train dense encoder on LLM‑graded relevance that outperforms InfoNCE/DPR pipelines and reduces annotation cost."
+abstract: "Neural sentence embedding models for dense retrieval typically rely on binary relevance labels, treating query-document pairs as either relevant or irrelevant. However, real-world relevance often exists on a continuum, and recent advances in large language models (LLMs) have made it feasible to scale the generation of fine-grained graded relevance labels. In this work, we propose BiXSE, a simple and effective pointwise training method that optimizes binary cross-entropy (BCE) over LLM-generated graded relevance scores. BiXSE interprets these scores as probabilistic targets, enabling granular supervision from a single labeled query-document pair per query. Unlike pairwise or listwise losses that require multiple annotated comparisons per query, BiXSE achieves strong performance with reduced annotation and compute costs by leveraging in-batch negatives. Extensive experiments across sentence embedding (MMTEB) and retrieval benchmarks (BEIR, TREC-DL) show that BiXSE consistently outperforms softmax-based contrastive learning (InfoNCE), and matches or exceeds strong pairwise ranking baselines when trained on LLM-supervised data. BiXSE offers a robust, scalable alternative for training dense retrieval models as graded relevance supervision becomes increasingly accessible."
+links:
+  paper: "https://arxiv.org/abs/2508.06781"
+  code: "https://github.com/tsirif/BiXSE"
+  explainer: "/projects/bixse/"
+  x: "https://x.com/tsirigoc/status/1975557538730156393"
+images:
+  teaser: "/images/projects/BiXSE_poster.jpeg"
+  alt: "BiXSE COLM 2025 poster"
+featured: true
+bibtex: |
+@inproceedings{
+    tsirigotis2025bixse,
+    title={Bi{XSE}: Improving Dense Retrieval via Probabilistic Graded Relevance Distillation},
+    author={Christos Tsirigotis and Vaibhav Adlakha and Joao Monteiro and Aaron Courville and Perouz Taslakian},
+    booktitle={Second Conference on Language Modeling},
+    year={2025},
+}
+---
+
+Dense retrieval models trained with *graded* relevance (not just positive/negative pairs) learn smoother decision boundaries and better ranking. **BiXSE** uses a probabilistic pointwise loss distilled from LLM‑judged labels, outperforming InfoNCE/DPR pipelines while **reducing annotation cost**.
+
+### Motivation
+Binary contrastive labels collapse the spectrum of relevance into 0/1 and force the learner to separate all positives equally far from all negatives. Real search isn’t binary. Graded relevance—*excellent / good / fair / irrelevant*—contains richer signal and lets the model learn margins proportional to usefulness.
+
+### Method in brief
+1. Use an LLM‑as‑a‑judge to assign a **graded score** per (query, doc).
+2. Distill these into a **probabilistic target** and train with a **pointwise ranking loss** (BiXSE).
+3. Keep the standard dual‑encoder architecture; the change is **in the supervision**.
+
+### Results at a glance
+Across standard retrieval benchmarks, BiXSE improves **nDCG@10** over InfoNCE/DPR‑style training. Practically, you can reach the same quality with **fewer human labels** by leveraging LLM‑graded data.

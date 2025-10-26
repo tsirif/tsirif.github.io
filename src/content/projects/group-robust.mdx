@@ -1,0 +1,36 @@
+---
+title: "Group Robust Classification Without Any Group Information"
+date: Dec 2023
+venue: "NeurIPS 2023"
+authors:
+  - <strong>Christos Tsirigotis</strong>
+  - José Monteiro
+  - Pau Rodriguez
+  - David Vazquez
+  - Aaron Courville
+keywords:
+  - robust-generalization
+  - spurious-correlations
+  - out-of-distribution
+  - logit-adjustment
+tldr: "Training recipe with logit adjustment that improves worst‑group accuracy without group labels."
+status: "published"
+abstract: "Empirical risk minimization (ERM) is sensitive to spurious correlations present in training data, which poses a significant risk when deploying systems trained under this paradigm in high-stake applications. While the existing literature focuses on maximizing group-balanced or worst-group accuracy, estimating these quantities is hindered by costly bias annotations. This study contends that current bias-unsupervised approaches to group robustness continue to rely on group information to achieve optimal performance. Firstly, these methods implicitly assume that all group combinations are represented during training. To illustrate this, we introduce a systematic generalization task on the MPI3D dataset and discover that current algorithms fail to improve the ERM baseline when combinations of observed attribute values are missing. Secondly, bias labels are still crucial for effective model selection, restricting the practicality of these methods in real-world scenarios. To address these limitations, we propose a revised methodology for training and validating debiased models in an entirely bias-unsupervised manner. We achieve this by employing pretrained self-supervised models to reliably extract bias information, which enables the integration of a logit adjustment training loss with our validation criterion. Our empirical analysis on synthetic and real-world tasks provides evidence that our approach overcomes the identified challenges and consistently enhances robust accuracy, attaining performance which is competitive with or outperforms that of state-of-the-art methods, which, conversely, rely on bias labels for validation."
+links:
+  paper: "https://proceedings.neurips.cc/paper_files/paper/2023/hash/b0d9ceb3d11d013e55da201d2a2c07b2-Abstract-Conference.html"
+  code: "https://github.com/tsirif/uLA"
+  explainer: "/writing/group-robust/"
+  x: "https://x.com/tsirigoc/status/1733647570851836112"
+images:
+  teaser: "/images/projects/uLA.png"
+  alt: "Training and validation process for group-unsupervised logit adjustment for robust classification"
+featured: true
+bibtex: |
+@inproceedings{tsirigotis2023group,
+ author = {Tsirigotis, Christos and Monteiro, Joao and Rodriguez, Pau and Vazquez, David and Courville, Aaron C},
+ booktitle = {Advances in Neural Information Processing Systems},
+ title = {Group Robust Classification Without Any Group Information},
+ year = {2023}
+}
+
+---

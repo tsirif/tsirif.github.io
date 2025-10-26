@@ -1,0 +1,73 @@
+---
+title: "FLAM: Frame‑Wise Language‑Audio Modeling"
+date: July 2025
+venue: "ICML 2025"
+authors:
+  - Yusong Wu
+  - <strong>Christos Tsirigotis</strong>
+  - Ke Chen
+  - Cheng-Zhi Anna Huang
+  - Aaron Courville
+  - Oriol Nieto
+  - Prem Seetharaman
+  - Justin Salamon
+keywords:
+  - audio-language
+  - multi-modal
+  - open-vocabulary
+  - contrastive-learning
+  - localization
+  - spurious-correlations
+  - out-of-distribution
+  - logit-adjustment
+tldr: "<strong>FLAM</strong> localizes sound events in time using frame‑level audio–text alignment. A <strong>logit‑adjusted</strong> contrastive training setup helps the model stay calibrated under long‑tail label imbalance and spurious correlations of detection labels with sound event descriptions. This enables state-of-the-art zero-shot and open-vocabulary sound event detection. Conceptually, this work consists a follow-up to the 2023 NeurIPS work <a class="link" href="/projects/group-robust/"><em>Group Robust Classification Without Any Group Information</em></a> regarding the training and inference methodology."
+abstract: "Recent multi-modal audio-language models (ALMs) excel at text-audio retrieval but struggle with frame-wise audio understanding. Prior works use temporal-aware labels or unsupervised training to improve frame-wise capabilities, but they still lack fine-grained labeling capability to pinpoint when an event occurs. While traditional sound event detection models can precisely localize events, they are limited to pre-defined categories, making them ineffective for real-world scenarios with out-of-distribution events. In this work, we introduce FLAM, an open-vocabulary contrastive audio-language model capable of localizing specific sound events. FLAM employs a memory-efficient and calibrated frame-wise objective with logit adjustment to address spurious correlations, such as event dependencies and label imbalances during training. To enable frame-wise supervision, we leverage a large-scale dataset with diverse audio events, LLM-generated captions and simulation. Experimental results and case studies demonstrate that FLAM significantly improves the open-vocabulary localization capability while maintaining strong performance in global retrieval and downstream tasks."
+status: "accepted"
+impact: {}
+links:
+  paper: "https://proceedings.mlr.press/v267/wu25ab.html"
+  demo: "https://flam-model.github.io"
+  explainer: "/projects/flam/"
+  x: "https://x.com/tsirigoc/status/1937987808989262289"
+  linkedin:
+images:
+  teaser: "/images/projects/flam.jpg"
+  alt: "FLAM frame-wise audio-language training schematic"
+featured: true
+bibtex: |
+@InProceedings{wu2025flam,
+  title = 	 {{FLAM}: Frame-Wise Language-Audio Modeling},
+  author =       {Wu, Yusong and Tsirigotis, Christos and Chen, Ke and Huang, Cheng-Zhi Anna and Courville, Aaron and Nieto, Oriol and Seetharaman, Prem and Salamon, Justin},
+  booktitle = 	 {Proceedings of the 42nd International Conference on Machine Learning},
+  year = 	 {2025},
+}
+
+---
+
+We tackle a core challenge in open-vocabulary audio event detection: **miscalibration across events**.
+
+This project was a joy to work on - a big thanks and congratulations to all collaborators who made it happen! For me, it stands as a real example of how OOD robustness research (spurious correlations, distribution shifts) can have meaningful real-world impact.
+
+🧠 What’s the problem?
+
+In open-vocabulary Sound Event Detection, a model receives an event description in text and decides whether it occurs at a specific audio frame. But models struggle to generalize in zero-shot settings, as it is difficult to set a single decision boundary that works well zero-shot across possible events!
+
+🎯 Our insight:
+
+It’s a spurious correlation issue.
+When scaling up training data, we may unintentionally amplify imbalances: some events occur often, others rarely. Strong models internalize these frequencies and ignore the input audio—assigning low probabilities to rare events even when they’re clearly present in an input audio frame.
+
+🛠️ Our solution:
+
+We adapt logit adjustment from the long-tail learning literature to the multi-modal contrastive learning setting.
+
+In particular, we train a bias network that predicts event occurrence just from its text description. Its logits estimate prior frequency, and we use this to additively bias the audio-text model logits during its training.
+
+Crucially at test time, the bias network is discarded.
+The result is a calibrated, efficient audio-text model with no added inference cost.
+
+🔬 The outcome? Stronger generalization to unseen events.
+
+👏 Big thanks to Yusong Wu and Ke Chen for their outstanding engineering, and to Justin Salamon, Oriol Nieto and Prem Seetharaman of the Adobe team for the amazing collaboration and the chance to learn so much about audio modeling.
+
+<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7343355943696404482" height="1062" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
