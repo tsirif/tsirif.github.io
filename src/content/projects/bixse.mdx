@@ -13,7 +13,8 @@ keywords:
   - retrieval
   - LLM-as-Judge
   - ranking
-tldr: "A pointwise ranking loss to train dense encoder on LLM‑graded relevance that outperforms InfoNCE/DPR pipelines and reduces annotation cost."
+tldr: "A pointwise ranking loss to train dense encoder on LLM‑graded relevance that outperforms InfoNCE/DPR pipelines by **+3-10% in nDCG@10** via leveraging
+LLM-graded relevance data to train, not only filter, and reduces annotation cost."
 abstract: "Neural sentence embedding models for dense retrieval typically rely on binary relevance labels, treating query-document pairs as either relevant or irrelevant. However, real-world relevance often exists on a continuum, and recent advances in large language models (LLMs) have made it feasible to scale the generation of fine-grained graded relevance labels. In this work, we propose BiXSE, a simple and effective pointwise training method that optimizes binary cross-entropy (BCE) over LLM-generated graded relevance scores. BiXSE interprets these scores as probabilistic targets, enabling granular supervision from a single labeled query-document pair per query. Unlike pairwise or listwise losses that require multiple annotated comparisons per query, BiXSE achieves strong performance with reduced annotation and compute costs by leveraging in-batch negatives. Extensive experiments across sentence embedding (MMTEB) and retrieval benchmarks (BEIR, TREC-DL) show that BiXSE consistently outperforms softmax-based contrastive learning (InfoNCE), and matches or exceeds strong pairwise ranking baselines when trained on LLM-supervised data. BiXSE offers a robust, scalable alternative for training dense retrieval models as graded relevance supervision becomes increasingly accessible."
 links:
   paper: "https://arxiv.org/abs/2508.06781"

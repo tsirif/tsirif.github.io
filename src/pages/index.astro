@@ -13,10 +13,10 @@ const news = (await getCollection("news"))
 
 // Pick up to 3 featured; if fewer exist, fill with most recent
 const pickFeatured = (arr) => {
-  const feat = arr.filter((x) => x.data.featured).slice(0,3);
-  if (feat.length >= 3) return feat;
+  const feat = arr.filter((x) => x.data.featured).slice(0,4);
+  if (feat.length >= 4) return feat;
   const used = new Set(feat.map((x)=>x.slug));
-  const fill = arr.filter((x)=>!used.has(x.slug)).slice(0, 3 - feat.length);
+  const fill = arr.filter((x)=>!used.has(x.slug)).slice(0, 4 - feat.length);
   return [...feat, ...fill];
 };
 const featuredProjects = pickFeatured(allProjects);
