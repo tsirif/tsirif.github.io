@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Giscus from "../../components/Giscus.astro";
 import Authors from "../../components/Authors.astro";
+import RenderTldr from "../../components/RenderTldr.astro";
 import { getCollection, getEntryBySlug } from "astro:content";
 
 export async function getStaticPaths() {
@@ -31,7 +32,7 @@ const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
     </figure>
   )}
 
-  {d.tldr && (<p><strong>TL;DR:</strong> {d.tldr}</p>)}
+  {d.tldr && (<RenderTldr tldr={d.tldr} />)}
 
   {d.motivation && (<p><strong>Motivation:</strong> {d.motivation}</p>)}
 

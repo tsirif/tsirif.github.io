@@ -1,5 +1,6 @@
 ---
 import RenderTldr from './RenderTldr.astro';
+import Authors from './Authors.astro';
 
 interface Props {
   entry: any;                  // CollectionEntry<'projects' | 'writing'>
@@ -38,7 +39,7 @@ const authors: string[] = d.authors || [];
       </small>
 
       {kind === 'project' && authors.length > 0 && (
-        <div class="card__authors">By {authors.join(", ")}</div>
+        <Authors authors={authors} highlightName="Christos Tsirigotis" />
       )}
 
       {(links.code || links.demo || links.paper || links.website || links.explainer || links.x) && (

@@ -1,7 +1,7 @@
 ---
 title: "A Walk with SGD"
 date: 2018-02-24
-venue: "arXiv 2018 (ICLR 2019 submission)"
+venue: "arXiv 2018 (preprint)"
 authors:
   - Chen Xing
   - Devansh Arpit
@@ -12,24 +12,22 @@ keywords:
   - SGD
   - generalization
   - loss landscape
-tldr: "Empirical study showing SGD typically moves above the valley floor—large LR sets the height; small batches inject exploration—explaining better generalization."
-status: "preprint"
-impact: {}
+tldr: "Empirical study showing SGD typically moves above the valley floor and learning rate sets the height. Small batches inject exploration, which can potentially explain better generalization."
+abstract: "We present novel empirical observations regarding how stochastic gradient descent (SGD) navigates the loss landscape of over-parametrized deep neural networks (DNNs). These observations expose the qualitatively different roles of learning rate and batch-size in DNN optimization and generalization. Specifically we study the DNN loss surface along the trajectory of SGD by interpolating the loss surface between parameters from consecutive \textit{iterations} and tracking various metrics during training. We find that the loss interpolation between parameters before and after each training iteration's update is roughly convex with a minimum (\textit{valley floor}) in between for most of the training. Based on this and other metrics, we deduce that for most of the training update steps, SGD moves in valley like regions of the loss surface by jumping from one valley wall to another at a height above the valley floor. This 'bouncing between walls at a height' mechanism helps SGD traverse larger distance for small batch sizes and large learning rates which we find play qualitatively different roles in the dynamics. While a large learning rate maintains a large height from the valley floor, a small batch size injects noise facilitating exploration. We find this mechanism is crucial for generalization because the valley floor has barriers and this exploration above the valley floor allows SGD to quickly travel far away from the initialization point (without being affected by barriers) and find flatter regions, corresponding to better generalization."
 links:
   paper: "https://arxiv.org/abs/1802.08770"
   explainer: "/projects/a-walk-with-sgd/"
+bibtex: |
+    @misc{xing2018walksgd,
+        title={A Walk with SGD},
+        author={Chen Xing and Devansh Arpit and Christos Tsirigotis and Yoshua Bengio},
+        year={2018},
+        eprint={1802.08770},
+        archivePrefix={arXiv},
+        primaryClass={stat.ML},
+    }
 ---
 
-**Takeaway.** During most of training, SGD doesn't constantly cross “barriers”; it bounces between valley walls at a height set by the learning rate, with mini‑batch noise enabling exploration — explaining small‑batch + large‑LR generalization.  [oai_citation:11‡arXiv](https://arxiv.org/pdf/1802.08770?utm_source=chatgpt.com)
+This project was part of my undergrad internship with Yoshua Bengio!
 
-**Links.** Project: [/projects/a-walk-with-sgd/](/projects/a-walk-with-sgd/) · arXiv: 1802.08770.  [oai_citation:12‡arXiv](https://arxiv.org/pdf/1802.08770?utm_source=chatgpt.com)
-
-### Preferred BibTeX
-```bibtex
-@article{xing2018walksgd,
-  title   = {A Walk with SGD},
-  author  = {Xing, Chen and Arpit, Devansh and Tsirigotis, Christos and Bengio, Yoshua},
-  journal = {arXiv:1802.08770},
-  year    = {2018},
-  url     = {https://arxiv.org/abs/1802.08770}
-}
+**Takeaway.** During most of training, SGD doesn't constantly cross “barriers”; it bounces between valley walls at a height set by the learning rate, with mini‑batch noise enabling exploration; explaining small‑batch + large‑LR generalization.
