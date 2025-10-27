@@ -23,7 +23,7 @@ const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
   <p class="muted">
   <time datetime={dateISO}>{dateISO}</time>{d.venue ? ` • ${d.venue}` : ""}{d.status ? ` • ${d.status}` : ""}
   </p>
-  <Authors authors={d.authors || []} highlightName="Christos Tsirigotis" />
+  <Authors authors={d.authors || []} />
 
   {d.images?.teaser && (
     <figure style="margin-block:16px;">

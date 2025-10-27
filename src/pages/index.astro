@@ -25,10 +25,10 @@ const latestNews = news.slice(0,3);
 ---
 
 <BaseLayout title="Home" description="Ideas, systems, and writing." wide={true}>
-  <section style="margin-block: var(--gap-8);">
-    <h1>Ideas, systems, and writing.</h1>
-    <p class="muted">A minimal, book‑inspired personal site with projects, publications, and essays.</p>
-  </section>
+  <!-- <section style="margin-block: var(--gap-8);">                                                            -->
+  <!--   <h1>Ideas, systems, and writing.</h1>                                                                  -->
+  <!--   <p class="muted">A minimal, book‑inspired personal site with projects, publications, and essays.</p> -->
+  <!-- </section>                                                                                               -->
 
   <section class="anchor" id="short-about" style="margin-bottom: 18px;">
   <p>
@@ -68,11 +68,11 @@ const latestNews = news.slice(0,3);
     <p style="margin-top:12px;"><a class="link" href="/projects/">See all projects →</a></p>
   </section>
 
-  <section style="margin-block: var(--gap-8);">
-    <h2>Featured Writing</h2>
-    <div class="projects-grid" style="margin-top: 16px;">
-      {featuredPosts.map((p) => <EntryCard entry={p} kind="writing" />)}
-    </div>
-    <p style="margin-top:12px;"><a class="link" href="/writing/">See all writing →</a></p>
-  </section>
+  <!-- <section style="margin-block: var(--gap-8);">                                              -->
+  <!--   <h2>Featured Writing</h2>                                                                -->
+  <!--   <div class="projects-grid" style="margin-top: 16px;">                                    -->
+  <!--     {featuredPosts.map((p) => <EntryCard entry={p} kind="writing" />)}                     -->
+  <!--   </div>                                                                                   -->
+  <!--   <p style="margin-top:12px;"><a class="link" href="/writing/">See all writing →</a></p> -->
+  <!-- </section>                                                                                 -->
 </BaseLayout>

@@ -3,16 +3,19 @@ title: "A General Framework for Proving the Equivariant Strong Lottery Ticket Hy
 date: 2023-02-01
 venue: "ICLR 2023 — Poster"
 authors:
-  - Damien Ferbach
-  - Christos Tsirigotis
-  - Gauthier Gidel
-  - Joey (Avishek) Bose
+  - name: "Damien Ferbach"
+    equal: true
+  - name: "Christos Tsirigotis"
+    equal: true
+    highlight: true
+  - name: "Gauthier Gidel"
+  - name: "Avishek Joey Bose"
 keywords:
   - pruning
   - lottery ticket hypothesis
   - equivariant networks
 tldr: "Extends the Strong Lottery Ticket Hypothesis to G‑equivariant nets with near‑optimal overparameterization guarantees; empirical validation on steerable CNNs and GNNs."
-abstract: "The Strong Lottery Ticket Hypothesis (SLTH) stipulates the existence of a subnetwork within a sufficiently overparameterized (dense) neural network that -- when initialized randomly and without any training -- achieves the accuracy of a fully trained target network. Recent works by Da Cunha et. al 2022; Burkholz 2022 demonstrate that the SLTH can be extended to translation equivariant networks -- i.e. CNNs -- with the same level of overparametrization as needed for the SLTs in dense networks. However, modern neural networks are capable of incorporating more than just translation symmetry, and developing general equivariant architectures such as rotation and permutation has been a powerful design principle. In this paper, we generalize the SLTH to functions that preserve the action of the group G -- i.e. G-equivariant network -- and prove, with high probability, that one can approximate any G-equivariant network of fixed width and depth by pruning a randomly initialized overparametrized G-equivariant network to a G-equivariant subnetwork. We further prove that our prescribed overparametrization scheme is optimal and provides a lower bound on the number of effective parameters as a function of the error tolerance. We develop our theory for a large range of groups, including subgroups of the Euclidean E(2) and Symmetric group G≤S_n -- allowing us to find SLTs for MLPs, CNNs, E(2)-steerable CNNs, and permutation equivariant networks as specific instantiations of our unified framework. Empirically, we verify our theory by pruning overparametrized E(2)-steerable CNNs, k-order GNNs, and message passing GNNs to match the performance of trained target networks.
+abstract: "The Strong Lottery Ticket Hypothesis (SLTH) stipulates the existence of a subnetwork within a sufficiently overparameterized (dense) neural network that -- when initialized randomly and without any training -- achieves the accuracy of a fully trained target network. Recent works by Da Cunha et. al 2022; Burkholz 2022 demonstrate that the SLTH can be extended to translation equivariant networks -- i.e. CNNs -- with the same level of overparametrization as needed for the SLTs in dense networks. However, modern neural networks are capable of incorporating more than just translation symmetry, and developing general equivariant architectures such as rotation and permutation has been a powerful design principle. In this paper, we generalize the SLTH to functions that preserve the action of the group G -- i.e. G-equivariant network -- and prove, with high probability, that one can approximate any G-equivariant network of fixed width and depth by pruning a randomly initialized overparametrized G-equivariant network to a G-equivariant subnetwork. We further prove that our prescribed overparametrization scheme is optimal and provides a lower bound on the number of effective parameters as a function of the error tolerance. We develop our theory for a large range of groups, including subgroups of the Euclidean E(2) and Symmetric group G≤S_n -- allowing us to find SLTs for MLPs, CNNs, E(2)-steerable CNNs, and permutation equivariant networks as specific instantiations of our unified framework. Empirically, we verify our theory by pruning overparametrized E(2)-steerable CNNs, k-order GNNs, and message passing GNNs to match the performance of trained target networks."
 links:
   paper: "https://arxiv.org/abs/2206.04270"
   code: "https://github.com/tsirif/equivariant_slt"
@@ -25,6 +28,6 @@ bibtex: |
     title     = {A General Framework for Proving the Equivariant Strong Lottery Ticket Hypothesis},
     author    = {Ferbach, Damien and Tsirigotis, Christos and Gidel, Gauthier and Bose, Avishek Joey},
     booktitle = {International Conference on Learning Representations},
-    year      = {2023},
+    year      = {2023}
   }
 ---

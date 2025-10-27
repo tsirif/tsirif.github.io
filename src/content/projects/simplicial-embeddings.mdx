@@ -1,15 +1,16 @@
 ---
 title: "Simplicial Embeddings in Self-Supervised Learning and Downstream Classification"
 date: Apr 2023
-venue: "ICLR 2023 — Oral (top 25%)"
+venue: "ICLR 2023 - Oral (top 25%)"
 authors:
-  - Samuel Lavoie
-  - Christos Tsirigotis
-  - Max Schwarzer
-  - Ankit Vani
-  - Mikhail Noukhovitch
-  - Kenji Kawaguchi
-  - Aaron Courville
+  - name: "Samuel Lavoie"
+  - name: "Christos Tsirigotis"
+    highlight: true
+  - name: "Max Schwarzer"
+  - name: "Ankit Vani"
+  - name: "Michael Noukhovitch"
+  - name: "Kenji Kawaguchi"
+  - name: "Aaron Courville"
 keywords:
   - self-supervised learning
   - representation learning
@@ -19,23 +20,22 @@ links:
   paper: "https://arxiv.org/abs/2204.00616"
   code: "https://github.com/lavoiems/simplicial-embeddings"
   explainer: "/projects/simplicial-embeddings/"
+images:
+  teaser: "/images/projects/ssb-ssl.jpg"
+  alt: "SEM architecture intervention"
+featured: true
+bibtex: |
+  @inproceedings{lavoie2023simplicial,
+    title={Simplicial Embeddings in Self-Supervised Learning and Downstream Classification},
+    author={Samuel Lavoie and Christos Tsirigotis and Max Schwarzer and Ankit Vani and Michael Noukhovitch and Kenji Kawaguchi and Aaron Courville},
+    booktitle={The Eleventh International Conference on Learning Representations },
+    year={2023}
+  }
+
 ---
 
-**TL;DR.** SEM constrains representations to a product of simplices. That structure encourages sparsity and yields more predictable downstream behavior.
+SEM constrains representations to a product of simplices. That structure encourages sparsity and yields more predictable downstream behavior.
 
-**What changes?** Replace unconstrained projections with softmaxes into L simplices of V dims each; train your SSL normally. The constraint is the inductive bias.  [oai_citation:5‡OpenReview](https://openreview.net/forum?id=RWtGreRpovS&utm_source=chatgpt.com)
+**What changes?** Replace unconstrained projections with softmaxes into L simplices of V dims each; train your SSL normally. The constraint is the inductive bias.
 
-**Why it works (intuitively).** You trade raw capacity for structured features that cluster semantically relevant factors, improving linear separability after pretraining. The ICLR 2023 result was accepted as an **Oral (top 25%)**.  [oai_citation:6‡ICLR](https://iclr.cc/virtual/2023/oral/12601?utm_source=chatgpt.com)
-
-**Links.** Project: [/projects/simplicial-embeddings/](/projects/simplicial-embeddings/) · arXiv: 2204.00616.  [oai_citation:7‡arXiv](https://arxiv.org/abs/2204.00616?utm_source=chatgpt.com)
-
-### Preferred BibTeX
-```bibtex
-@inproceedings{lavoie2023sem,
-  title     = {Simplicial Embeddings in Self-Supervised Learning and Downstream Classification},
-  author    = {Lavoie, Samuel and Tsirigotis, Christos and Schwarzer, Max and Vani, Ankit and Noukhovitch, Mikhail and Kawaguchi, Kenji and Courville, Aaron},
-  booktitle = {International Conference on Learning Representations (ICLR)},
-  year      = {2023},
-  note      = {Oral (top 25\%)},
-  url       = {https://arxiv.org/abs/2204.00616}
-}
+**Why it works (intuitively).** You trade raw capacity for structured features that cluster semantically relevant factors, improving linear separability after pretraining. The ICLR 2023 result was accepted as an **Oral (top 25%)**.

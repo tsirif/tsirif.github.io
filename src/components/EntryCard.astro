@@ -39,7 +39,7 @@ const authors: string[] = d.authors || [];
       </small>
 
       {kind === 'project' && authors.length > 0 && (
-        <Authors authors={authors} highlightName="Christos Tsirigotis" />
+        <Authors authors={authors} />
       )}
 
       {(links.code || links.demo || links.paper || links.website || links.explainer || links.x) && (

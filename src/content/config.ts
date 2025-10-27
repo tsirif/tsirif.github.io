@@ -1,12 +1,22 @@
 import { defineCollection, z } from "astro:content";
 
+const authorSchema = z.union([
+  z.string(),
+  z.object({
+    name: z.string(),
+    url: z.string().url().optional(),
+    highlight: z.boolean().optional(),
+    equal: z.boolean().optional(),
+  }),
+]);
+
 const projects = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
     venue: z.string().optional(),
-    authors: z.array(z.string()).default([]),           // ← NEW
+    authors: z.array(authorSchema).default([]),
     status: z.enum(["in-progress","preprint","submitted","accepted","published","archived"]).optional(),
     tldr: z.string().optional(),
     motivation: z.string().optional(),
