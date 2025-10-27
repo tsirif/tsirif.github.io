@@ -1,0 +1,12 @@
+---
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom';
+
+const { tldr } = Astro.props; // string with markdown from frontmatter
+const window = new JSDOM('').window;
+const purify = DOMPurify(window);
+const rawHtml = marked.parse(tldr ?? '');
+const safeHtml = purify.sanitize(rawHtml);
+---
+<div class="tldr" innerHTML={safeHtml} />

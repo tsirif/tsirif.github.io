@@ -17,11 +17,11 @@ const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
 ---
 
 <BaseLayout title={d.title} description={d.tldr || d.abstract || ""} ogImage={d.images?.teaser}>
-  <h1>{d.title}</h1>
+  <h3>{d.title}</h3>
   <p class="muted">
   <time datetime={dateISO}>{dateISO}</time>{d.venue ? ` • ${d.venue}` : ""}{d.status ? ` • ${d.status}` : ""}
   </p>
-  {d.authors?.length ? (<p class="muted">By {d.authors.join(", ")}</p>) : null}
+  <Authors authors={d.authors || []} highlightName="Christos Tsirigotis" />
 
   {d.images?.teaser && (
     <figure style="margin-block:16px;">

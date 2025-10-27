@@ -1,0 +1,18 @@
+---
+// src/components/Authors.astro
+const { authors = [], highlightName = "Christos Tsirigotis" } = Astro.props;
+---
+<div class="authors">
+  {authors.map((a, i) => (
+    <span class="author" key={i}>
+      {a === highlightName ? <strong>{a}</strong> : a}
+      {i < authors.length - 1 ? <span class="sep">, </span> : null}
+    </span>
+  ))}
+</div>
+
+<style>
+  .authors { font-size: 0.95rem; color: var(--muted); }
+  .author strong { font-weight: 700; color: var(--ink); }
+  .sep { color: var(--muted); }
+</style>

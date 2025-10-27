@@ -1,4 +1,6 @@
 ---
+import RenderTldr from './RenderTldr.astro';
+
 interface Props {
   entry: any;                  // CollectionEntry<'projects' | 'writing'>
   kind: 'project' | 'writing';
@@ -60,7 +62,7 @@ const authors: string[] = d.authors || [];
 
       <!-- Collapsible details now live inside the left column (no grid row => no reserved gap) -->
       <div class="card__details">
-        {tldr && (<p class="card__tldr">{tldr}</p>)}
+        {tldr && (<RenderTldr tldr={tldr} />)}
         {kind === 'project' && (d.status || Object.keys(impact).length > 0) && (
           <p class="muted card__impact">
             {d.status ? (<><strong>Status:</strong> {d.status}. </>) : null}
