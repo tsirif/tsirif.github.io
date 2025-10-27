@@ -27,17 +27,8 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN && (
-      <>
-        <script defer data-domain={import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js"></script>
-        <script is:inline>
-          window.plausible = window.plausible || function(){ (window.plausible.q = window.plausible.q || []).push(arguments) }
-        </script>
-      </>
-    )}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- <title>{title} • {Astro.site?.hostname}</title> -->
     <MetaHead title={`${title} • logotechnologia`} description={description} image={ogImage} />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="light dark" />
@@ -84,6 +75,7 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
         })();
     </script>
     <!-- Google Analytics -->
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
     <!-- GA4 Consent Mode v2: define dataLayer/gtag and set default consent BEFORE loading gtag.js -->
     <script is:inline>
     // Create dataLayer + gtag shim
@@ -125,19 +117,11 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
         'ad_personalization': 'denied'
         });
     })();
+
+    gtag('js', new Date());
+    // Basic page view (Astro is multi-page; this fires on every navigation)
+    gtag('config', {GA_ID}, { page_path: location.pathname });
     </script>
-    {GA_ID && (
-    <>
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
-        <script is:inline>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){ dataLayer.push(arguments); }
-        gtag('js', new Date());
-        // Basic page view (Astro is multi-page; this fires on every navigation)
-        gtag('config', {GA_ID}, { page_path: location.pathname });
-        </script>
-    </>
-    )}
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
