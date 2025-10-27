@@ -1,35 +1,63 @@
 ---
-title: "Oríon: Asynchronous, Distributed Hyperparameter Optimization"
+title: "Oríon: Asynchronous Distributed Hyperparameter Optimization"
 date: 2018-07-01
-venue: "Open‑source (Mila)"
+venue: "Open‑source Software"
 authors:
   - Christos Tsirigotis
-  - Frédéric Bastien
   - Xavier Bouthillier
+  - Frédéric Bastien
+  - Pascal Lamblin
   - (and contributors)
 keywords:
   - hyperparameter optimization
   - distributed systems
   - experiment management
-  - open source
+impact:
+  github_stars: 299
 tldr: "An async black‑box HPO framework and experiment manager designed to minimally disrupt ML workflows; supports scalable, reproducible tuning."
 links:
+  paper: "https://openreview.net/pdf?id=r1xkNLPixX"
   code: "https://github.com/Epistimio/orion"
   website: "https://orion.readthedocs.io/en/latest/"
-  explainer: "/writing/orion-explainer/"
+  explainer: "/projects/orion/"
+images:
+  teaser: "/images/projects/orion_logo_grid_150ppi.png"
+  alt: "Oríon logo"
+bibtex: |
+  @software{xavier_bouthillier_2023_0_2_7,
+    author       = {Xavier Bouthillier and
+                    Christos Tsirigotis and
+                    François Corneau-Tremblay and
+                    Thomas Schweizer and
+                    Lin Dong and
+                    Pierre Delaunay and
+                    Fabrice Normandin and
+                    Mirko Bronzi and
+                    Dendi Suhubdy and
+                    Reyhane Askari and
+                    Michael Noukhovitch and
+                    Chao Xue and
+                    Satya Ortiz-Gagné and
+                    Olivier Breuleux and
+                    Arnaud Bergeron and
+                    Olexa Bilaniuk and
+                    Steven Bocco and
+                    Hadrien Bertrand and
+                    Guillaume Alain and
+                    Dmitriy Serdyuk and
+                    Peter Henderson and
+                    Pascal Lamblin and
+                    Christopher Beckham},
+    title        = {{Epistimio/orion: Asynchronous Distributed Hyperparameter Optimization}},
+    month        = march,
+    year         = 2023,
+    publisher    = {Zenodo},
+    version      = {v0.2.7,
+    doi          = {10.5281/zenodo.3478592},
+    url          = {https://doi.org/10.5281/zenodo.3478592}
+    }
 ---
 
-**What it is.** Oríon is an async framework for black‑box optimization and experiment management designed to integrate with existing ML scripts. It prioritizes reproducibility and minimal friction.  [oai_citation:14‡Orion](https://orion.readthedocs.io/en/latest/?utm_source=chatgpt.com)
+**What it is.** Oríon is an async framework for black‑box optimization and experiment management designed to integrate with existing ML scripts. It prioritizes reproducibility and minimal friction.
 
 **Why it matters.** Clean experiment lineage and scalable HPO save real time and cost, especially when you’re iterating on data/architectures.
-
-**Links.** Project: [/projects/orion/](/projects/orion/) · Docs: orion.readthedocs.io · GitHub: Epistimio/orion.  [oai_citation:15‡Orion](https://orion.readthedocs.io/en/latest/?utm_source=chatgpt.com)
-
-### Preferred BibTeX
-```bibtex
-@software{orion2018,
-  title        = {Or{\'i}on: Asynchronous Distributed Hyperparameter Optimization},
-  author       = {Tsirigotis, Christos and Bastien, Fr{\'e}d{\'e}ric and Bouthillier, Xavier and contributors},
-  year         = {2018},
-  url          = {https://orion.readthedocs.io/en/latest/}
-}

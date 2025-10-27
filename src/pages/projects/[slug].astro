@@ -32,7 +32,7 @@ const dateISO = d.date ? new Date(d.date).toISOString().slice(0,10) : '';
     </figure>
   )}
 
-  {d.tldr && (<RenderTldr tldr={d.tldr} />)}
+  {d.tldr && (<p><strong>TL;DR:</strong></p><RenderTldr tldr={d.tldr} />)}
 
   {d.motivation && (<p><strong>Motivation:</strong> {d.motivation}</p>)}
 

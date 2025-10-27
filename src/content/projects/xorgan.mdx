@@ -8,14 +8,32 @@ authors:
   - Aaron Courville
   - Pericles A. Mitkas
 keywords:
-  - GANs
+  - generative adversarial networks
   - adversarial training
-  - stability
-  - XOR
-  - non-zero-sum games
-  - gradient penalty
-tldr: "Introduces XOR‑type adversarial objectives (XORGAN): a pairwise discriminator and non‑zero‑sum parametric losses that aim to stabilize GAN training **without** gradient penalties; shows global optimality (Q*=P) under standard assumptions and analyzes local stability."
+  - generative modeling
+tldr: "Introduces XOR‑type adversarial objectives (XORGAN): a pairwise discriminator and non‑zero‑sum parametric losses that aim to stabilize GAN training **without** gradient penalties; shows global optimality ($Q^*=P$) under standard assumptions and analyzes local stability."
+abstract: "Recent advances in adversarial learning observe that stabilization with gradient
+penalties trades off generated sample quality. We try to address this limitation by
+proposing novel objectives inspired by the logical XOR operation, which should
+not depend on gradient penalty regularization in order to be locally stable. In the
+sections that follow, we will present a theoretical study on this type of objective
+functions. We will prove global optimality conditions with similar assumptions
+as those made in the original GAN paper by Goodfellow et al., we will notice
+connections between the XOR-type objectives and the original GAN, and we will
+define non zero-sum parametric objectives based on that connection. Finally, we
+will attempt to study the local stability of the continuous-time training dynamical
+system around desirable equilibria."
 links:
   paper: "https://sgo-workshop.github.io/CameraReady2019/23.pdf"
   explainer: "/projects/xorgan/"
+images:
+  teaser: "/images/projects/xorgan.png"
+  alt: "Convergence patterns for GAN and XORGAN (ours) dynamics for a toy generative adversarial network."
+bibtex: |
+    @inProceedings{tsirigotis2019xorgan,
+        title={Objectives Towards Stable Adversarial Training Without Gradient Penalties},
+        author={Christos Tsirigotis and R. Devon Hjelm and Aaron Courville and Pericles A. Mitkas},
+        year={2019},
+        booktitle={Smooth Games Optimization and Machine Learning Workshop, NeurIPS},
+    }
 ---
