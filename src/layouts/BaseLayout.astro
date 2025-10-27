@@ -74,54 +74,73 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
             } catch {}
         })();
     </script>
+
     <!-- Google Analytics -->
-    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
-    <!-- GA4 Consent Mode v2: define dataLayer/gtag and set default consent BEFORE loading gtag.js -->
+    <!-- Consent defaults MUST come before loading gtag.js -->
     <script is:inline>
-    // Create dataLayer + gtag shim
+    // Shim + dataLayer
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
 
     (function(){
-        // Read a previous choice (set by the banner). Values: 'granted' | 'denied'
+        // Read prior choice from banner ('granted' | 'denied')
         var stored = null;
-        try { stored = localStorage.getItem('ga_consent'); } catch (e) {}
+        try { stored = localStorage.getItem('ga_consent'); } catch {}
 
-        // Safer global default: denied until user accepts
-        var analyticsDefault = (stored === 'granted') ? 'granted' : 'denied';
-
-        // Consent Mode v2 defaults (no ads here, keep ad_* denied)
+        if (stored === 'granted' || stored === 'denied') {
+        // Respect saved choice
         gtag('consent', 'default', {
-        'analytics_storage': analyticsDefault,
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied'
+            'analytics_storage': stored,
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
         });
-
-        // ---------- Region-aware option (comment IN to use):
-        // Deny analytics by default in EEA/UK/CH; grant elsewhere by default.
-        // Google applies this server-side based on visitor location.
+        } else {
+        // Region-aware defaults (EEA/UK/CH denied by default)
         gtag('consent', 'default', {
-        'analytics_storage': 'denied',
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied'
+            'analytics_storage': 'denied',
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
         }, {
-        'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']
+            'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']
         });
-        // Then set a global "granted" default (applies to everyone else):
+        // Everyone else: granted by default (until the user acts)
         gtag('consent', 'default', {
-        'analytics_storage': 'granted',
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied'
+            'analytics_storage': 'granted',
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
         });
+        }
     })();
-
-    gtag('js', new Date());
-    // Basic page view (Astro is multi-page; this fires on every navigation)
-    gtag('config', {GA_ID}, { page_path: location.pathname });
     </script>
+
+    {GA_ID && (
+    <>
+        <!-- Load GA4 only if we actually have an ID -->
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
+        <script is:inline>
+        // Inject the literal string ID (not an object)
+        const GA_MEASUREMENT_ID = {JSON.stringify(GA_ID)};
+
+        // Init GA + first page_view
+        gtag('js', new Date());
+        gtag('config', GA_MEASUREMENT_ID, {
+            page_path: location.pathname
+        });
+
+        // If you later add Astro view transitions, send a page_view on swaps:
+        window.addEventListener?.('astro:after-swap', () => {
+            gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: location.href,
+            page_path: location.pathname
+            });
+        });
+        </script>
+    </>
+    )}
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
