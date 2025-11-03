@@ -187,3 +187,34 @@ hr, .card, .tag, .footer, .header { border-color: var(--border); }
 @media (prefers-reduced-motion: no-preference) {
   html:focus-within { scroll-behavior: smooth; }
 }
+
+/* About / mini-about two-column layout: text left, portrait right */
+.about-hero {
+  display: grid;
+  grid-template-columns: 1fr auto; /* text | image */
+  gap: 16px;
+  align-items: start;
+}
+
+/* Portrait sizing (reusing your existing classes) */
+.portrait {
+  width: 160px;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  object-fit: cover;
+  display: block;
+}
+.portrait--hero { width: 440px; }
+
+/* Mobile stacking */
+@media (max-width: 720px){
+  .about-hero { grid-template-columns: 1fr; }
+
+  /* Option A (recommended): show the portrait ABOVE the text on mobile */
+  .about-hero .portrait--hero { order: -1; }   /* move image to the top */
+
+  /* Option B: if you prefer it BELOW the text on mobile, just comment the line above */
+  /* .about-hero .portrait--hero { order: 0; } */
+}
+

@@ -19,7 +19,7 @@ interface Props {
   wide?: boolean;
   ogImage?: string; // NEW
 }
-const { title = "Home", description = "Personal site", wide = false, ogImage } = Astro.props;
+const { title = "Home", description = "AI Research Portfolio, Discussions and Writings", wide = false, ogImage } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 ---
