@@ -206,7 +206,7 @@ hr, .card, .tag, .footer, .header { border-color: var(--border); }
   display: block;
   background: var(--paper);
 }
-.portrait--hero { width: 220px; }
+.portrait--hero { width: 320px }
 
 /* Mobile stacking */
 @media (max-width: 720px){
