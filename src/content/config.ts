@@ -63,7 +63,6 @@ const news = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
-    body: z.string(),
   }),
 });
 

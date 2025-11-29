@@ -3,22 +3,27 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
 const items = (await getCollection("news"))
-  .sort((a,b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
+  .sort((a, b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
 ---
 
 <BaseLayout title="News" description="Updates & announcements.">
   <h1>News</h1>
   <ul style="list-style:none; padding:0; margin:0;">
-    {items.map((n) => {
+    {await Promise.all(items.map(async (n) => {
       const d = n.data;
       const dateISO = new Date(d.date).toISOString().slice(0,10);
+      const { Content } = await n.render();
       return (
         <li style="padding:12px 0; border-bottom:1px solid var(--border);">
           <div><strong>{d.title}</strong></div>
-          <small class="muted"><time datetime={dateISO}>{dateISO}</time></small>
-          <p style="margin:6px 0 0 0;">{d.body}</p>
+          <small class="muted">
+            <time datetime={dateISO}>{dateISO}</time>
+          </small>
+          <div style="margin:6px 0 0 0;">
+            <Content />   {/* ← renders Markdown/links properly */}
+          </div>
         </li>
       );
-    })}
+    }))}
   </ul>
 </BaseLayout>
