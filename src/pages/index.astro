@@ -21,7 +21,13 @@ const pickFeatured = (arr) => {
 };
 const featuredProjects = pickFeatured(allProjects);
 const featuredPosts = pickFeatured(allPosts);
-const latestNews = news.slice(0,3);
+const latestNews = news.slice(0,5);
+const renderedNews = await Promise.all(
+  latestNews.map(async (n) => {
+    const { Content } = await n.render();
+    return { ...n, Content };
+  })
+);
 ---
 
 <BaseLayout title="Home" wide={true}>
@@ -41,12 +47,15 @@ const latestNews = news.slice(0,3);
   <section style="margin-block: var(--gap-8);">
     <h2>News</h2>
     <ul style="list-style:none; padding:0; margin:0;">
-      {latestNews.map((n) => {
+      {renderedNews.map((n) => {
         const d = n.data; const dateISO = new Date(d.date).toISOString().slice(0,10);
+        const Content = n.Content;
         return (
           <li style="padding:12px 0; border-bottom:1px solid var(--border);">
             <div><strong>{d.title}</strong> · <small class="muted"><time datetime={dateISO}>{dateISO}</time></small></div>
-            <p style="margin:6px 0 0 0;">{d.body}</p>
+            <div style="margin:6px 0 0 0;">
+              <Content />  {/* ← MDX body (can contain links, bold, etc.) */}
+            </div>
           </li>
         );
       })}
