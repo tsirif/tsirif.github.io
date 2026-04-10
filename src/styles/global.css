@@ -1,4 +1,4 @@
-/* Base reset-ish */
+/* Base reset */
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -6,56 +6,70 @@ html, body { margin: 0; padding: 0; }
 img, video { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
 
-/* Body & default typography */
-body {
-  background: var(--paper);
-  font: 400 var(--fs-body)/var(--lh-body) "Noto Serif", Georgia, "Times New Roman", serif;
-  color: var(--ink);
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-}
-
-h1, h2 {
-  font-family: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
-  color: var(--ink);
-  letter-spacing: var(--tracking-mono);
-  line-height: 1.15;
-  margin-block: 0.75em 0.35em;
-}
-h1 { font-size: var(--fs-h1); }
-h2 { font-size: var(--fs-h2); }
-h3 {
-  font: 600 var(--fs-h3)/1.15 "Noto Serif", Georgia, "Times New Roman", serif;
-  color: var(--ink);
-  letter-spacing: var(--tracking-mono);
-  line-height: 1.15;
-  margin-block: 0.75em 0.35em;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-}
-
-p { margin-block: 0.5em 1em; color: var(--ink); }
-small, .muted { color: var(--muted); }
-
-/* Links */
-a.link {
-  text-underline-offset: 2px; text-decoration-thickness: 1px;
-  text-decoration-color: color-mix(in oklab, var(--ink), transparent 70%);
-}
-a.link:hover, a.link:focus-visible {
-  text-decoration-thickness: 2px; text-decoration-color: var(--ink);
-}
-
-/* Guarantee hidden elements are not displayed, regardless of resets */
+/* Guarantee hidden elements are not displayed */
 [hidden] { display: none !important; }
 
+/* Body & default typography */
+body {
+  background: var(--bg);
+  font: 400 var(--fs-body)/var(--lh-body) "Noto Serif", Georgia, "Times New Roman", serif;
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings — system sans-serif, matching logotechnologia.com */
+h1 {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-size: var(--fs-h1);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--fg);
+  margin: 0 0 0.4rem;
+}
+
+h2 {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-size: var(--fs-h2);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+  line-height: 1.2;
+}
+
+h3 {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 600;
+  color: var(--fg);
+  line-height: 1.3;
+  margin-block: 0.75em 0.35em;
+}
+
+p { margin-block: 0.5em 1em; color: var(--fg); }
+small, .muted { color: var(--muted); }
+
+/* Links — border-bottom + opacity hover, matching logotechnologia.com */
+a.link {
+  text-decoration: none;
+  border-bottom: 1px solid var(--fg);
+}
+a.link:hover, a.link:focus-visible {
+  opacity: 0.65;
+}
+
 /* Layout helpers */
-.wrapper { max-width: 70ch; margin-inline: auto; padding-inline: clamp(16px, 4vw, 32px); }
+.wrapper { max-width: var(--max); margin-inline: auto; padding-inline: clamp(16px, 4vw, 32px); }
 .wrapper--wide { max-width: min(1100px, 92vw); margin-inline: auto; padding-inline: clamp(16px, 4vw, 32px); }
 
 /* Header / Nav */
-.header{
-  position: sticky;         /* stays in view while scrolling */
+.header {
+  position: sticky;
   top: env(safe-area-inset-top, 0);
   z-index: 1000;
   display: grid;
@@ -63,79 +77,71 @@ a.link:hover, a.link:focus-visible {
   align-items: center;
   gap: var(--gap-3);
   padding: 12px clamp(16px, 4vw, 32px);
-  background: var(--surface); /* solid background so content doesn't show through */
-  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
 }
 
-.header.is-stuck{           /* subtle elevation once you scroll */
-  box-shadow: 0 1px 0 var(--border), 0 .5rem 1rem rgba(0,0,0,.03);
-}
-
-.header__brand{
+.header__brand {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 1rem;
 }
-.brand{
-  font-family: "Space Mono", ui-monospace, monospace;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1;
-  font-size: 1.25rem;
+.brand {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
 }
-.subbrand{
-  font-family: "Space Mono", ui-monospace, monospace;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  font-size: 0.95rem;
-  color: var(--muted);
-}
-.nav{
+.nav {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: 12px;
 }
-.nav a{
+.nav a {
   padding: 8px 6px;
-  font-family: "Space Mono", ui-monospace, monospace;
-  letter-spacing: 0.01em;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
-.nav a[aria-current="page"]{ text-decoration: underline; text-underline-offset: 4px; }
+.nav a[aria-current="page"] {
+  border-bottom: 1px solid var(--fg);
+}
 
-@media (max-width: 720px){
-  .header{ grid-template-columns: 1fr; justify-items: center; }
-  .nav{ justify-content: center; }
+@media (max-width: 720px) {
+  .header { grid-template-columns: 1fr; justify-items: center; }
+  .nav { justify-content: center; }
 }
 
 /* When skipping to content, avoid header overlap on anchor jumps */
-#main{ scroll-margin-top: 80px; }
+#main { scroll-margin-top: 80px; }
 
 /* Buttons */
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 14px; border: 1px solid var(--ink);
-  background: transparent; color: var(--ink); border-radius: 6px;
+  padding: 10px 14px; border: 1px solid var(--fg);
+  background: transparent; color: var(--fg); border-radius: 6px;
   text-decoration: none; cursor: pointer;
 }
-.btn:hover, .btn:focus-visible { background: var(--ink); color: var(--sel-ink); }
+.btn:hover, .btn:focus-visible { background: var(--fg); color: var(--bg); }
 .btn.small { padding: 6px 10px; font-size: 0.9em; }
-.btn--ghost { border-color: var(--border); }
+.btn--ghost { border-color: var(--rule); }
 
 /* Tag chips */
 .tag {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px;
-  font-size: 0.9em; background: var(--surface); color: var(--muted); text-decoration: none;
+  padding: 6px 10px; border: 1px solid var(--rule); border-radius: 999px;
+  font-size: 0.9em; background: var(--bg); color: var(--muted); text-decoration: none;
 }
 .tag[aria-pressed="true"] { background: var(--sel-surface); border-color: var(--sel-surface); color: var(--sel-ink); }
 
 /* Grid for projects */
 .projects-grid {
   display: grid;
-  grid-template-columns: 1fr;  /* one card per row */
+  grid-template-columns: 1fr;
   gap: 1.25rem;
 }
 
@@ -143,7 +149,7 @@ a.link:hover, a.link:focus-visible {
 .skip-link {
   position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
 }
-.skip-link:focus { position: static; width: auto; height: auto; padding: 6px 10px; background: var(--ink); color: var(--paper); }
+.skip-link:focus { position: static; width: auto; height: auto; padding: 6px 10px; background: var(--fg); color: var(--bg); }
 
 /* Media */
 figure { margin: 0; }
@@ -152,38 +158,24 @@ figcaption { color: var(--muted); font-size: 0.9em; margin-top: 4px; }
 /* Filter toolbar + toggle */
 .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; }
 .toolbar input[type="search"] {
-  border: 1px solid var(--border); background: transparent; color: var(--ink);
+  border: 1px solid var(--rule); background: transparent; color: var(--fg);
   padding: 8px 10px; border-radius: 6px; min-width: 220px;
 }
 .toolbar select {
-  border: 1px solid var(--border); background: transparent; color: var(--ink);
+  border: 1px solid var(--rule); background: transparent; color: var(--fg);
   padding: 8px 10px; border-radius: 6px;
 }
 .filter-toggle { display: flex; align-items: center; gap: 8px; }
 
-/* Smooth, opt-in theme animation */
-:root.theme-anim, :root.theme-anim * {
-  transition:
-    background-color .25s ease,
-    color            .25s ease,
-    border-color     .25s ease,
-    fill             .25s ease,
-    stroke           .25s ease !important;
-}
-@media (prefers-reduced-motion: reduce) {
-  :root.theme-anim, :root.theme-anim * { transition: none !important; }
-}
-
 /* Hook color vars everywhere they matter */
-body { background: var(--paper); color: var(--ink); }
-a.link { color: var(--accent); }
-a.link:visited { color: var(--accent-visited); }
-hr, .card, .tag, .footer, .header { border-color: var(--border); }
+body { background: var(--bg); color: var(--fg); }
+a.link { color: var(--fg); }
+hr, .card, .tag, .footer, .header { border-color: var(--rule); }
 
 /* Offset anchor targets so sticky header doesn't cover them */
-.anchor { scroll-margin-top: 84px; }  /* adjust to your header height */
+.anchor { scroll-margin-top: 84px; }
 
-/* Optional: smooth scroll for people who haven't requested reduced motion */
+/* Smooth scroll for people who haven't requested reduced motion */
 @media (prefers-reduced-motion: no-preference) {
   html:focus-within { scroll-behavior: smooth; }
 }
@@ -191,31 +183,25 @@ hr, .card, .tag, .footer, .header { border-color: var(--border); }
 /* About / mini-about two-column layout: text left, portrait right */
 .about-hero {
   display: grid;
-  grid-template-columns: 1fr auto; /* text | image */
+  grid-template-columns: 1fr auto;
   gap: 16px;
   align-items: start;
 }
 
-/* Portrait sizing (reusing your existing classes) */
+/* Portrait sizing */
 .portrait {
   width: 160px;
   aspect-ratio: 1 / 1;
   border-radius: 14px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--rule);
   object-fit: cover;
   display: block;
-  background: var(--paper);
+  background: var(--bg);
 }
 .portrait--hero { width: 320px }
 
 /* Mobile stacking */
-@media (max-width: 720px){
+@media (max-width: 720px) {
   .about-hero { grid-template-columns: 1fr; }
-
-  /* Option A (recommended): show the portrait ABOVE the text on mobile */
-  .about-hero .portrait--hero { order: -1; }   /* move image to the top */
-
-  /* Option B: if you prefer it BELOW the text on mobile, just comment the line above */
-  /* .about-hero .portrait--hero { order: 0; } */
+  .about-hero .portrait--hero { order: -1; }
 }
-

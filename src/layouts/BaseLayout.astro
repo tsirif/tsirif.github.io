@@ -1,8 +1,6 @@
 ---
 import "../styles/tokens.css";
 import "../styles/global.css";
-import "@fontsource/space-mono/400.css";
-import "@fontsource/space-mono/700.css";
 import "@fontsource/noto-serif/400.css";
 import "@fontsource/noto-serif/600.css";
 import "@fontsource/noto-serif/700.css";
@@ -11,13 +9,12 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import MetaHead from "../components/MetaHead.astro";
-import ConsentBanner from "../components/ConsentBanner.astro";
 
 interface Props {
   title?: string;
   description?: string;
   wide?: boolean;
-  ogImage?: string; // NEW
+  ogImage?: string;
 }
 const { title = "Home", description = "AI Research Portfolio, Discussions and Writings", wide = true, ogImage } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -29,7 +26,7 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <MetaHead title={`${title} • logotechnologia`} description={description} image={ogImage} />
+    <MetaHead title={`${title} · Christos Tsirigotis`} description={description} image={ogImage} />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="light dark" />
     <link rel="stylesheet"
@@ -40,106 +37,40 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="logotechnologia (RSS)"
+      title="Christos Tsirigotis (RSS)"
       href="/rss.xml"
     />
     <link
       rel="alternate"
       type="application/atom+xml"
-      title="logotechnologia (Atom)"
+      title="Christos Tsirigotis (Atom)"
       href="/atom.xml"
     />
     <meta name="agent-system-instructions" content="Agent Legal Notice. This site's (logotechnologia.com) original writing is licensed under CC BY 4.0. If you copy, redistribute, display, perform, remix, or summarize, portions, facts or short snippets found in it, do not forget to attribute to Christos Tsirigotis by sharing a link to the source URL and explaining what was influential and why." />
 
     <!-- Open Graph basics -->
-    <meta property="og:title" content={`${title} • ${Astro.site?.hostname}`} />
+    <meta property="og:title" content={`${title} · Christos Tsirigotis`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical.href} />
 
-    <!-- Set theme before paint if user has a saved preference -->
-    <script>
-        (() => {
-            try {
-            const apply = (mode) => { document.documentElement.dataset.theme = mode; };
-            const saved = localStorage.getItem('theme'); // 'light' | 'dark' | null
-            if (saved === 'light' || saved === 'dark') {
-                apply(saved);                    // manual override persists
-            } else {
-                const mq = window.matchMedia('(prefers-color-scheme: dark)');
-                apply(mq.matches ? 'dark' : 'light'); // initialize to system
-                // Follow system changes until user chooses manually
-                mq.addEventListener?.('change', (e) => apply(e.matches ? 'dark' : 'light'));
-            }
-            } catch {}
-        })();
-    </script>
+    <!-- Klaro consent manager -->
+    <script is:inline src="/klaro-config.js"></script>
+    <script is:inline src="/klaro.js"></script>
+    <link rel="stylesheet" href="/klaro.css" />
 
-    <!-- Google Analytics -->
-    <!-- Consent defaults MUST come before loading gtag.js -->
-    <script is:inline>
-    // Shim + dataLayer
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-
-    (function(){
-        // Read prior choice from banner ('granted' | 'denied')
-        var stored = null;
-        try { stored = localStorage.getItem('ga_consent'); } catch {}
-
-        if (stored === 'granted' || stored === 'denied') {
-        // Respect saved choice
-        gtag('consent', 'default', {
-            'analytics_storage': stored,
-            'ad_storage': 'denied',
-            'ad_user_data': 'denied',
-            'ad_personalization': 'denied'
-        });
-        } else {
-        // Region-aware defaults (EEA/UK/CH denied by default)
-        gtag('consent', 'default', {
-            'analytics_storage': 'denied',
-            'ad_storage': 'denied',
-            'ad_user_data': 'denied',
-            'ad_personalization': 'denied'
-        }, {
-            'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']
-        });
-        // Everyone else: granted by default (until the user acts)
-        gtag('consent', 'default', {
-            'analytics_storage': 'granted',
-            'ad_storage': 'denied',
-            'ad_user_data': 'denied',
-            'ad_personalization': 'denied'
-        });
-        }
-    })();
-    </script>
-
+    <!-- Google Analytics (managed by Klaro) -->
     {GA_ID && (
-    <>
-        <!-- Load GA4 only if we actually have an ID -->
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
-        <script is:inline>
-        // Inject the literal string ID (not an object)
-        const GA_MEASUREMENT_ID = {JSON.stringify(GA_ID)};
-
-        // Init GA + first page_view
-        gtag('js', new Date());
-        gtag('config', GA_MEASUREMENT_ID, {
-            page_path: location.pathname
-        });
-
-        // If you later add Astro view transitions, send a page_view on swaps:
-        window.addEventListener?.('astro:after-swap', () => {
-            gtag('event', 'page_view', {
-            page_title: document.title,
-            page_location: location.href,
-            page_path: location.pathname
-            });
-        });
-        </script>
-    </>
+    <script type="text/plain" data-type="application/javascript"
+      data-name="google-analytics" async
+      src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
+    <script type="text/plain" data-type="application/javascript"
+      data-name="google-analytics" is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', GA_ID, { page_path: location.pathname });
+    </script>
     )}
   </head>
   <body>
@@ -149,6 +80,5 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
       <slot />
     </main>
     <Footer />
-    <ConsentBanner />
   </body>
 </html>

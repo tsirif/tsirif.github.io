@@ -1,73 +1,54 @@
 ---
-import DarkToggle from "./DarkToggle.astro";
 import SocialIcons from "./SocialIcons.astro";
-
-const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer" role="contentinfo" aria-label="Footer">
   <div class="footer-left">
     <small>
-    © {new Date().getFullYear()} •
-    <!-- Built with Astro • -->
-    <!-- <a class="link" href="https://github.com/tsirif/tsirif.github.io">Source</a> • -->
-    <a class="link" href="/rss.xml" type="application/rss+xml">RSS</a> •
-    <a class="link" href="/atom.xml" type="application/atom+xml">Atom</a> •
-    <a class="link" href="#manage-cookies" id="manage-cookies-link">Manage cookies</a>
+    &copy; {new Date().getFullYear()} &middot;
+    <a class="link" href="/rss.xml" type="application/rss+xml">RSS</a> &middot;
+    <a class="link" href="/atom.xml" type="application/atom+xml">Atom</a> &middot;
+    <a class="link" href="#" id="manage-cookies-link">Manage cookies</a>
     </small>
-
-    <div class="footer-controls">
-      <DarkToggle />
-    </div>
   </div>
   <div class="footer-right">
-    <div class="footer-controls">
-      <SocialIcons size={24} className="footer-socials" />
-    </div>
+    <SocialIcons size={24} className="footer-socials" />
   </div>
 
   <style>
-    .site-footer{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+    .site-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 12px;
       padding: 18px clamp(16px, 4vw, 32px);
-      border-top: 1px solid var(--border);
-      background: var(--surface);
+      border-top: 1px solid var(--rule);
+      background: var(--bg);
     }
 
-    .footer-left { display:flex; align-items:center; gap:12px; }
-    .footer-controls { display:flex; align-items:center; gap:12px; }
-
-    /* Make social icons a bit smaller in footer if desired */
+    .footer-left { display: flex; align-items: center; gap: 12px; }
+    .footer-right { color: var(--muted); font-size: 0.95rem; }
     .footer-socials { --social-size: 26px; }
 
-    .footer-right { color: var(--muted); font-size: 0.95rem; }
-
-    /* Mobile: stack nicely */
     @media (max-width: 700px) {
-      .site-footer{
-        flex-direction:column;
-        align-items:center;
-        text-align:center;
+      .site-footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
         gap: 10px;
         padding: 14px;
       }
-      .footer-left, .footer-right { width:100%; display:flex; justify-content:center; }
-      .footer-right { order: 2; }
-      .footer-controls { order: 1; gap: 10px; }
+      .footer-left, .footer-right { width: 100%; display: flex; justify-content: center; }
     }
   </style>
 
   <script is:inline>
     (function(){
-      const link = document.getElementById('manage-cookies-link');
+      var link = document.getElementById('manage-cookies-link');
       if (!link) return;
-      link.addEventListener('click', (e) => {
+      link.addEventListener('click', function(e) {
         e.preventDefault();
-        if (window.openConsentBanner) window.openConsentBanner();
-        else window.dispatchEvent(new CustomEvent('consent-open'));
+        if (window.klaro) window.klaro.show();
       });
     })();
   </script>

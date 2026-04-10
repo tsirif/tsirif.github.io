@@ -1,24 +1,29 @@
 :root {
-  /* Light theme (default) */
-  --paper:        #FAF9F7;   /* page background */
-  --ink:          #1A1A1A;   /* primary text */
-  --surface:      #FFFFFF;   /* cards */
-  --muted:        #646765;   /* secondary text */
-  --sel-surface:  #2B2B2B;
-  --sel-ink:      #FFFFFF;
-  --border:       #E6E3DC;
-  --accent:       #1A1A1A;   /* link/brand */
-  --accent-visited:#1A1A1A;
+  /* Color palette — matches logotechnologia.com */
+  --fg: #0a0a0a;
+  --bg: #ffffff;
+  --muted: #6b6b6b;
+  --rule: #e6e6e6;
+
+  /* Aliases for existing references in components */
+  --paper: var(--bg);
+  --ink: var(--fg);
+  --surface: var(--bg);
+  --border: var(--rule);
+  --accent: var(--fg);
+  --accent-visited: var(--fg);
+  --sel-surface: #2B2B2B;
+  --sel-ink: #ffffff;
 
   /* Typography scale (fluid) */
   --fs-body: clamp(14px, 1.6vw, 18px);
   --lh-body: 1.6;
-  --fs-h1: clamp(22px, 6vw, 52px);
-  --fs-h2: clamp(18px, 4.5vw, 36px);
+  --fs-h1: clamp(1.6rem, 3.2vw, 2.1rem);
+  --fs-h2: 0.78rem;
   --fs-h3: clamp(16px, 3.8vw, 28px);
-  --tracking-mono: 0.012em;
 
   /* Layout tokens */
+  --max: 760px;
   --radius: 8px;
   --gap-1: 0.25rem;
   --gap-2: 0.5rem;
@@ -29,30 +34,11 @@
   --gap-8: 3rem;
 }
 
-/* Light theme (warm neutral, soft contrast) */
-:root[data-theme="light"] {
-  color-scheme: light;
-  --paper:        #FAF9F7;   /* page background */
-  --ink:          #111111;   /* primary text */
-  --surface:      #FFFFFF;   /* cards */
-  --muted:        #666666;   /* secondary text */
-  --sel-surface:  #2B2B2B;
-  --sel-ink:      #FFFFFF;
-  --border:       #E6E3DC;
-  --accent:       #1A1A1A;   /* link/brand */
-  --accent-visited:#1A1A1A;
-}
-
-/* Dark theme (smooth charcoal, readable ink) */
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --paper:        #353535;
-  --ink:          #FFFFFF;
-  --surface:      #2E2E2C;
-  --muted:        #B7B7B7;
-  --sel-surface:  #E7E7E7;
-  --sel-ink:      #000000;
-  --border:       #505050;
-  --accent:       #FFFFFF;
-  --accent-visited:#FFFFFF;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #f5f5f5;
+    --bg: #0a0a0a;
+    --muted: #9a9a9a;
+    --rule: #1f1f1f;
+  }
 }

@@ -27,10 +27,10 @@ export async function GET({ site }) {
   ].sort((a, b) => new Date(b.date) - new Date(a.date));
 
   // const origin = (site && site.toString()) || 'https://tsirif.github.io';
-  const origin = (site && site.toString()) || 'https://logotechnologia.com';
+  const origin = (site && site.toString()) || 'https://christos.logotechnologia.com';
 
   return rss({
-    title: 'logotechnologia',
+    title: 'Christos Tsirigotis',
     description: 'Essays, projects, and more by Christos Tsirigotis.',
     site: origin,
     items: combined.map((it) => ({

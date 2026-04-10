@@ -11,5 +11,5 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   integrations: [react(), mdx(), sitemap()],
   // site: 'https://tsirif.github.io'
-  site: 'https://logotechnologia.com'
+  site: 'https://christos.logotechnologia.com'
 });

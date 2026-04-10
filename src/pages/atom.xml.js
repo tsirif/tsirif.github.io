@@ -7,7 +7,7 @@ export async function GET({ site }) {
   ]);
 
   // const origin = (site && site.toString()) || 'https://tsirif.github.io';
-  const origin = (site && site.toString()) || 'https://logotechnologia.com';
+  const origin = (site && site.toString()) || 'https://christos.logotechnologia.com';
 
   const esc = (s = '') =>
     String(s)
@@ -68,7 +68,7 @@ export async function GET({ site }) {
 
   const xml = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>logotechnologia</title>
+  <title>Christos Tsirigotis</title>
   <id>${origin}/</id>
   <updated>${updatedISO}</updated>
   <link href="${selfUrl}" rel="self" />
