@@ -5,11 +5,16 @@ import SocialIcons from "./SocialIcons.astro";
 <footer class="site-footer" role="contentinfo" aria-label="Footer">
   <div class="footer-left">
     <small>
-    &copy; {new Date().getFullYear()} &middot;
+    &copy; {new Date().getFullYear()} Christos Tsirigotis &middot;
     <a class="link" href="/rss.xml" type="application/rss+xml">RSS</a> &middot;
-    <a class="link" href="/atom.xml" type="application/atom+xml">Atom</a> &middot;
-    <a class="link" href="#" id="manage-cookies-link">Manage cookies</a>
+    <a class="link" href="/atom.xml" type="application/atom+xml">Atom</a>
     </small>
+  </div>
+  <div class="footer-center">
+    <nav class="footer-links" aria-label="Legal">
+      <a class="link" href="https://www.logotechnologia.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+      <a class="link" href="#" id="manage-cookies-link">Cookie Settings</a>
+    </nav>
   </div>
   <div class="footer-right">
     <SocialIcons size={24} className="footer-socials" />
@@ -24,9 +29,12 @@ import SocialIcons from "./SocialIcons.astro";
       padding: 18px clamp(16px, 4vw, 32px);
       border-top: 1px solid var(--rule);
       background: var(--bg);
+      font-size: 0.82rem;
     }
 
     .footer-left { display: flex; align-items: center; gap: 12px; }
+    .footer-center { display: flex; align-items: center; }
+    .footer-links { display: flex; gap: 1rem; font-size: 0.82rem; }
     .footer-right { color: var(--muted); font-size: 0.95rem; }
     .footer-socials { --social-size: 26px; }
 
@@ -38,7 +46,11 @@ import SocialIcons from "./SocialIcons.astro";
         gap: 10px;
         padding: 14px;
       }
-      .footer-left, .footer-right { width: 100%; display: flex; justify-content: center; }
+      .footer-left, .footer-center, .footer-right {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
     }
   </style>
 

@@ -19,7 +19,7 @@
   --fs-body: clamp(14px, 1.6vw, 18px);
   --lh-body: 1.6;
   --fs-h1: clamp(1.6rem, 3.2vw, 2.1rem);
-  --fs-h2: 0.78rem;
+  --fs-h2: 0.88rem;
   --fs-h3: clamp(16px, 3.8vw, 28px);
 
   /* Layout tokens */

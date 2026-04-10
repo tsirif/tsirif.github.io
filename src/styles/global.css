@@ -106,6 +106,12 @@ a.link:hover, a.link:focus-visible {
   font-size: 0.82rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  color: var(--muted);
+  transition: opacity 0.15s ease;
+}
+.nav a:hover, .nav a:focus-visible {
+  color: var(--fg);
+  opacity: 0.6;
 }
 .nav a[aria-current="page"] {
   border-bottom: 1px solid var(--fg);
@@ -117,7 +123,7 @@ a.link:hover, a.link:focus-visible {
 }
 
 /* When skipping to content, avoid header overlap on anchor jumps */
-#main { scroll-margin-top: 80px; }
+#main { scroll-margin-top: 80px; padding-top: clamp(1rem, 3vw, 2rem); }
 
 /* Buttons */
 .btn {
