@@ -92,6 +92,11 @@ a.link:hover, a.link:focus-visible {
   font-size: 0.82rem;
   letter-spacing: 0.04em;
   line-height: 1.3;
+  color: var(--fg);
+  transition: opacity 0.15s ease;
+}
+.brand:hover, .brand:focus-visible {
+  opacity: 0.65;
 }
 .nav {
   display: flex;
@@ -107,11 +112,10 @@ a.link:hover, a.link:focus-visible {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
-  transition: opacity 0.15s ease;
+  transition: color 0.15s ease;
 }
 .nav a:hover, .nav a:focus-visible {
   color: var(--fg);
-  opacity: 0.6;
 }
 .nav a[aria-current="page"] {
   border-bottom: 1px solid var(--fg);

@@ -19,6 +19,7 @@ interface Props {
 const { title = "Home", description = "AI Research Portfolio, Discussions and Writings", wide = true, ogImage } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const CWA_TOKEN = import.meta.env.PUBLIC_CWA_BEACON_TOKEN;
 ---
 
 <!DOCTYPE html>
@@ -58,6 +59,14 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     <script is:inline src="/klaro-config.js"></script>
     <script is:inline src="/klaro.js"></script>
     <link rel="stylesheet" href="/klaro.css" />
+
+    <!-- Cloudflare Web Analytics (managed by Klaro — required/functional) -->
+    {CWA_TOKEN && (
+    <script type="text/plain" data-type="application/javascript"
+      data-name="cloudflare-analytics" defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={`{"token": "${CWA_TOKEN}"}`}></script>
+    )}
 
     <!-- Google Analytics (managed by Klaro) -->
     {GA_ID && (
