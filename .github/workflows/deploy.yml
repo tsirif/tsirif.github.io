@@ -17,8 +17,13 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  BUILD_PATH: "." # default value when not using subfolders
-  # BUILD_PATH: subfolder
+  BUILD_PATH: "."
+  PUBLIC_GA_MEASUREMENT_ID: G-CK1NLPG2EQ
+  PUBLIC_CWA_BEACON_TOKEN: ""  # Set once you create a CWA site for christos.logotechnologia.com
+  PUBLIC_GISCUS_REPO: tsirif/tsirif.github.io
+  PUBLIC_GISCUS_REPO_ID: R_kgDOQFjsYw
+  PUBLIC_GISCUS_CATEGORY: General
+  PUBLIC_GISCUS_CATEGORY_ID: DIC_kwDOQFjsY84Cw3q7
 
 jobs:
   build:
