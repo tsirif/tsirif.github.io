@@ -19,7 +19,7 @@ concurrency:
 env:
   BUILD_PATH: "."
   PUBLIC_GA_MEASUREMENT_ID: G-CK1NLPG2EQ
-  PUBLIC_CWA_BEACON_TOKEN: ""  # Set once you create a CWA site for christos.logotechnologia.com
+  PUBLIC_CWA_BEACON_TOKEN: 279d2ec248754a7cb0f31f3c760d0b7d
   PUBLIC_GISCUS_REPO: tsirif/tsirif.github.io
   PUBLIC_GISCUS_REPO_ID: R_kgDOQFjsYw
   PUBLIC_GISCUS_CATEGORY: General
